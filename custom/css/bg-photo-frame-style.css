@@ -1,0 +1,127 @@
+/* CSS Document */
+/* photo frame
+-----------------------------------------*/
+/*--------------------------------------------------------------
+# Initial
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# Typography
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# layout
+--------------------------------------------------------------*/
+#page {
+  z-index: 1; }
+
+#wrapper {
+  padding-left: 3%;
+  padding-right: 3%;
+  position: relative;
+  z-index: 1; }
+
+/*hedaer-image
+-----------------------------------------*/
+#header-image {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0; }
+
+#header-image ul {
+  display: none;
+  margin: 0;
+  padding: 0; }
+
+#header-image li {
+  margin: 0;
+  padding: 0;
+  list-style: none; }
+
+/* site-wrapper
+-----------------------------------------*/
+#site-wrapper {
+  margin: 0;
+  padding: 21px;
+  z-index: 1;
+  position: relative;
+  width: auto; }
+
+#site-wrapper-inner {
+  position: relative;
+  width: 100%; }
+
+/* site-header
+-----------------------------------------*/
+#masthead {
+  position: relative;
+  z-index: 1; }
+
+.site-title {
+  font-size: 36px;
+  line-height: 1em;
+  margin-bottom: 0.1em;
+  padding-bottom: 0.1em;
+  margin-right: 52px; }
+
+.site-title a:hover {
+  text-decoration: none; }
+
+.site-description {
+  padding-bottom: 1em;
+  margin-bottom: 3em;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  padding-right: 52px; }
+
+/* content
+-----------------------------------------*/
+#content {
+  position: relative;
+  z-index: 1; }
+
+/*--------------------------------------------------------------
+# Mavigation
+--------------------------------------------------------------*/
+.navbar-nav {
+  display: block;
+  float: left; }
+
+.navbar-nav li a {
+  display: block;
+  padding: 15px 15px; }
+
+#site-navigation {
+  margin-bottom: 30px; }
+
+/*--------------------------------------------------------------
+# Enrty
+--------------------------------------------------------------*/
+.entry-title {
+  padding-bottom: 0.5em; }
+
+/*--------------------------------------------------------------
+# Widgets
+--------------------------------------------------------------*/
+.widget {
+  padding: 15px;
+  margin-bottom: 0; }
+
+.widget h2 {
+  margin: 0;
+  font-size: large; }
+
+.widget ul {
+  margin: 0 0 0 1em;
+  padding: 0; }
+
+/*--------------------------------------------------------------
+# Footer
+--------------------------------------------------------------*/
+.site-footer {
+  margin-top: 30px;
+  padding-top: 15px; }
+
+/*--------------------------------------------------------------
+# Custom
+--------------------------------------------------------------*/
