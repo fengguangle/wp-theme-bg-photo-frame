@@ -47,6 +47,10 @@
             photoFrame: false, //フォトフレーム機能
             stopWhenClicked: true,
             contents: '', //コンテンツ要素
+            maskColor: 'light', //マスクのカラー
+            maskOpacity: 0.7 //マスクの透明度
+
+
 
         };
 
@@ -127,9 +131,8 @@
                 ----------------------------------------------------------------------*/
                 //ul element
                 element.css({
-                    margin: '0px' //余白をなくす
-                        ,
-                    padding: '0px'
+                    margin: '0px', //余白をなくす
+                    padding: '0px',
                 });
                 wrapper.css({
                     opacity: '1.0'
@@ -143,10 +146,8 @@
 
                 //list element
                 element.find('li').css({
-                    position: 'absolute' //ポジションを絶対値に指定して画像を重ねて表示
-                        ,
-                    listStyle: 'none' //リストスタイルを無しに指定
-                        ,
+                    position: 'absolute', //ポジションを絶対値に指定して画像を重ねて表示
+                    listStyle: 'none', //リストスタイルを無しに指定
                     display: 'none',
                     overflow: 'hidden'
                 });
@@ -295,6 +296,10 @@
                                     marginTop = (windowHeight - imgHeight) / 2;
                                 }
                             }
+                            imgWidth = parseInt(imgWidth);
+                            imgHeight = parseInt(imgHeight);
+                            marginTop = parseInt(marginTop);
+                            marginLeft = parseInt(marginLeft);
 
                             if (animation) {
                                 _img.animate({
@@ -339,7 +344,14 @@
                 function initMask() {
                     wrapper.after("<div id='images-mask'></div>")
                     maskElement = $('#images-mask');
+
+                    //CSS
+
+                    maskElement.css({
+                        background: 'rgba(' + setting.maskColor + ',' + setting.maskColor + ',' + setting.maskColor + ',' + setting.maskOpacity + ')'
+                    })
                 }
+
                 /* Resize
                 ----------------------------------------------------------------------*/
                 function resizeMask() {
@@ -351,11 +363,11 @@
 
 
                 mask.showMask = function() {
-                    maskElement.fadeTo(fadeTime, 1.0);
+                    maskElement.stop(true, false).fadeTo(fadeTime, 1.0);
                 }
 
                 mask.hideMask = function() {
-                    maskElement.fadeTo(fadeTime, 0.0);
+                    maskElement.stop(true, false).fadeTo(fadeTime, 0.0);
                 }
 
                 /* Run
@@ -507,14 +519,17 @@
 
 
                 commandProcess.modeChange = function() {
-                    mode.modeChange();
-                    if (currentMode == 'photoframe') {
-                        mask.hideMask();
-                    } else if (currentMode == 'background') {
-                        hideInterface();
-                        disableTimerInterface();
+                    if (btnEnable) {
+                        btnEnable = false;
+                        mode.modeChange();
+                        if (currentMode == 'photoframe') {
+                            mask.hideMask();
+                        } else if (currentMode == 'background') {
+                            hideInterface();
+                            disableTimerInterface();
+                        }
+                        disableTimer();
                     }
-                    disableTimer();
                 }
 
                 commandProcess.modeChangeEnd = function() {
@@ -525,8 +540,8 @@
                         timerOn();
                         mask.showMask();
                     }
-                    btnEnable = true;
                     setTimer();
+                    btnEnable = true;
                 }
 
 
@@ -659,17 +674,13 @@
                 ----------------------------------------------------------------------*/
                 //Toggle
                 mode.modeChange = function() {
-                    if (btnEnable) {
-                        btnEnable = false;
-                        stopModeChangeAnimation();
-                        if (currentMode == 'background') {
-                            photoFrameMode();
-                        } else if (currentMode == 'photoframe') {
-                            backgroundMode();
-                        }
-                        command('modeChange')
-                    }
 
+                    stopModeChangeAnimation();
+                    if (currentMode == 'background') {
+                        photoFrameMode();
+                    } else if (currentMode == 'photoframe') {
+                        backgroundMode();
+                    }
                 }
 
                 //Photoframe
@@ -727,7 +738,7 @@
 
                 function EndModeChangeAnimation() {
                     if (currentMode == "photoframe") {
-                        btnEnable = true;
+
                     } else if (currentMode == "background") {
                         showContents();
                     }
@@ -769,9 +780,9 @@
                             return false;
                         })
                     } else {
-                        toggleButton.bind('touchstart', function() {
+                        toggleButton.bind('touchstart', function(event) {
                             command('modeChange');
-                            preventDefault();
+                            event.preventDefault();
                         })
                     }
                 }
@@ -829,9 +840,9 @@
                                 return false;
                             })
                         } else {
-                            $('.' + navPrefix).bind('touchstart', function() {
+                            $('.' + navPrefix).bind('touchstart', function(event) {
                                 navClick($(this));
-                                preventDefault();
+                                event.preventDefault();
                             })
                         }
 
@@ -933,9 +944,9 @@
                             return false;
                         })
                     } else {
-                        thumbBtn.bind('touchstart', function() {
+                        thumbBtn.bind('touchstart', function(event) {
                             toggleThumbBtn();
-                            preventDefault();
+                            event.preventDefault();
                         })
                     }
 
@@ -1125,9 +1136,9 @@
                                 return false;
                             })
                         } else {
-                            timerBtn.bind('touchend', function() {
+                            timerBtn.bind('touchend', function(event) {
                                 toggleTimer();
-                                preventDefault();
+                                event.preventDefault();
                             })
                         }
                     }
@@ -1230,6 +1241,7 @@
                     } else { //それ以外は次の画像を指定する。
                         newNum = parseInt(current) + 1;
                     }
+
                     return newNum;
                 }
 
@@ -1384,7 +1396,7 @@
                         speed,
                         swipeEasing,
                         function() {
-                            swipeEnd(num, direction)
+                            swipeEnd(num, direction);
                         }
                     );
                     swipeAnmation = true;
@@ -1410,12 +1422,18 @@
 
                 function setSwipeImage(num, direction) {
                     var img = element.find('li').eq(num);
-                    img.removeClass('dammy').removeClass('dammy-left').removeClass('dammy-right');
                     command('setSwipeImage', num);
                     img.css({
                         display: 'block',
                         marginLeft: 0
                     });
+
+
+
+                    element.find('li:not(:eq(' + num + '))').css({
+                        display: 'none'
+                    });
+
                 }
 
 
@@ -1577,6 +1595,24 @@
                 // JavaScript Document
 
                 var dammy = [];
+                var dammyGroup;
+
+                /* init
+                ----------------------------------------------------------------------*/
+                function initDammy() {
+                    dammyGroup = $('<ul/>');
+                    dammyGroup.addClass('dammy');
+                    element.after(dammyGroup);
+
+                    dammyGroup.css({
+                        margin: '0px',
+                        padding: '0px',
+                        position: 'absolute',
+                        display: 'block',
+                        width: '100%'
+                    });
+
+                }
 
                 dammy.setDammy = function(num, direction) {
                     var leftMargin, rightMargin;
@@ -1589,9 +1625,9 @@
                     var dammyNum;
 
                     if (wrapperMargin > 0) {
-                        leftDammyNum = Math.floor((wrapperMargin + $(window).width()) / $(window).width()) + 1
+                        leftDammyNum = Math.floor((wrapperMargin + $(window).width()) / $(window).width()) + 1;
                     } else if (wrapperMargin < 0) {
-                        rightDammyNum = Math.floor(-(wrapperMargin - $(window).width()) / $(window).width()) + 1
+                        rightDammyNum = Math.floor(-(wrapperMargin - $(window).width()) / $(window).width()) + 1;
                     }
 
 
@@ -1608,6 +1644,7 @@
                     }
 
                     dammyNum = num;
+
                     for (var i = 0; i < rightDammyNum; i++) {
                         var rightNum;
                         if (dammyNum == element.find('li').length - 1) {
@@ -1615,6 +1652,7 @@
                         } else {
                             rightNum = dammyNum + 1;
                         }
+
                         dammyShow(rightNum, i, 'right');
                         dammyNum = rightNum;
                     }
@@ -1625,26 +1663,44 @@
                 }
 
                 function dammyShow(num, i, direction) {
-                    var dammyImg = element.find('li').eq(num);
-                    var margin;
-                    if (direction == 'left') {
-                        margin = -$(window).width();
-                    } else if (direction == 'right') {
-                        margin = $(window).width();
-                    }
-                    dammyImg.addClass('dammy').css({
-                        marginLeft: margin * (i + 1) + 'px'
-                    })
                     command('setDammy', num);
+                    var dammyBase = element.find('li').eq(num).find('img');
+                    var width = dammyBase.width();
+                    var height = dammyBase.height();
+                    var marginTop = dammyBase.css('marginTop');
+                    var marginLeft;
+
+                    if (direction == 'left') {
+                        marginLeft = -$(window).width();
+                    } else if (direction == 'right') {
+                        marginLeft = $(window).width();
+                    }
+                    var src = dammyBase.attr('src');
+                    var dammyElement = $('<li><img/></li>');
+
+                    dammyElement.find('img').attr('src', src);
+                    dammyElement.addClass('dammy-list').addClass('dammy-' + direction);
+                    dammyElement.css({
+                        width: '100%',
+                        position: 'absolute',
+                        listStyle: 'none'
+                    })
+
+                    dammyElement.find('img').css({
+                        width: width + 'px',
+                        height: height + 'px',
+                        marginTop: marginTop,
+                        marginLeft: marginLeft * (i + 1) + 'px'
+                    })
+
+                    dammyGroup.append(dammyElement);
                 }
 
                 dammy.removeDammy = function() {
-                    var dammyElement = element.find('li.dammy');
-                    dammyElement.css({
-                        display: 'none'
-                    })
-                    dammyElement.removeClass('dammy').removeClass('dammy-left').removeClass('dammy-right');
+                    dammyGroup.find('li').remove();
                 }
+
+                initDammy();
             }
         }
     }

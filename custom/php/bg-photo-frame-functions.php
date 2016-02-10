@@ -2,7 +2,7 @@
 
 //Load Script Files
 function bg_photo_frame_custom_sctipt() {
-	$theme_color = get_theme_mod( 'color_option' ,'light');
+	$theme_color = get_theme_mod( 'theme_color' ,'light');
 	wp_enqueue_style( 
 		'bootstrap', 
 		get_template_directory_uri()   . '/custom/css/bootstrap.min.css'
@@ -48,17 +48,32 @@ add_action( 'wp_enqueue_scripts', 'bg_photo_frame_custom_sctipt' );
 
 function bg_photo_frame_js_params() {
 	$image_order = get_theme_mod( "image_order" ,"in_order");
+	$theme_color = get_theme_mod( 'theme_color' ,'light');
+	$image_opacity = get_theme_mod( "image_opacity" , "70") / 100;
+	$contents_opacity = get_theme_mod( "contents_opacity" , "70") / 100;
 	echo "\n";
 	echo '<script type="text/javascript">//<![CDATA[';
-	echo "\n";
 	
+	//Color
+	echo "\n";
+	echo "var themeColor = '" . $theme_color  . "';";
+	
+	//Opacity
+	echo "\n";
+	echo "var imageOpacity = " . $image_opacity  . ";";
+	echo "\n";
+	echo "var contentsOpacity = " . $contents_opacity  . ";";
+	
+	//Order
+	echo "\n";
 	if($image_order == 'in_order'){
 		echo "var shuffle = false;";
 	}else{
 		echo "var shuffle = true;";
 	}
-	echo "\n";
+	
 	echo "//]]></script>";
+	echo "\n";
 }
 
 add_action( 'wp_head', 'bg_photo_frame_js_params', 15 );
@@ -73,7 +88,8 @@ function bg_photo_frame_theme_color_customize_register($wp_customize){
         'priority'       => 20,
     ));
 		
-	$wp_customize->add_setting('color_option', array(
+	/* Theme Color */
+	$wp_customize->add_setting('theme_color', array(
         'default'        => 'light',
 		'capability' => 'manage_options',
 		'type' => 'theme_mod',
@@ -81,19 +97,18 @@ function bg_photo_frame_theme_color_customize_register($wp_customize){
 		'sanitize_callback' => 'bg_photo_frame_sanitize_teheme_color',
     ));
 	
-    $wp_customize->add_control('bg_photo_frame_setting_color_scheme', array(
+    $wp_customize->add_control('bg_photo_frame_setting_theme_color', array(
         'label'      => esc_html__('Theme Color', 'bg-photo-frame'),
         'section'    => 'bg_photo_frame_setting',
-        'settings'   => 'color_option',
+        'settings'   => 'theme_color',
 		'type' => 'radio',
 		'choices' => array(
             'light' => esc_html__('Light Side', 'bg-photo-frame'),
             'dark' => esc_html__('Dark Side', 'bg-photo-frame'),
         ),
-
     ));
 	
-	
+	/* Image Order */
 	$wp_customize->add_setting('image_order', array(
         'default'        => 'in_order',
 		'capability' => 'manage_options',
@@ -103,7 +118,7 @@ function bg_photo_frame_theme_color_customize_register($wp_customize){
     ));
 	
     $wp_customize->add_control('bg_photo_frame_setting_image_order', array(
-        'label'      => esc_html__('Order of images', 'bg-photo-frame'),
+        'label'      => esc_html__('Order of Images', 'bg-photo-frame'),
         'section'    => 'bg_photo_frame_setting',
         'settings'   => 'image_order',
 		'type' => 'radio',
@@ -111,34 +126,79 @@ function bg_photo_frame_theme_color_customize_register($wp_customize){
             'in_order' => esc_html__('In order', 'bg-photo-frame'),
             'shuffle' => esc_html__('Shuffle', 'bg-photo-frame'),
         ),
-
+    ));
+	
+	$wp_customize->add_setting('image_opacity', array(
+        'default'        => 70,
+		'capability' => 'manage_options',
+		'type' => 'theme_mod',
+		'transport' => 'refresh',
+		'sanitize_callback' => 'bg_photo_frame_sanitize_image_opacity',
+    ));
+	
+	$wp_customize->add_control('bg_photo_frame_setting_image_opacity', array(
+        'label'      => esc_html__('Opacity of Images', 'bg-photo-frame'),
+        'section'    => 'bg_photo_frame_setting',
+        'settings'   => 'image_opacity',
+		'type' => 'range',
+		'input_attrs' => array(
+			'min' => 0,
+			'max' => 100,
+			'step' => 1
+			//'class' => 'image-opacity',
+			//'style' => 'color: #0a0',
+    	),
+    ));
+	
+	$wp_customize->add_setting('contents_opacity', array(
+        'default'        => 70,
+		'capability' => 'manage_options',
+		'type' => 'theme_mod',
+		'transport' => 'refresh',
+		'sanitize_callback' => 'bg_photo_frame_sanitize_contents_opacity',
+    ));
+	
+	$wp_customize->add_control('bg_photo_frame_setting_contents_opacity', array(
+        'label'      => esc_html__('Opacity of Contents Background', 'bg-photo-frame'),
+        'section'    => 'bg_photo_frame_setting',
+        'settings'   => 'contents_opacity',
+		'type' => 'range',
+		'input_attrs' => array(
+			'min' => 0,
+			'max' => 100,
+			'step' => 1
+			//'class' => 'image-opacity',
+			//'style' => 'color: #0a0',
+    	),
     ));
 
 }
-function bg_photo_frame_sanitize_teheme_color( $input ) {
-    $valid = array(
-		'light' => esc_html__('Light Side', 'bg-photo-frame'),
-		'dark' => esc_html__('Dark Side', 'bg-photo-frame'),
-     );
 
-     if ( array_key_exists( $input, $valid ) ) {
+function bg_photo_frame_sanitize_teheme_color( $input ) {
+	 $valid = array( 'light', 'dark' );
+     if ( in_array( $input, $valid, true)) {
+        return $input;
+     } else {
+        return '';
+     }
+	 
+}
+
+function bg_photo_frame_sanitize_image_order( $input ) {
+	 $valid = array( 'in_order', 'shuffle' );
+     if ( in_array( $input, $valid, true)) {
         return $input;
      } else {
         return '';
      }
 }
 
-function bg_photo_frame_sanitize_image_order( $input ) {
-    $valid = array(
-		'in_order' => esc_html__('In order', 'bg-photo-frame'),
-		'shuffle' => esc_html__('Shuffle', 'bg-photo-frame'),
-     );
+function bg_photo_frame_sanitize_image_opacity( $input ) {
+	return absint($input);
+}
 
-     if ( array_key_exists( $input, $valid ) ) {
-        return $input;
-     } else {
-        return '';
-     }
+function bg_photo_frame_sanitize_contents_opacity( $input ) {
+	return absint($input);
 }
 
 

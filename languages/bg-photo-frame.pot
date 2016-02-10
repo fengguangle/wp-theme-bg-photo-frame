@@ -8,7 +8,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-01-09 14:14+0900\n"
+"PO-Revision-Date: 2016-02-10 15:36+0900\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "X-Generator: Poedit 1.5.7\n"
@@ -248,7 +248,7 @@ msgstr "ダークサイド"
 
 # @ _s
 #: custom/php/bg-photo-frame-functions.php:93
-msgid "Order of images"
+msgid "Order of Images"
 msgstr "画像の順番"
 
 # @ _s
@@ -260,3 +260,13 @@ msgstr "順番どおり"
 #: custom/php/bg-photo-frame-functions.php:93
 msgid "Shuffle"
 msgstr "シャッフル"
+
+# @ _s
+#: custom/php/bg-photo-frame-functions.php:124
+msgid "Opacity of Images"
+msgstr "画像の透明度"
+
+# @ _s
+#: custom/php/bg-photo-frame-functions.php:150
+msgid "Opacity of Contents Background"
+msgstr "コンテンツの背景の透明度"
