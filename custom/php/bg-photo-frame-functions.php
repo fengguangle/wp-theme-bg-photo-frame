@@ -41,7 +41,7 @@ function bg_photo_frame_custom_sctipt() {
 	
 		
 	//Master
-	wp_enqueue_script('master', get_template_directory_uri() . '/custom/js/bg-photo-frame-master.js', array(), '1.0.0', true);
+	wp_enqueue_script('master', get_template_directory_uri() . '/custom/js/bg-photo-frame-master.js', array(), '1.2.2', true);
 	
 }
 add_action( 'wp_enqueue_scripts', 'bg_photo_frame_custom_sctipt' );
