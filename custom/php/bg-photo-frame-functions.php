@@ -224,6 +224,24 @@ function bg_photo_frame_custom_header_setup_custom() {
 add_action( 'after_setup_theme', 'bg_photo_frame_custom_header_setup_custom' );
 
 
+/**
+ * Custom_Comment_Form_Setup
+ */
+function bg_photo_frame_comment_form_before() {
+    ob_start();
+}
+add_action( 'comment_form_before', 'bg_photo_frame_comment_form_before' );
+
+function bg_photo_frame_comment_form_after() {
+    $html = ob_get_clean();
+    $html = preg_replace(
+        '/<h3 id="reply-title"(.*)>(.*)<\/h3>/',
+        '<h2 id="reply-title"\1>\2</h2>',
+        $html
+    );
+    echo $html;
+}
+add_action( 'comment_form_after', 'bg_photo_frame_comment_form_after' );
 
 
 
