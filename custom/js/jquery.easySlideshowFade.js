@@ -77,6 +77,10 @@
             var prefix = 'bg-photo-frame';
 
 
+            //Whether click or not
+            var easing = 'easeOutCubic';
+
+
 
 
             /* call back before run
@@ -266,7 +270,7 @@
                                     height: imgHeight + 'px',
                                     marginTop: marginTop + 'px',
                                     marginLeft: marginLeft + 'px'
-                                }, photoAnimeTime, photoAnimeEasing, function() {
+                                }, photoAnimeTime, easing, function() {
                                     if (callback) {
                                         eval(callback + "()");
                                     }
@@ -443,7 +447,7 @@
                         showInterface();
                         enableTimerInterface();
                     } else if ('background') {
-
+                        timerOn();
                     }
                     btnEnable = true;
                     setTimer();
@@ -771,7 +775,7 @@
                 var thumbPrefix = prefix + '-thumb';
                 var thumbPageClass = thumbPrefix + '-thumbs';
                 var thumbBtnClass = thumbPrefix + '-btn';
-
+                var thumbTime = 500;
 
                 /* Init
                 ----------------------------------------------------------------------*/
@@ -806,15 +810,17 @@
                         toggleThumbBtn();
                     })
 
-                    $('#' + thumbPageClass).bind(eventName, function() {
+
+                    $('#' + thumbPageClass).bind('click', function() {
                         closeThumbs();
                     })
+
                 }
 
                 function attachThumbImage(num, src) {
                     var thumb = thumbPage.find('li').eq(num).find('a');
-                    var thumbImg = $(new Image());
-                    thumbImg.attr('src', src);
+                    var thumbImg = new Image();
+                    thumbImg.src = src;
                     //元画像のサイズを取得
                     imgWidth = imgInfo[num]['width'];
                     imgHeight = imgInfo[num]['height'];
@@ -822,8 +828,14 @@
 
                     //サムネールのサイズを取得
                     thumbSize = thumbPage.find('li').width();
+                    var canvas = document.createElement('canvas');
+                    var ctx = canvas.getContext('2d');
+                    var drawPositonX = (thumbSize - (thumbSize * imgRatio)) / 2;
+                    var drawPositonY = 0;
+                    ctx.drawImage(thumbImg, drawPositonX, drawPositonY, thumbSize * imgRatio, thumbSize);
+                    thumb.append(canvas);
 
-                    thumb.append(thumbImg);
+                    //thumb.append(thumbImg);
 
                     var fixWidth;
                     var fixHeight;
@@ -839,13 +851,14 @@
                         fixHeight = imgHeight * (thumbSize / fixWidth);
                         fixMarginTop = -(fixHeight - thumbSize) / 2;
                     }
-
+                    /*
                     thumbImg.css({
-                        width: fixWidth + 'px',
-                        height: fixHeight + 'px',
-                        marginTop: fixMarginTop + 'px',
-                        marginLeft: fixMarginLeft + 'px'
+                    	width : fixWidth + 'px',
+                    	height : fixHeight + 'px',
+                    	marginTop : fixMarginTop + 'px',
+                    	marginLeft : fixMarginLeft + 'px'
                     })
+                    */
 
                     //Attach Event
                     var eventName;
@@ -855,7 +868,7 @@
                         eventName = 'touchstart';
                     }
 
-                    thumb.bind(eventName, function() {
+                    thumb.bind('click', function() {
                         ThumbClick(thumb);
                     })
 
@@ -935,7 +948,7 @@
                     $('#' + thumbPageClass).animate({
                         width: '100%',
                         height: '100%'
-                    })
+                    }, thumbTime, easing)
                 }
 
 
@@ -943,7 +956,7 @@
                     $('#' + thumbPageClass).animate({
                         width: '0%',
                         height: '0%'
-                    })
+                    }, thumbTime, easing)
                     thumbBtn.removeClass('active')
                 }
 
@@ -1000,7 +1013,23 @@
                 ----------------------------------------------------------------------*/
                 function toggleTimer() {
                     timerBtn.toggleClass('on');
+                    if (timerBtn.hasClass('on')) {
+                        timerOn();
+                    } else {
+                        timerOff();
+                    }
+                }
+
+
+                function timerOn() {
+                    timerBtn.addClass('on');
                     setTimer()
+
+                }
+
+                function timerOff() {
+                    timerBtn.removeClass('on');
+                    disableTimer();
                 }
 
 
