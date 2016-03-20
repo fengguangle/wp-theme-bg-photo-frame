@@ -1747,13 +1747,12 @@
                     var marginTop = dammyBase.css('marginTop');
                     var wrapperMargin = removeUnit(wrapper.css('marginLeft'));
                     var marginLeft;
-
-
                     if (direction == 'left') {
-                        marginLeft = -$(window).width() + ($(window).width() - width) / 2;
+                        marginLeft = -$(window).width() * (i + 1) + ($(window).width() - width) / 2;
                     } else if (direction == 'right') {
-                        marginLeft = $(window).width() + ($(window).width() - width) / 2;
+                        marginLeft = $(window).width() * (i + 1) + ($(window).width() - width) / 2;
                     }
+
                     var src = dammyBase.attr('src');
                     var alt = dammyBase.attr('alt');
                     var dammyImg = $('<li><img/></li>');
@@ -1771,7 +1770,7 @@
                         width: width + 'px',
                         height: height + 'px',
                         marginTop: marginTop,
-                        marginLeft: marginLeft * (i + 1) + 'px'
+                        marginLeft: marginLeft + 'px'
                     });
 
                     dammyElement.append(dammyImg);
