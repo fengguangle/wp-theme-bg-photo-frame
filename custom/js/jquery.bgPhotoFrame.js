@@ -1,5 +1,5 @@
 /*
- * jQuery BG Photo Frame v1.0.0
+ * jQuery BG Photo Frame v1.0.1
  * Copyright 2016 Takeshi Kashihara
  * Contributing Author: Takeshi Kashihara
  * License: GPLv3 or later
@@ -116,77 +116,10 @@
             //Fade time
             var fadeTime = 1000;
 
-            /*
-            ------------------------------------------------------------------------------------------------*/
-            // Resize
-            var photoAnimeTime = 1000;
-            var photoAnimeEasing = 'easeOutQuad';
 
-            // Mask
-            var mask = [];
-            var maskElement;
-
-            // Command
-            var commandProcess = [];
-            var interface = false;
-
-            // Mode
-            var contentFadeTime = 500;
-            var currentMode = 'background';
-            var mode = [];
-
-            // Toggle
-            var toggleBtnId = prefix + '-toggle';
-            var iconClassPhotoFrame = 'glyphicon-picture';
-            var iconClassBlog = 'glyphicon-list-alt';
-
-            var toggleButtonSrc = '<a href="#" id="' + toggleBtnId + '" class="' + prefix + '-btn"　name="Switch Mode"><span class="glyphicon glyphicon-picture"></span></a>';
-            var toggleButton;
-
-            // Navigation
-            var nav;
-            var prev;
-            var next;
-            var navClicked = false;
-            var navPrefix = prefix + '-nav';
-
-            // Thumbs
-            var thumbPage;
-            var thumbBtn;
-
-            var thumbPrefix = prefix + '-thumb';
-            var thumbPageClass = thumbPrefix + '-thumbs';
-            var thumbBtnClass = thumbPrefix + '-btn';
-            var thumbTime = 500;
-
-            //Timer
-            var timer;
-            var timerBtn;
-            var timerPrefix = prefix + '-timer';
-            var timerBtnId = timerPrefix + '-btn';
-
-            //Chanage
-            var change = [];
-
-            //Transition
-            transitionMode = 'fade';
-
-            //Image Transition(Fade)
-            var fade = [];
-
-            //Image Transition(Swipe)
-            var swipe = [];
-            var swipeSpeed = 2000;
-            var swipeAnmation = false;
-            var currentSwipeNum = 0;
-            var nextSwipeNum = 0;
-            var swipeSpeedLimit = 5;
-            var swipeSpeedTimerSpan = 100;
-
-            //dammy
-            var dammy = [];
-            var dammyElement;
-
+            /*=======================================================================
+            /* init
+            =======================================================================*/
 
 
 
@@ -297,20 +230,29 @@
                 /*=======================================================================
                 /* Resize
                 =======================================================================*/
+                /* Params
+                ----------------------------------------------------------------------*/
+                var resize = [];
+                var photoAnimeTime = 1000;
+                var photoAnimeEasing = 'easeOutQuad';
 
-                /* Resize event
+
+                /* Commands
                 ----------------------------------------------------------------------*/
                 //Attach event
-                function setResizeEvent() {
-                    $(window).resize(function() {
+                resize.setResizeEvent = function() {
+                        $(window).resize(function() {
+                            for (var i = 0; i < element.find('li').length; i++) {
+                                resizeImages(i);
+                            }
+                        });
                         for (var i = 0; i < element.find('li').length; i++) {
                             resizeImages(i);
                         }
-                    });
-                    for (var i = 0; i < element.find('li').length; i++) {
-                        resizeImages(i);
                     }
-                }
+                    /* Resize event
+                    ----------------------------------------------------------------------*/
+
 
 
 
@@ -410,8 +352,13 @@
 
 
                 /*=======================================================================
-                /* Mask resize
+                /* Mask
                 =======================================================================*/
+
+                /* Params
+                ----------------------------------------------------------------------*/
+                var mask = [];
+                var maskElement;
 
                 /* Init
                 ----------------------------------------------------------------------*/
@@ -426,6 +373,16 @@
                     });
                 }
 
+                /* commands
+                ----------------------------------------------------------------------*/
+                mask.showMask = function() {
+                    maskElement.stop(true, false).fadeTo(fadeTime, 1.0);
+                };
+
+                mask.hideMask = function() {
+                    maskElement.stop(true, false).fadeTo(fadeTime, 0.0);
+                };
+
                 /* Resize
                 ----------------------------------------------------------------------*/
                 function resizeMask() {
@@ -436,13 +393,6 @@
                 }
 
 
-                mask.showMask = function() {
-                    maskElement.stop(true, false).fadeTo(fadeTime, 1.0);
-                };
-
-                mask.hideMask = function() {
-                    maskElement.stop(true, false).fadeTo(fadeTime, 0.0);
-                };
 
                 /* Run
                 ----------------------------------------------------------------------*/
@@ -455,290 +405,16 @@
                 });
                 resizeMask();
                 /*=======================================================================
-                /* Load
-                =======================================================================*/
-
-                /*　読み込み完了イベントの割り当て
-                ----------------------------------------------------------------------*/
-
-                for (var i = 0; i < element.find('img').length; i++) {
-
-                    var img = this.find('img').eq(i);
-                    var imgSrc = img.attr('src');
-                    var loadImg = $(new Image());
-                    loadImg.attr('id', i);
-                    loadImg.bind('load', function() {
-                        var index = $(this).attr('id');
-                        var src = $(this).attr('src');
-                        imgInfo[index]['loaded'] = true;
-                        setImageSize(index); //画像サイズを取得
-                        attachThumbImage(index, src); //サムネール画像の作成
-                        checkLoadComplete(); //画像が全て読み込まれたかチェック
-                    });
-                    loadImg.attr('src', imgSrc);
-                }
-
-                /*元画像のサイズを取得
-                ----------------------------------------------------------------------*/
-                function setImageSize(_index) {
-                    var img = element.find('img').eq(_index);
-                    var _src = img.attr('src');
-                    var _size = getImageTrueSize(img);
-                    _size['ratio'] = _size['width'] / _size['height'];
-
-                    imgInfo[_index]['width'] = _size['width'];
-                    imgInfo[_index]['height'] = _size['height'];
-                    imgInfo[_index]['ratio'] = _size['ratio'];
-                    imgInfo[_index]['loaded'] = true;
-
-                    checkLoadComplete(_index); //読み込み完了のチェック
-                }
-
-                function getImageTrueSize(image) {
-                    var size = [];
-                    if (image.prop('naturalWidth')) {
-                        size['width'] = image.prop('naturalWidth');
-                        size['height'] = image.prop('naturalHeight');
-                    } else {
-                        var img = new Image();
-                        img.src = image.attr('src');
-                        size['width'] = img.width;
-                        size['height'] = img.height;
-                    }
-                    return size;
-
-                }
-
-                /*　読み込み完了チェック
-                ----------------------------------------------------------------------*/
-
-                function checkLoadComplete(index) {
-
-                    var allLoaded = true;
-
-                    if (index == 0) { //最初の画像が読み込み完了したら動作スタート
-                        LoadFirstImageComplete();
-                    } else {
-                        for (var i = 0; i < imgInfo.length; i++) {
-                            if (!imgInfo[i]['loaded']) {
-                                allLoaded = false;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (allLoaded) {
-                        loaded = true;
-                        LoadComplete();
-                    }
-
-                }
-
-                /*　最初に表示させる画像の読み込み完了
-                ----------------------------------------------------------------------*/
-                function LoadFirstImageComplete() {
-                    start();
-                }
-
-                /*　全ての画像の読み込み完了
-                ----------------------------------------------------------------------*/
-                function LoadComplete() {
-
-                }
-                /*=======================================================================
-                * Run
-                =======================================================================*/
-                function start() {
-
-                    showFirstImage();
-                    setResizeEvent();
-
-                    //最初のタイマーイベントを設定
-                    setTimer();
-                    if (setting.callbackAfter) {
-                        window[setting.callbackAfter].apply();
-                    }
-                }
-
-                /*1番目以外の画像を非表示にする
-                ----------------------------------------------------------------------*/
-                function showFirstImage() {
-
-                    for (var i = 0; i < element.find('li').length; i++) {
-                        //i番目のリスト要素を取得
-                        var li = element.find('li').eq(i);
-                        //最初の画像以外は非表示に設定
-                        if (i == 0) {
-                            li.fadeIn(setting.fadeSpeed);
-                            resizeImages(i);
-                        } else {
-                            li.hide();
-                        }
-                        //sdsds
-                    }
-                    element.show();
-                }
-                /*=======================================================================
-                  Command function
-                =======================================================================*/
-
-                function command(sentence, val) {
-                    commandProcess[sentence](val);
-                }
-
-
-                commandProcess.modeChange = function() {
-                    if (btnEnable) {
-                        btnEnable = false;
-                        mode.modeChange();
-                        if (currentMode == 'photoframe') {
-                            mask.hideMask();
-                        } else if (currentMode == 'background') {
-                            hideInterface();
-                            disableTimerInterface();
-                        }
-                        disableTimer();
-                    }
-                };
-
-                commandProcess.modeChangeEnd = function() {
-                    if (currentMode == 'photoframe') {
-                        showInterface();
-                        enableTimerInterface();
-                    } else if ('background') {
-                        timerOn();
-                        mask.showMask();
-                    }
-                    setTimer();
-                    btnEnable = true;
-                };
-
-
-
-                commandProcess.imgChange = function(val) {
-                    disableTimer();
-                    var newNum = change.getChangeNum(val);
-
-                    dammy.removeDammy();
-                    if (val == 'next' || val == 'prev' || val == 'current') {
-                        dammy.setDammy(newNum, val);
-                        transition(newNum, 'swipe', val);
-                    } else {
-                        transition(newNum, 'fade');
-                    }
-                    previous = current;
-                    current = newNum;
-                    removeTimerInterface();
-                    setTimerInterface();
-                };
-
-
-
-                commandProcess.setSwipeImage = function(val) {
-                    resizeImages(val, false, true);
-                };
-
-                commandProcess.setDammy = function(val) {
-                    resizeImages(val, false, true);
-                };
-
-                commandProcess.swipeDown = function() {
-                    dammy.removeDammy();
-                    dammy.setDammy(current, 'current');
-                    disableTimer();
-                    removeTimerInterface();
-                    setTimerInterface();
-                };
-
-                commandProcess.swipeUp = function() {
-                    setTimer();
-                };
-
-                commandProcess.swipeEnd = function() {
-                    dammy.removeDammy();
-                };
-
-                commandProcess.transitionEnd = function() {
-                    setTimer();
-                };
-
-                commandProcess.timerChange = function() {
-                    var newNum = change.getChangeNum('next');
-                    transition(newNum, 'fade');
-                    current = newNum;
-                };
-
-
-
-
-
-                /*Show/Hide Interface
-                ----------------------------------------------------------------------*/
-                var interfaceTimer = [];
-
-                function showInterface() {
-                    showNav();
-                    showThumbBtn();
-                    showTimer();
-                    interface = true;
-                }
-
-                function hideInterface() {
-                    hideNav();
-                    hideThumbBtn();
-                    hideTimer();
-                    interface = false;
-                }
-
-                function toggleInterface() {
-                    if (interface) {
-                        hideInterface();
-                    } else {
-                        showInterface();
-                    }
-                }
-
-                function enableTimerInterface() {
-                    if (setting.interfaceTimer) {
-                        maskElement.bind('click', function() {
-                            if (currentMode == 'photoframe') {
-                                showInterface();
-                                removeTimerInterface();
-                                setTimerInterface();
-                            }
-                        });
-                        setTimerInterface();
-                    }
-
-                }
-
-                function setTimerInterface() {
-                    if (setting.interfaceTimer) {
-                        interfaceTimer.push(setTimeout(function() {
-                            hideInterface();
-                        }, setting.autoTimer));
-                    }
-                }
-
-
-                function disableTimerInterface() {
-                    maskElement.unbind('click');
-                    removeTimerInterface();
-
-                }
-
-                function removeTimerInterface() {
-                    for (var i = 0; i < interfaceTimer.length; i++) {
-                        clearTimeout(interfaceTimer[i]);
-                    }
-                    interfaceTimer.length = 0;
-                }
-
-
-                /*=======================================================================
                   Mode
                 =======================================================================*/
-                //Toggle
+                /* Params
+                ----------------------------------------------------------------------*/
+                var contentFadeTime = 500;
+                var currentMode = 'background';
+                var mode = [];
+
+                /* Commands
+                ----------------------------------------------------------------------*/
                 mode.modeChange = function() {
 
                     stopModeChangeAnimation();
@@ -748,6 +424,9 @@
                         backgroundMode();
                     }
                 };
+
+                /* functions
+                ----------------------------------------------------------------------*/
 
                 //Photoframe
                 function photoFrameMode() {
@@ -822,7 +501,13 @@
                 　　Toggle
                 =======================================================================*/
 
+                // params
+                var toggleBtnId = prefix + '-toggle';
+                var iconClassPhotoFrame = 'glyphicon-picture';
+                var iconClassBlog = 'glyphicon-list-alt';
 
+                var toggleButtonSrc = '<a href="#" id="' + toggleBtnId + '" class="' + prefix + '-btn"　name="Switch Mode"><span class="glyphicon glyphicon-picture"></span></a>';
+                var toggleButton;
 
 
                 /* init
@@ -870,11 +555,18 @@
                 /*=======================================================================
                 　　Navigation
                 =======================================================================*/
+                /* Params
+                ----------------------------------------------------------------------*/
+                var nav;
+                var prev;
+                var next;
+                var navClicked = false;
+                var navPrefix = prefix + '-nav';
 
                 /* Init
                 ----------------------------------------------------------------------*/
                 function initNav() {
-                    if (element.find('li').length > 1) {
+                    if (element.find('li').length) {
                         //prev
                         controls.append('<a class="' + prefix + '-btn ' + navPrefix + '" id="' + navPrefix + '-prev" href="#"><span class="glyphicon glyphicon-chevron-left"></span></a>');
 
@@ -961,6 +653,15 @@
                 /*=======================================================================
                 Image Thumbnails
                 =======================================================================*/
+                /* Params
+                ----------------------------------------------------------------------*/
+                var thumbPage;
+                var thumbBtn;
+
+                var thumbPrefix = prefix + '-thumb';
+                var thumbPageClass = thumbPrefix + '-thumbs';
+                var thumbBtnClass = thumbPrefix + '-btn';
+                var thumbTime = 500;
 
                 /* Init
                 ----------------------------------------------------------------------*/
@@ -1168,18 +869,27 @@
                 /*=======================================================================
                 Timer
                 =======================================================================*/
+                /* Params
+                ----------------------------------------------------------------------*/
+                var timer = [];
+                var timerArr = [];
+                var timerBtn;
+                var timerPrefix = prefix + '-timer';
+                var timerBtnId = timerPrefix + '-btn';
+
+
 
 
                 /* Init
                 ----------------------------------------------------------------------*/
 
                 function initTimer() {
-                    if (setting.autoChange && element.find('li').length > 1) {
-                        var timerBtnSrc = '<a id="' + timerBtnId + '" class="' + prefix + '-btn" href="#"><span class="glyphicon glyphicon-refresh ' + prefix + '-blur-text"></span><span class="glyphicon glyphicon-refresh"></span></a>';
+                    if (setting.autoChange && element.find('li').length) {
+                        var timerBtnSrc = '<a id="' + timerBtnId + '" class="' + prefix + '-btn" href="#"><span class="glyphicon glyphicon-refresh ' + prefix + '-blur-text"></span><span class="glyphicon glyphicon-refresh ' + prefix + '-text"></span></a>';
                         controls.append(timerBtnSrc);
                         timerBtn = $('#' + timerBtnId);
 
-                        if (setting.autoChange && element.find('li').length > 1) {
+                        if (setting.autoChange && element.find('li').length) {
                             timerBtn.addClass('on');
                         }
 
@@ -1198,7 +908,17 @@
                     }
                 }
 
+                initTimer();
 
+
+                /* Command
+                ----------------------------------------------------------------------*/
+                timer.setTimer = function(num, direction) {
+                    timer.disableTimer();
+                    if (setting.autoChange && timerBtn.hasClass('on') && element.find('li').length) {
+                        enableTimer();
+                    }
+                }
 
 
                 /* Click
@@ -1215,37 +935,31 @@
 
                 function timerOn() {
                     timerBtn.addClass('on');
-                    setTimer();
+                    timer.setTimer();
 
                 }
 
                 function timerOff() {
                     timerBtn.removeClass('on');
-                    disableTimer();
+                    timer.disableTimer();
                 }
 
 
 
                 /* Event
                 ----------------------------------------------------------------------*/
-                function setTimer() {
-                    disableTimer();
-                    if (setting.autoChange && timerBtn.hasClass('on') && element.find('li').length > 1) {
-                        enableTimer();
-                    }
-                }
 
                 function enableTimer() {
-                    timer.push(setTimeout(function() {
+                    timerArr.push(setTimeout(function() {
                         timerChange();
                     }, setting.autoTimer));
                 }
 
-                function disableTimer() {
-                    for (var i = 0; i < timer.length; i++) {
-                        clearTimeout(timer[i]);
+                timer.disableTimer = function() {
+                    for (var i = 0; i < timerArr.length; i++) {
+                        clearTimeout(timerArr[i]);
                     }
-                    timer.length = 0;
+                    timerArr.length = 0;
                 }
 
 
@@ -1272,13 +986,275 @@
                 }
 
 
-                initTimer();
+                /*=======================================================================
+                /* Load
+                =======================================================================*/
+
+                /*　読み込み完了イベントの割り当て
+                ----------------------------------------------------------------------*/
+
+                for (var i = 0; i < element.find('img').length; i++) {
+
+                    var img = this.find('img').eq(i);
+                    var imgSrc = img.attr('src');
+                    var loadImg = $(new Image());
+                    loadImg.attr('id', i);
+                    loadImg.bind('load', function() {
+                        var index = $(this).attr('id');
+                        var src = $(this).attr('src');
+                        imgInfo[index]['loaded'] = true;
+                        setImageSize(index); //画像サイズを取得
+                        attachThumbImage(index, src); //サムネール画像の作成
+                        checkLoadComplete(); //画像が全て読み込まれたかチェック
+                    });
+                    loadImg.attr('src', imgSrc);
+                }
+
+                /*元画像のサイズを取得
+                ----------------------------------------------------------------------*/
+                function setImageSize(_index) {
+                    var img = element.find('img').eq(_index);
+                    var _src = img.attr('src');
+                    var _size = getImageTrueSize(img);
+                    _size['ratio'] = _size['width'] / _size['height'];
+
+                    imgInfo[_index]['width'] = _size['width'];
+                    imgInfo[_index]['height'] = _size['height'];
+                    imgInfo[_index]['ratio'] = _size['ratio'];
+                    imgInfo[_index]['loaded'] = true;
+
+                    checkLoadComplete(_index); //読み込み完了のチェック
+                }
+
+                function getImageTrueSize(image) {
+                    var size = [];
+                    if (image.prop('naturalWidth')) {
+                        size['width'] = image.prop('naturalWidth');
+                        size['height'] = image.prop('naturalHeight');
+                    } else {
+                        var img = new Image();
+                        img.src = image.attr('src');
+                        size['width'] = img.width;
+                        size['height'] = img.height;
+                    }
+                    return size;
+
+                }
+
+                /*　読み込み完了チェック
+                ----------------------------------------------------------------------*/
+
+                function checkLoadComplete(index) {
+
+                    var allLoaded = true;
+                    if (index == 0) { //最初の画像が読み込み完了したら動作スタート
+                        LoadFirstImageComplete();
+                    } else {
+                        for (var i = 0; i < imgInfo.length; i++) {
+                            if (!imgInfo[i]['loaded']) {
+                                allLoaded = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (allLoaded) {
+                        loaded = true;
+                        LoadComplete();
+                    }
+
+                }
+
+                /*　最初に表示させる画像の読み込み完了
+                ----------------------------------------------------------------------*/
+                function LoadFirstImageComplete() {
+                    command('loaded');
+                    //start();
+                }
+
+                /*　全ての画像の読み込み完了
+                ----------------------------------------------------------------------*/
+                function LoadComplete() {
+
+                }
+                /*=======================================================================
+                  Command function
+                =======================================================================*/
+                // Params
+                var commandProcess = [];
+                var interface = false;
+
+                function command(sentence, val) {
+                    commandProcess[sentence](val);
+                }
+
+                commandProcess.loaded = function() {
+                    transition.showFirstImage();
+                    resize.setResizeEvent();
+
+                    //最初のタイマーイベントを設定
+
+                    timer.setTimer();
+
+                    if (setting.callbackAfter) {
+                        window[setting.callbackAfter].apply();
+                    }
+                }
+
+                commandProcess.modeChange = function() {
+                    if (btnEnable) {
+                        btnEnable = false;
+                        mode.modeChange();
+                        if (currentMode == 'photoframe') {
+                            mask.hideMask();
+                        } else if (currentMode == 'background') {
+                            hideInterface();
+                            disableTimerInterface();
+                        }
+                        timer.disableTimer();
+                    }
+                };
+
+                commandProcess.modeChangeEnd = function() {
+                    if (currentMode == 'photoframe') {
+                        showInterface();
+                        enableTimerInterface();
+                    } else if ('background') {
+                        timerOn();
+                        mask.showMask();
+                    }
+                    timer.setTimer();
+                    btnEnable = true;
+                };
+
+
+
+                commandProcess.imgChange = function(val) {
+                    timer.disableTimer();
+                    var newNum = change.getChangeNum(val);
+
+                    dammy.removeDammy();
+                    if (val == 'next' || val == 'prev' || val == 'current') {
+                        dammy.setDammy(newNum, val);
+                        transition.transition(newNum, 'swipe', val);
+                    } else {
+                        transition.transition(newNum, 'fade');
+                    }
+                    previous = current;
+                    current = newNum;
+                    removeTimerInterface();
+                    setTimerInterface();
+                };
+
+
+
+                commandProcess.setSwipeImage = function(val) {
+                    resizeImages(val, false, true);
+                };
+
+                commandProcess.setDammy = function(val) {
+                    resizeImages(val, false, true);
+                };
+
+                commandProcess.swipeDown = function() {
+                    dammy.removeDammy();
+                    dammy.setDammy(current, 'current');
+                    timer.disableTimer();
+                    removeTimerInterface();
+                    setTimerInterface();
+                };
+
+                commandProcess.swipeUp = function() {
+                    timer.setTimer();
+                };
+
+                commandProcess.swipeEnd = function() {
+                    dammy.removeDammy();
+                };
+
+                commandProcess.transitionEnd = function() {
+                    timer.setTimer();
+                };
+
+                commandProcess.timerChange = function() {
+                    var newNum = change.getChangeNum('next');
+                    transition.transition(newNum, 'fade');
+                    current = newNum;
+                };
+
+
+
+
+
+                /*Show/Hide Interface
+                ----------------------------------------------------------------------*/
+                var interfaceTimer = [];
+
+                function showInterface() {
+                    showNav();
+                    showThumbBtn();
+                    showTimer();
+                    interface = true;
+                }
+
+                function hideInterface() {
+                    hideNav();
+                    hideThumbBtn();
+                    hideTimer();
+                    interface = false;
+                }
+
+                function toggleInterface() {
+                    if (interface) {
+                        hideInterface();
+                    } else {
+                        showInterface();
+                    }
+                }
+
+                function enableTimerInterface() {
+                    if (setting.interfaceTimer) {
+                        maskElement.bind('click', function() {
+                            if (currentMode == 'photoframe') {
+                                showInterface();
+                                removeTimerInterface();
+                                setTimerInterface();
+                            }
+                        });
+                        setTimerInterface();
+                    }
+
+                }
+
+                function setTimerInterface() {
+                    if (setting.interfaceTimer) {
+                        interfaceTimer.push(setTimeout(function() {
+                            hideInterface();
+                        }, setting.autoTimer));
+                    }
+                }
+
+
+                function disableTimerInterface() {
+                    maskElement.unbind('click');
+                    removeTimerInterface();
+
+                }
+
+                function removeTimerInterface() {
+                    for (var i = 0; i < interfaceTimer.length; i++) {
+                        clearTimeout(interfaceTimer[i]);
+                    }
+                    interfaceTimer.length = 0;
+                }
+
+
                 /*=======================================================================
                 Chanage
                 =======================================================================*/
+                /* Params
+                ----------------------------------------------------------------------*/
                 var change = [];
-
-
 
                 change.getChangeNum = function(val) {
                     var newNum;
@@ -1322,17 +1298,45 @@
                     return val;
                 };
 
+                /*=======================================================================
+                /* Transition
+                =======================================================================*/
 
+                /* params
+                ----------------------------------------------------------------------*/
+                transition = [];
+                transitionMode = 'fade';
+
+                /* init
+                ----------------------------------------------------------------------*/
                 function initTransition() {
 
                 }
 
-                function changeTransitionMode(mode) {
-                    transitionMode = mode;
+                /* command
+                ----------------------------------------------------------------------*/
+
+                /*1番目以外の画像を非表示にする
+                ----------------------------------------------------------------------*/
+                transition.showFirstImage = function() {
+
+                    for (var i = 0; i < element.find('li').length; i++) {
+                        //i番目のリスト要素を取得
+                        var li = element.find('li').eq(i);
+                        //最初の画像以外は非表示に設定
+                        if (i == 0) {
+                            li.fadeIn(setting.fadeSpeed);
+                            resizeImages(i);
+                        } else {
+                            li.hide();
+                        }
+                        //sdsds
+                    }
+                    element.show();
                 }
 
 
-                function transition(num, transitionMode, direction) {
+                transition.transition = function(num, transitionMode, direction) {
                     transitionStop();
                     if (transitionMode == 'fade') {
                         fade.transitionFade(num);
@@ -1341,6 +1345,16 @@
                     }
 
                 }
+
+
+                /* functions
+                ----------------------------------------------------------------------*/
+
+                function changeTransitionMode(mode) {
+                    transitionMode = mode;
+                }
+
+
 
                 function transitionStop() {
                     if (transitionMode == 'fade') {
@@ -1356,9 +1370,14 @@
 
 
 
+
                 /*=======================================================================
                 Image Transition(Fade)
                 =======================================================================*/
+                /* Params
+                ----------------------------------------------------------------------*/
+                var fade = [];
+
 
                 fade.transitionFade = function(num) {
                     //各画像の表示・非表示
@@ -1412,6 +1431,16 @@
                 /*=======================================================================
                 Image Auto change(Swipe)
                 =======================================================================*/
+                /* Params
+                ----------------------------------------------------------------------*/
+                var swipe = [];
+                var swipeSpeed = 2000;
+                var swipeAnmation = false;
+                var currentSwipeNum = 0;
+                var nextSwipeNum = 0;
+                var swipeSpeedLimit = 5;
+                var swipeSpeedTimerSpan = 100;
+
 
                 swipe.transitionSwipe = function(num, direction) {
                     if (!swipeAnmation) {
@@ -1633,6 +1662,10 @@
                 /* Dammy
                 =======================================================================*/
 
+                /* params
+                ----------------------------------------------------------------------*/
+                var dammy = [];
+                var dammyElement;
 
                 /* init
                 ----------------------------------------------------------------------*/
@@ -1650,6 +1683,8 @@
 
                 }
 
+                /* command
+                ----------------------------------------------------------------------*/
                 dammy.setDammy = function(num, direction) {
                     dammyElement.find('li').remove();
                     var leftMargin, rightMargin;
