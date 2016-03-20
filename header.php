@@ -20,6 +20,11 @@
 </head>
 <body <?php body_class(); ?>>
 
+<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'bg-photo-frame' ); ?></a>
+
+<div class="bg-photo-frame-controls"></div>
+
+
 <div id="page" class="hfeed site">
 	<div id="header-image">
     	<ul>
@@ -43,7 +48,7 @@
         </ul>
 	</div>
     
-	<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'bg-photo-frame' ); ?></a>
+	
 
 	<div id="site-wrapper">
     	<div id="site-wrapper-inner">
@@ -56,11 +61,14 @@
                     <?php endif; ?>
                     <p class="site-description"><?php bloginfo( 'description' ); ?></p>
                 </div><!-- .site-branding -->
+                
         
                 <nav id="site-navigation" class="main-navigation" role="navigation">
                     <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'bg-photo-frame' ); ?></button>
                     <?php wp_nav_menu( array( 'theme_location' => 'primary', 'menu_id' => 'primary-menu', 'menu_class' => 'nav navbar-nav' ) ); ?>
                 </nav><!-- #site-navigation -->
             </header><!-- #masthead -->
+            
+            
         
             <div id="content" class="site-content row">
