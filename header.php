@@ -34,7 +34,7 @@
                 <?php endforeach;?>
             <?php endif; ?>
         <?php else : ?>
-        	<?php $theme_color = get_theme_mod( 'color_option' ,'light'); ?>
+        	<?php $theme_color = get_theme_mod( 'theme_color' ,'light'); ?>
         	<?php for($i = 0; $i < 3; $i++) : ?>
 			<li><img src="<?php echo get_template_directory_uri() . '/custom/img/bg-default-' . $theme_color . '-' . $i .'.jpg' ?>" alt="<?php bloginfo( 'name' ); ?>"></li>
 			<?php endfor; ?>
