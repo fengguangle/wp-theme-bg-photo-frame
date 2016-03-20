@@ -6,6 +6,7 @@
  *
  * @package BG_Photo_Frame
  */
+
 if ( ! function_exists( 'bg_photo_frame_setup' ) ) :
 /**
  * Sets up theme defaults and registers support for various WordPress features.
@@ -71,13 +72,10 @@ function bg_photo_frame_setup() {
 	) );
 
 	// Set up the WordPress core custom background feature.
-	/*
 	add_theme_support( 'custom-background', apply_filters( 'bg_photo_frame_custom_background_args', array(
 		'default-color' => 'ffffff',
 		'default-image' => '',
 	) ) );
-	*/
-	
 }
 endif; // bg_photo_frame_setup
 add_action( 'after_setup_theme', 'bg_photo_frame_setup' );
@@ -117,7 +115,9 @@ add_action( 'widgets_init', 'bg_photo_frame_widgets_init' );
  */
 function bg_photo_frame_scripts() {
 	wp_enqueue_style( 'bg-photo-frame-style', get_stylesheet_uri() );
+
 	wp_enqueue_script( 'bg-photo-frame-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20120206', true );
+
 	wp_enqueue_script( 'bg-photo-frame-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20130115', true );
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
@@ -151,8 +151,26 @@ require get_template_directory() . '/inc/customizer.php';
  */
 require get_template_directory() . '/inc/jetpack.php';
 
-/**
- * Load Custom file.
- */ 
-require get_template_directory() . '/custom/php/bg-photo-frame-functions.php';
+
+
+//CSS
+function bg_photo_frame_cosutom_sctipt() {
+	wp_enqueue_style( 
+		'bootstrap', 
+		get_template_directory_uri()   . '/css/bootstrap.min.css'
+	);
+	wp_enqueue_style( 
+		'custom-css', 
+		get_template_directory_uri()   . '/css/custom.css'
+	);
+	
+	//jQuery
+	wp_enqueue_script('jquery');
+	//
+	wp_enqueue_script('easy-slideshow-fade', get_template_directory_uri() . '/js/jquery.easySlideshowFade.js', array(), '1.0.0', true);
+	//
+	wp_enqueue_script('master', get_template_directory_uri() . '/js/master.js', array(), '1.0.0', true);
+	
+}
+add_action( 'wp_enqueue_scripts', 'bg_photo_frame_cosutom_sctipt' );
 

@@ -35,33 +35,4 @@
 			}
 		} );
 	} );
-	
-	
-	// Header text color.
-	wp.customize( 'color_option[color]', function( value ) {
-		console.log(value)
-		value.bind( function( to ) {
-			console.log(value)
-			console.log(to)
-			
-			/*
-			if ( 'dark' === to ) {
-				
-				
-				$( '.site-title a, .site-description' ).css( {
-					'clip': 'rect(1px, 1px, 1px, 1px)',
-					'position': 'absolute'
-				} );
-			} else {
-				$( '.site-title a, .site-description' ).css( {
-					'clip': 'auto',
-					'color': to,
-					'position': 'relative'
-				} );
-			}
-			*/
-			
-		} );
-	} );
-	
 } )( jQuery );

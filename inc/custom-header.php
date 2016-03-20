@@ -22,7 +22,6 @@
  * @uses bg_photo_frame_admin_header_style()
  * @uses bg_photo_frame_admin_header_image()
  */
-
 function bg_photo_frame_custom_header_setup() {
 	add_theme_support( 'custom-header', apply_filters( 'bg_photo_frame_custom_header_args', array(
 		'default-image'          => '',
@@ -36,7 +35,6 @@ function bg_photo_frame_custom_header_setup() {
 	) ) );
 }
 add_action( 'after_setup_theme', 'bg_photo_frame_custom_header_setup' );
-
 
 if ( ! function_exists( 'bg_photo_frame_header_style' ) ) :
 /**
