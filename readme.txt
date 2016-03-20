@@ -5,7 +5,7 @@ Tags: translation-ready, custom-background, theme-options, custom-menu, post-for
 
 Requires at least: 4.0
 Tested up to: 4.2.2
-Stable tag: 1.0.7
+Stable tag: 1.0.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,7 @@ A starter theme called BG Photo Frame, or underscores.
 == Description ==
 
 
-This theme able to set header images like a background image, full size on window, and change randomly. You can set header images at the Theme Custmizer.If you don't set header hedaer, several default images will apperes in the background.
+This theme able to set header images like a background image, full size on window. You can set header images by the Theme Custmizer.If you has not set header images, several default images will apperes in the background.And you can toggle background mode between photoframe mode from a upper right button on the site.
 
 == Installation ==
 	
@@ -38,6 +38,10 @@ BG Photo Frame includes support for Infinite Scroll in Jetpack.
 * Changed the screen shot image
 = 1.0.7 - Decemvar 31 2015 =
 * Add Japanese localization
+= 1.0.8 - January 08 2016 =
+* Add photoframe function
+= 1.0.9 - January 09 2016 =
+* Add order of images setting function
 
 == Credits ==
 

@@ -1,0 +1,67 @@
+/* Scss Document */
+/* Toggle Button
+--------------------------------------------------------------*/
+#photoframe-toggle {
+  position: fixed;
+  display: block;
+  width: 48px;
+  height: 48px;
+  padding: 6px;
+  background: #000;
+  z-index: 1000;
+  top: 21px;
+  right: 21px;
+  color: #FFF;
+  font-size: 36px;
+  line-height: 1em;
+  text-shadow: none; }
+
+#photoframe-toggle span {
+  text-shadow: none; }
+
+.admin-bar #photoframe-toggle {
+  top: 53px !important; }
+
+/* Navigation
+--------------------------------------------------------------*/
+#photoframe-nav {
+  display: none;
+  position: fixed;
+  margin: 0;
+  padding: 0; }
+
+#photoframe-nav li {
+  list-style: none;
+  float: left;
+  margin-right: 10px; }
+
+.photoframe-nav-btn a {
+  display: block;
+  width: 32px;
+  height: 32px;
+  color: #FFF;
+  background: rgba(0, 0, 0, 0.5);
+  text-shadow: none;
+  font-size: 16px;
+  line-height: 1em;
+  padding: 8px; }
+
+.photoframe-nav-btn a:hover {
+  background: rgba(0, 0, 0, 0.75); }
+
+.photoframe-nav-btn.current a {
+  background: black; }
+
+/*--------------------------------------------------------------
+# SmartPhone
+--------------------------------------------------------------*/
+@media screen and (max-width: 782px) {
+  #photoframe-toggle {
+    top: 12px;
+    right: 12px; }
+  .admin-bar #photoframe-toggle {
+    top: 58px !important; }
+  /* Navigation
+--------------------------------------------------------------*/
+  .photoframe-nav-num {
+    display: none; } }

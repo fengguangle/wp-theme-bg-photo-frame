@@ -18,13 +18,12 @@ a:hover {
 # Typography
 --------------------------------------------------------------*/
 body {
-  text-shadow: 1px 1px 0px #000;
   color: #FFF; }
 
 /* site-wrapper
 -----------------------------------------*/
 #site-wrapper {
-  background: rgba(0, 0, 0, 0.5); }
+  background: rgba(0, 0, 0, 0.75); }
 
 /* site-header
 -----------------------------------------*/
@@ -35,6 +34,9 @@ body {
 /*--------------------------------------------------------------
 # layout
 --------------------------------------------------------------*/
+#content {
+  text-shadow: 1px 1px 0px #000; }
+
 .site-title {
   border-color: #FFF; }
 
@@ -45,3 +47,30 @@ body {
   text-shadow: none;
   color: #000;
   background: white; }
+
+/*--------------------------------------------------------------
+## Menus
+--------------------------------------------------------------*/
+/* Small menu. */
+.menu-toggle,
+.main-navigation.toggled ul {
+  color: #000; }
+
+/*--------------------------------------------------------------
+# PhotoFrame
+--------------------------------------------------------------*/
+#photoframe-toggle {
+  background: white !important;
+  color: #000 !important; }
+
+/* Navigation
+--------------------------------------------------------------*/
+.photoframe-nav-btn a {
+  color: #000 !important;
+  background: rgba(255, 255, 255, 0.5) !important; }
+
+.photoframe-nav-btn a:hover {
+  background: rgba(255, 255, 255, 0.75) !important; }
+
+.photoframe-nav-btn.current a {
+  background: white !important; }

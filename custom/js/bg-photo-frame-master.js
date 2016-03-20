@@ -9,11 +9,15 @@ var bgGradationColor;
 	=======================================================================*/
 	/*Slider
 	-----------------------------------------------*/
+	
 	bgSlide = $('#header-image ul');
 	bgSlide.easySlideshowFade({
 		width : '100%',
 		gradationColor: bgGradationColor,
-		autoTimer:4000
+		autoTimer:4000,
+		photoFrame:true,
+		contents : '#site-wrapper',
+		shuffle : shuffle
 		
 	});
 
@@ -35,17 +39,11 @@ var bgGradationColor;
 	$(window).resize(function(){
 		resize()
 	})
-	resize();
-	
 	
 	function resize(){
-		var height = 0.94;
-		/*
-		if($('body').hasClass('admin-bar')){
-			height = 0.86;
+		if($('#site-wrapper').height() < $(window).height()){
+			$('#site-wrapper').height($(window).height());
 		}
-		$('#site-wrapper').height($(window).height() * height);
-		*/
 	}
 	
 	resize();

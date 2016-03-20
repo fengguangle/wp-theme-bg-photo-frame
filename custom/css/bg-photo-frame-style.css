@@ -9,8 +9,6 @@
 /*--------------------------------------------------------------
 # layout
 --------------------------------------------------------------*/
-/* page
------------------------------------------*/
 #page {
   z-index: 1; }
 
@@ -42,11 +40,11 @@
 /* site-wrapper
 -----------------------------------------*/
 #site-wrapper {
-  margin: 2% auto 2%;
-  padding: 2%;
+  margin: 0;
+  padding: 21px;
   z-index: 1;
   position: relative;
-  width: 96%; }
+  width: auto; }
 
 #site-wrapper-inner {
   position: relative;

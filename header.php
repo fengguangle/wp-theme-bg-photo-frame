@@ -17,6 +17,16 @@
 <link rel="profile" href="http://gmpg.org/xfn/11">
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>">
 <?php wp_head(); ?>
+<script type="text/javascript">
+
+<?php $image_order = get_theme_mod( 'image_order' ,'in_order'); ?>
+<?php if($image_order == 'in_order') : ?>
+var shuffle = false;
+<?php elseif($image_order == 'shuffle') : ?>
+var shuffle = true;	
+<?php endif;?>
+</script> 
+
 </head>
 <body <?php body_class(); ?>>
 
