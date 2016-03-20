@@ -1,5 +1,7 @@
 /* CSS Document */
 /* Scss Document */
+/* photo frame
+-----------------------------------------*/
 /*--------------------------------------------------------------
 # Initial
 --------------------------------------------------------------*/
@@ -59,18 +61,24 @@ body {
 /*--------------------------------------------------------------
 # PhotoFrame
 --------------------------------------------------------------*/
-#photoframe-toggle {
-  background: white !important;
-  color: #000 !important; }
+.bg-photo-frame-blur-text {
+  filter: blur(3px);
+  -webkit-filter: blur(5px); }
 
+/* Button
+--------------------------------------------------------------*/
+.bg-photo-frame-btn {
+  color: #FFF !important;
+  background: rgba(0, 0, 0, 0.75) !important; }
+
+.bg-photo-frame-btn:hover {
+  background: black !important; }
+
+/* Toggle
+--------------------------------------------------------------*/
 /* Navigation
 --------------------------------------------------------------*/
-.photoframe-nav-btn a {
-  color: #000 !important;
-  background: rgba(255, 255, 255, 0.5) !important; }
-
-.photoframe-nav-btn a:hover {
-  background: rgba(255, 255, 255, 0.75) !important; }
-
-.photoframe-nav-btn.current a {
-  background: white !important; }
+/* Thumbnail
+--------------------------------------------------------------*/
+#bg-photo-frame-thumb-thumbs {
+  background: rgba(0, 0, 0, 0.75) !important; }

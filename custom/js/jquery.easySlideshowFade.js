@@ -58,8 +58,7 @@
             //device
             var device = userAgent();
 
-            //mode
-            var mode = 'background';
+
 
             //load		
             var loaded = false;
@@ -73,6 +72,9 @@
 
             //Whether click or not
             var clicked = false;
+
+            //Whether click or not
+            var prefix = 'bg-photo-frame';
 
 
 
@@ -231,7 +233,7 @@
                             //Stop animation
                             _img.stop(false, true)
 
-                            if (mode == 'background') {
+                            if (currentMode == 'background') {
                                 if (windowRatio > imgRatio) {
                                     imgWidth = windowWidth;
                                     imgHeight = parseInt(baseHeight * (imgWidth / baseWidth));
@@ -243,7 +245,7 @@
                                     marginTop = 0
                                     marginLeft = -(imgWidth - windowWidth) / 2;
                                 }
-                            } else if (mode == 'photoframe') {
+                            } else if (currentMode == 'photoframe') {
                                 if (windowRatio >= imgRatio) { //if window is　taller 
                                     imgHeight = windowHeight;
                                     imgWidth = parseInt(baseWidth * (imgHeight / baseHeight));
@@ -286,7 +288,7 @@
                     for (var i = 0; i < element.find('li').length; i++) {
                         var _li = element.find('li').eq(_num)
                         var _img = _li.find('img');
-                        _img.stop(true, false);
+                        _img.stop(false, true)
                     }
                 }
                 /*=======================================================================
@@ -304,25 +306,13 @@
                     loadImg.attr('id', i)
                     loadImg.bind('load', function() {
                         var index = $(this).attr('id');
+                        var src = $(this).attr('src');
                         imgInfo[index]['loaded'] = true;
                         setImageSize(index); //画像サイズを取得
+                        attachThumbImage(index, src); //サムネール画像の作成
                         checkLoadComplete() //画像が全て読み込まれたかチェック
                     })
                     loadImg.attr('src', imgSrc);
-
-
-                    /*
-	
-                     _img.bind("load", function(){
-                    	 var index = element.find('img').index(this);
-                    	 imgInfo[index]['loaded'] = true;
-                    	 setImageSize(index); //画像サイズを取得
-                    	 
-                    	 
-                    	 
-                    	 checkLoadComplete()  //画像が全て読み込まれたかチェック
-                     }) 
-                     */
                 }
 
                 /*元画像のサイズを取得
@@ -330,27 +320,15 @@
                 function setImageSize(_index) {
                     var img = element.find('img').eq(_index);
                     var _src = img.attr('src');
-                    var source = $('<img>');
-                    source.attr('src', _src + "?" + new Date().getTime());
-                    source.attr('alt', _index);
-                    source.load(function() {
-                        var num = $(this).attr('alt');
-                        imgInfo[num]['source'] = source
-                            //onLoad(num);
-                        var _size = getImageTrueSize(imgInfo[num]['source']);
-                        _size['ratio'] = _size['width'] / _size['height'];
-                        imgInfo[_index]['width'] = _size['width'];
-                        imgInfo[_index]['height'] = _size['height'];
-                        imgInfo[_index]['ratio'] = _size['ratio'];
-                        imgInfo[_index]['loaded'] = true;
+                    var _size = getImageTrueSize(img);
+                    _size['ratio'] = _size['width'] / _size['height'];
 
-                        checkLoadComplete(); //読み込み完了のチェック
-                        if (_index == 0) { //最初の画像が読み込み完了したら動作スタート
-                            LoadFirstImageComplete();
+                    imgInfo[_index]['width'] = _size['width'];
+                    imgInfo[_index]['height'] = _size['height'];
+                    imgInfo[_index]['ratio'] = _size['ratio'];
+                    imgInfo[_index]['loaded'] = true;
 
-                        }
-
-                    })
+                    checkLoadComplete(_index); //読み込み完了のチェック
                 }
 
                 function getImageTrueSize(image) {
@@ -371,13 +349,18 @@
                 /*　読み込み完了チェック
                 ----------------------------------------------------------------------*/
 
-                function checkLoadComplete() {
+                function checkLoadComplete(index) {
 
                     var allLoaded = true;
-                    for (var i = 0; i < imgInfo.length; i++) {
-                        if (!imgInfo[i]['loaded']) {
-                            allLoaded = false;
-                            break;
+
+                    if (index == 0) { //最初の画像が読み込み完了したら動作スタート
+                        LoadFirstImageComplete();
+                    } else {
+                        for (var i = 0; i < imgInfo.length; i++) {
+                            if (!imgInfo[i]['loaded']) {
+                                allLoaded = false;
+                                break;
+                            }
                         }
                     }
 
@@ -408,7 +391,7 @@
                     setResizeEvent();
 
                     //最初のタイマーイベントを設定
-                    setTimerEvent();
+                    setTimer();
                     if (setting.callbackAfter) {
                         window[setting.callbackAfter].apply()
                     }
@@ -433,166 +416,157 @@
                     element.show();
                 }
                 /*=======================================================================
-                Timer Chnage
+                　　Photoframe function
                 =======================================================================*/
 
-                function setTimerEvent() {
-                    if (setting.autoChange && element.find('li').length > 1) {
-                        timer.push(setTimeout(function() {
-                            timerChange()
-                        }, setting.autoTimer))
-                    }
+                var commandProcess = [];
+
+                var interface = false;
+                /*Command
+                ----------------------------------------------------------------------*/
+                function command(sentence, val) {
+                    commandProcess[sentence](val);
                 }
 
 
-                function timerChange() {
-                    //次に表示させる画像を設定する
-                    var newNum;
-                    var length = element.find('li').length;
-                    if (current >= length - 1) { //一番最後の画像を表示させている場合は最初に戻る
-                        newNum = 0;
-                    } else { //それ以外は次の画像を指定する。
-                        newNum = current + 1;
+                commandProcess.modeChange = function() {
+                    mode.modeChange();
+                    if (currentMode == 'background') {
+                        hideInterface()
+                        disableTimerInterface()
                     }
-                    //current = newNum	//現在表示させている画像を代入
-                    transition(newNum, true);
+                    disableTimer();
+                }
+
+                commandProcess.modeChangeEnd = function() {
+                    if (currentMode == 'photoframe') {
+                        showInterface();
+                        enableTimerInterface();
+                    } else if ('background') {
+
+                    }
+                    btnEnable = true;
+                    setTimer();
+                }
+
+                commandProcess.transitionEnd = function() {
+                    setTimer();
+
+                }
+
+                commandProcess.imgChange = function(val) {
+                    var newNum = change.getChangeNum(val);
+                    transition(newNum);
+                    current = newNum;
+                }
+
+                commandProcess.timerChange = function() {
+                    var newNum = change.getChangeNum('next');
+                    transition(newNum);
+                    current = newNum;
                 }
 
 
-                function pauseTimerChange() {
-                    for (var i = 0; i < timer.length; i++) {
-                        clearTimeout(timer[i])
-                    }
-                    timer.length = 0;
-                }
 
 
-                function restartTimerChange() {
-                    if (setting.stopWhenClicked) {
-                        if (!navClicked) { //ボタンをクリックしていなかったらタイマーイベントを再度設定
-                            pauseTimerChange()
-                            timer.push(setTimeout(function() {
-                                timerChange()
-                            }, setting.autoTimer))
-                        }
-                    } else {
-                        pauseTimerChange()
-                        timer.push(setTimeout(function() {
-                            timerChange()
-                        }, setting.autoTimer))
+                /*Show/Hide Interface
+                ----------------------------------------------------------------------*/
+                var interfaceTimer = [];
+
+                function showInterface() {
+                    if (!interface) {
+                        showNav();
+                        showThumbBtn();
+                        showTimer();
+                        interface = true;
                     }
                 }
 
+                function hideInterface() {
+                    if (interface) {
+                        hideNav();
+                        hideThumbBtn();
+                        hideTimer();
+                        interface = false;
+                    }
+                }
 
+                function enableTimerInterface() {
+                    $(window).bind('click', function() {
+                            showInterface()
+                            removeTimerInterface();
+                            setTimerInterface();
+                        })
+                        /*
+                        $(window).bind('mousemove', function(){
+                        	showInterface()
+                        	removeTimerInterface();
+                        	setTimerInterface();
+                        })
+                        */
+                    setTimerInterface()
+                }
+
+                function setTimerInterface() {
+                    interfaceTimer.push(setTimeout(function() {
+                        hideInterface()
+                    }, setting.autoTimer))
+                }
+
+
+                function disableTimerInterface() {
+                    $(window).unbind('click');
+                    $(window).unbind('mousemove');
+                    removeTimerInterface();
+
+                }
+
+                function removeTimerInterface() {
+                    for (var i = 0; i < interfaceTimer.length; i++) {
+                        clearTimeout(interfaceTimer[i])
+                    }
+                    interfaceTimer.length = 0;
+                }
 
 
                 /*=======================================================================
                 　　Photoframe function
                 =======================================================================*/
 
-
-                var toggleBtnId = 'photoframe-toggle';
-                var iconClassPhotoFrame = 'glyphicon-picture';
-                var iconClassBlog = 'glyphicon-list-alt';
-                /* Params
-                /* Params
+                /* params
                 ----------------------------------------------------------------------*/
-                var toggleButtonSrc = '<a href="#" id="' + toggleBtnId + '"><span class="glyphicon glyphicon-picture"></span></a>';
-                var toggleButton;
-                if (setting.photoFrame) {
-                    initPhotoFrame();
-                }
-
                 var contentFadeTime = 500;
-
-
-
-                /* Icon
-                ----------------------------------------------------------------------*/
-                function changeToggleBtnIcon() {
-                    $('#' + toggleBtnId).find('span').removeClass(iconClassPhotoFrame)
-                    $('#' + toggleBtnId).find('span').removeClass(iconClassBlog)
-                    if (mode == 'background') {
-                        $('#' + toggleBtnId).find('span').addClass(iconClassPhotoFrame)
-                    } else if (mode == 'photoframe') {
-                        $('#' + toggleBtnId).find('span').addClass(iconClassBlog)
-
-                    }
-
-                }
-
-                /* init
-                ----------------------------------------------------------------------*/
-
-                function initPhotoFrame() {
-
-                    $('body').append(toggleButtonSrc)
-
-                    toggleButton = $('#photoframe-toggle');
-                    var toggleEvent;
-
-                    if (device == 'pc') {
-                        toggleEvent = 'click';
-                    } else {
-                        toggleEvent = 'touchstart';
-                    }
-
-                    toggleButton.bind(toggleEvent, function() {
-                        togglePhotoFrame();
-                    })
-                }
-
+                var currentMode = 'background';
+                var mode = [];
                 /* Change mode
                 ----------------------------------------------------------------------*/
                 //Toggle
-                function togglePhotoFrame() {
+                mode.modeChange = function() {
                     if (btnEnable) {
                         btnEnable = false;
-                        pauseTimerChange();
                         stopModeChangeAnimation();
-                        if (mode == 'background') {
+                        if (currentMode == 'background') {
                             photoFrameMode();
-                        } else if (mode == 'photoframe') {
+                        } else if (currentMode == 'photoframe') {
                             backgroundMode();
                         }
-
+                        command('modeChange')
                     }
+
                 }
 
                 //Photoframe
                 function photoFrameMode() {
-                    mode = "photoframe";
+                    currentMode = "photoframe";
                     hideContents();
                 }
 
                 //Background
                 function backgroundMode() {
-
-                    mode = "background";
-                    hideNav();
+                    currentMode = "background";
                     modeChangeAnimation(mode)
                 }
 
-                function modeChangeAnimation(mode) {
-                    var currentImage = element.find('li').eq(current).find('img');
-                    resizeImages(current, true, 'EndModeChangeAnimation');
-                }
-
-                function EndModeChangeAnimation() {
-                    if (mode == "photoframe") {
-                        btnEnable = true;
-                        showNav();
-                        //setTimerEvent();
-                    } else if (mode == "background") {
-                        showContents();
-                    }
-                    changeToggleBtnIcon()
-
-                }
-
-                function stopModeChangeAnimation() {
-                    stopContentsAnimation()
-                }
 
 
                 /*Contents animation
@@ -612,22 +586,94 @@
                 }
 
                 function stopContentsAnimation() {
-                    $(setting.contents).stop(true, false)
+                    $(setting.contents).stop(false, true)
                 }
 
 
                 //Animation end.
                 function contentsAnimationEnd() {
                     //Run resize if mode has photoframe.
-                    if (mode == "photoframe") {
+                    if (currentMode == "photoframe") {
                         modeChangeAnimation();
-                    } else if (mode == "background") {
-                        setTimerEvent();
-                        btnEnable = true;
+                    } else if (currentMode == "background") {
+                        command('modeChangeEnd')
                     }
                 }
 
 
+                /* Change Animation
+                ----------------------------------------------------------------------*/
+                function modeChangeAnimation(mode) {
+                    var currentImage = element.find('li').eq(current).find('img');
+                    resizeImages(current, true, 'EndModeChangeAnimation');
+                }
+
+                function EndModeChangeAnimation() {
+                    if (currentMode == "photoframe") {
+                        btnEnable = true;
+                    } else if (currentMode == "background") {
+                        showContents();
+                    }
+                    changeToggleBtnIcon()
+                    command('modeChangeEnd')
+                }
+
+                function stopModeChangeAnimation() {
+                    stopContentsAnimation()
+                }
+
+
+
+                /*=======================================================================
+                　　Toggle
+                =======================================================================*/
+
+                /* Params
+                ----------------------------------------------------------------------*/
+                var toggleBtnId = prefix + '-toggle';
+                var iconClassPhotoFrame = 'glyphicon-picture';
+                var iconClassBlog = 'glyphicon-list-alt';
+
+                var toggleButtonSrc = '<a href="#" id="' + toggleBtnId + '" class="' + prefix + '-btn"><span class="glyphicon glyphicon-picture"></span></a>';
+                var toggleButton;
+                if (setting.photoFrame) {
+                    initPhotoFrame();
+                }
+
+                /* init
+                ----------------------------------------------------------------------*/
+
+                function initPhotoFrame() {
+
+                    $('body').append(toggleButtonSrc)
+                    toggleButton = $('#' + toggleBtnId);
+                    var toggleEvent;
+
+                    if (device == 'pc') {
+                        toggleEvent = 'click';
+                    } else {
+                        toggleEvent = 'touchstart';
+                    }
+
+                    toggleButton.bind(toggleEvent, function() {
+                        command('modeChange');
+                    })
+                }
+
+
+                /* Icon Change
+                ----------------------------------------------------------------------*/
+                function changeToggleBtnIcon() {
+                    $('#' + toggleBtnId).find('span').removeClass(iconClassPhotoFrame)
+                    $('#' + toggleBtnId).find('span').removeClass(iconClassBlog)
+                    if (currentMode == 'background') {
+                        $('#' + toggleBtnId).find('span').addClass(iconClassPhotoFrame)
+                    } else if (currentMode == 'photoframe') {
+                        $('#' + toggleBtnId).find('span').addClass(iconClassBlog)
+
+                    }
+
+                }
 
 
 
@@ -639,6 +685,7 @@
                 var prev;
                 var next;
                 var navClicked = false;
+                var navPrefix = prefix + '-nav';
 
                 if (setting.photoFrame) {
                     initNav();
@@ -649,20 +696,13 @@
                 ----------------------------------------------------------------------*/
                 function initNav() {
                     if (element.find('li').length > 1) {
-                        $('body').append('<ul id="photoframe-nav"></ul>')
-                        nav = $('#photoframe-nav');
                         //prev
-                        nav.append('<li class="photoframe-nav-btn" id="photoframe-nav-prev"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>');
-
-                        for (var i = 0; i < element.find('li').length; i++) {
-                            var navBtn = '<li class="photoframe-nav-btn photoframe-nav-num" id="photoframe-nav-' + i + '"><a href="#"></a></li>';
-                            nav.append(navBtn);
-                        }
+                        $('body').append('<a class="' + prefix + '-btn ' + navPrefix + '" id="' + navPrefix + '-prev" href="#"><span class="glyphicon glyphicon-chevron-left"></span></a>');
                         //next
-                        nav.append('<li class="photoframe-nav-btn" id="photoframe-nav-next"><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>');
+                        $('body').append('<a class="' + prefix + '-btn ' + navPrefix + '" id="' + navPrefix + '-next" href="#"><span class="glyphicon glyphicon-chevron-right"></span></a>');
 
 
-                        $('.photoframe-nav-btn').click(function() {
+                        $('.' + navPrefix).click(function() {
                             navClick($(this))
                         })
 
@@ -671,6 +711,8 @@
                         $(window).resize(function() {
                             resizeNav();
                         })
+
+                        nav = $('.' + navPrefix);
                     }
                 }
 
@@ -679,27 +721,10 @@
                 function navClick(btn) {
                     //次に表示させる画像を設定する
                     var newNum;
-                    if (btnEnable) {
-                        if (btn.attr('id').match('prev')) {
-                            if (current == 0) { //一番最後の画像を表示させている場合は最初に戻る
-                                newNum = element.find('li').length - 1;
-                            } else { //それ以外は次の画像を指定する。
-                                newNum = current - 1;
-                            }
-                        } else if (btn.attr('id').match('next')) {
-                            if (current == element.find('li').length - 1) { //一番最後の画像を表示させている場合は最初に戻る
-                                newNum = 0;
-                            } else { //それ以外は次の画像を指定する。
-                                newNum = current + 1;
-                            }
-                        } else {
-                            newNum = parseInt(btn.attr('id').replace('photoframe-nav-', ''));
-                            //$('.photoframe-nav-btn').index(btn)
-                        }
-                        navClicked = true;
-                        transition(newNum);
+                    if (btnEnable && nav.hasClass('active')) {
+                        var navBtn = btn.attr('id').replace(navPrefix + '-', '');
+                        command('imgChange', navBtn);
                     }
-
                 }
 
 
@@ -707,12 +732,16 @@
                 /* Show/Hide
                 ----------------------------------------------------------------------*/
                 function showNav() {
-                    nav.fadeIn();
+                    nav.stop(false, true)
+                    nav.fadeIn(1000, function() {
+                        nav.addClass('active');
+                    });
                     navPosition();
-                    appearNav(current)
                 }
 
                 function hideNav() {
+                    nav.removeClass('active');
+                    nav.stop(false, true)
                     nav.fadeOut();
                 }
 
@@ -728,93 +757,371 @@
 
                 function navPosition() {
                     var left;
-                    var top;
-                    if (breakPoint <= $(window).width()) { //PC表示
-                        left = ($(window).width() - nav.width()) / 2;
-                        top = $(window).height() - $('.photoframe-nav-btn').height() - 10;
-                        nav.css({
-                            top: top + 'px',
-                            left: left + 'px'
-                        })
-
-                        $('#photoframe-nav-prev').css({
-                            position: 'relative',
-                            left: 'auto'
-                        })
-
-                        $('#photoframe-nav-next').css({
-                            position: 'relative',
-                            right: 'auto'
-                        })
-                    } else { //スマホ表示
-
-                        top = ($(window).height() - $('.photoframe-nav-btn a').width()) / 2;
-                        nav.css({
-                            top: top + 'px',
-                            left: 'auto'
-                        })
-
-                        $('#photoframe-nav-prev').css({
-                            position: 'fixed',
-                            left: '10px'
-                        })
-
-                        $('#photoframe-nav-next').css({
-                            position: 'fixed',
-                            right: 0
-                        })
-
-
-                    }
-
+                    var top = ($(window).height() - nav.width()) / 2;
+                    $('#' + navPrefix + '-prev, #' + navPrefix + '-next').css({
+                        top: top + 'px'
+                    })
                 }
+                /*=======================================================================
+                Image Thumbnails
+                =======================================================================*/
+                var thumbPage;
+                var thumbBtn;
+
+                var thumbPrefix = prefix + '-thumb';
+                var thumbPageClass = thumbPrefix + '-thumbs';
+                var thumbBtnClass = thumbPrefix + '-btn';
 
 
-                /* Appearance
+                /* Init
                 ----------------------------------------------------------------------*/
-                function appearNav(num) {
-                    $('.photoframe-nav-btn').removeClass('current');
-                    if (nav.css('display') != "none") {
-                        $('#photoframe-nav-' + num).addClass('current');
+                if (setting.photoFrame) {
+                    initThumbs();
+                }
+
+                function initThumbs() {
+                    //ページ
+                    $('body').append('<div id="' + thumbPageClass + '"><div id="' + thumbPageClass + '-inner" class="clearfix"><ul></ul></div></div>');
+                    thumbPage = $('#' + thumbPageClass + ' ul');
+
+                    //サムネール
+                    for (var i = 0; i < element.find('li').length; i++) {
+                        var thumb = '<li class="' + thumbPrefix + '" id="' + prefix + '-thumb-' + i + '"><a href="#' + i + '"></a></li>';
+                        thumbPage.append(thumb);
+                    }
+
+                    //ボタン
+                    $('body').append('<a id="' + thumbBtnClass + '" class="' + prefix + '-btn" href="#"><span class="glyphicon glyphicon-th"></span></a>');
+                    thumbBtn = $('#' + thumbBtnClass);
+
+                    //Event
+                    var eventName;
+                    if (device == 'pc') {
+                        eventName = 'click';
+                    } else {
+                        eventName = 'touchend';
+                    }
+
+                    thumbBtn.bind(eventName, function() {
+                        toggleThumbBtn();
+                    })
+
+                    $('#' + thumbPageClass).bind(eventName, function() {
+                        closeThumbs();
+                    })
+                }
+
+                function attachThumbImage(num, src) {
+                    var thumb = thumbPage.find('li').eq(num).find('a');
+                    var thumbImg = $(new Image());
+                    thumbImg.attr('src', src);
+                    //元画像のサイズを取得
+                    imgWidth = imgInfo[num]['width'];
+                    imgHeight = imgInfo[num]['height'];
+                    imgRatio = imgInfo[num]['ratio'];
+
+                    //サムネールのサイズを取得
+                    thumbSize = thumbPage.find('li').width();
+
+                    thumb.append(thumbImg);
+
+                    var fixWidth;
+                    var fixHeight;
+                    var fixMarginTop = 0;
+                    var fixMarginLeft = 0;
+
+                    if (imgRatio > 1) { //横長の場合
+                        fixHeight = thumbSize
+                        fixWidth = imgWidth * (thumbSize / imgHeight);
+                        fixMarginLeft = -(fixWidth - thumbSize) / 2;
+                    } else {　 //縦長の場合
+                        fixWidth = thumbSize
+                        fixHeight = imgHeight * (thumbSize / fixWidth);
+                        fixMarginTop = -(fixHeight - thumbSize) / 2;
+                    }
+
+                    thumbImg.css({
+                        width: fixWidth + 'px',
+                        height: fixHeight + 'px',
+                        marginTop: fixMarginTop + 'px',
+                        marginLeft: fixMarginLeft + 'px'
+                    })
+
+                    //Attach Event
+                    var eventName;
+                    if (device == 'pc') {
+                        eventName = 'click';
+                    } else {
+                        eventName = 'touchstart';
+                    }
+
+                    thumb.bind(eventName, function() {
+                        ThumbClick(thumb);
+                    })
+
+                }
+
+                /* Resize
+                ----------------------------------------------------------------------*/
+
+                $(window).resize(function() {
+                    resizeThumbs();
+                })
+                resizeThumbs()
+
+                function resizeThumbs() {
+                    var innerWidth = $(window).width();
+                    var innerHeight = $(window).height();
+                    var innerPaddingHorizontal = $(window).width() * 0.02;
+
+                    $('#' + thumbPageClass + '-inner').css({
+                        width: innerWidth + 'px',
+                        //height : innerHeight + 'px',
+                        padding: innerPaddingHorizontal + 'px ' + innerPaddingHorizontal + 'px',
+                    })
+
+
+                    //サムネールのサイズを取得
+                    var thumbSize = thumbPage.find('li').width();
+                    var thumbMargin = removeUnit(thumbPage.find('li').css('margin'));
+
+                    var ulMargin = (
+                        $('#' + thumbPageClass + ' ul').width() - (thumbSize + thumbMargin * 2) * parseInt($('#' + thumbPageClass + ' ul').width() / (thumbMargin * 2 + thumbSize))
+                    ) / 2
+
+                    $('#' + thumbPageClass + ' ul').css({
+                        marginLeft: ulMargin + 'px'
+                    })
+                }
+
+
+                /* Button
+                ----------------------------------------------------------------------*/
+                //Show
+                function showThumbBtn() {
+                    thumbBtn.stop(false, true)
+                    thumbBtn.fadeIn()
+                }
+
+                //Hide
+                function hideThumbBtn() {
+                    thumbBtn.stop(false, true)
+                    thumbBtn.fadeOut()
+                }
+
+                //サムネールボタンの開閉
+                function toggleThumbBtn() {
+                    thumbBtn.toggleClass('active')
+                    toggleThumbs()
+                }
+
+
+                /* Event of Thumbs
+                ----------------------------------------------------------------------*/
+                function toggleThumbs() {
+                    thumbAnimationStop()
+                    if (thumbBtn.hasClass('active')) {
+                        openThumbs()
+                    } else {
+                        closeThumbs()
                     }
                 }
+
+                function thumbAnimationStop() {
+                    $('#' + thumbPageClass).stop(false, true)
+                }
+
+                function openThumbs() {
+                    $('#' + thumbPageClass).animate({
+                        width: '100%',
+                        height: '100%'
+                    })
+                }
+
+
+                function closeThumbs() {
+                    $('#' + thumbPageClass).animate({
+                        width: '0%',
+                        height: '0%'
+                    })
+                    thumbBtn.removeClass('active')
+                }
+
+
+
+                /* Thumbnails
+                ----------------------------------------------------------------------*/
+                //Event
+                function ThumbClick(thumb) {
+                    var num = thumb.attr('href').replace('#', '');
+                    console.log(num)
+                    command('imgChange', num)
+                    closeThumbs()
+                }
+                /*=======================================================================
+                Timer Chnage
+                =======================================================================*/
+                var timer;
+                var timerBtn;
+                var timerPrefix = prefix + '-timer';
+                var timerBtnId = timerPrefix + '-btn'
+
+                initTimer()
+                    /* Init
+                    ----------------------------------------------------------------------*/
+
+                function initTimer() {
+                    if (setting.autoChange && element.find('li').length > 1) {
+                        var timerBtnSrc = '<a id="' + timerBtnId + '" class="' + prefix + '-btn" href="#"><span class="glyphicon glyphicon-refresh ' + prefix + '-blur-text"></span><span class="glyphicon glyphicon-refresh"></span></a>';
+                        $('body').append(timerBtnSrc);
+                        timerBtn = $('#' + timerBtnId);
+
+                        if (setting.autoChange && element.find('li').length > 1) {
+                            timerBtn.addClass('on');
+                        }
+
+                        //Event
+                        var eventName;
+                        if (device == 'pc') {
+                            eventName = 'click';
+                        } else {
+                            eventName = 'touchend';
+                        }
+
+                        timerBtn.bind(eventName, function() {
+                            toggleTimer();
+                        })
+                    }
+                }
+
+
+
+                /* Click
+                ----------------------------------------------------------------------*/
+                function toggleTimer() {
+                    timerBtn.toggleClass('on');
+                    setTimer()
+                }
+
+
+
+                /* Event
+                ----------------------------------------------------------------------*/
+                function setTimer() {
+                    disableTimer()
+                    if (setting.autoChange && timerBtn.hasClass('on') && element.find('li').length > 1) {
+                        enableTimer();
+                    }
+                }
+
+                function enableTimer() {
+                    timer.push(setTimeout(function() {
+                        timerChange()
+                    }, setting.autoTimer))
+                }
+
+                function disableTimer() {
+                    for (var i = 0; i < timer.length; i++) {
+                        clearTimeout(timer[i])
+                    }
+                    timer.length = 0;
+                }
+
+
+
+                /* Change
+                ----------------------------------------------------------------------*/
+
+                function timerChange() {
+                    command('timerChange');
+                }
+
+
+                /* Show/Hide
+                ----------------------------------------------------------------------*/
+                function showTimer() {
+                    timerBtn.stop(false, true)
+                    timerBtn.fadeIn();
+                    timerBtn.addClass('active');
+                }
+
+                function hideTimer() {
+                    timerBtn.removeClass('active');
+                    timerBtn.stop(false, true)
+                    timerBtn.fadeOut();
+                }
+                // JavaScript Document
+                var change = [];
+
+                change.getChangeNum = function(val) {
+                    var newNum;
+
+                    if (isNaN(val)) {
+                        newNum = changeType[val]()
+                    } else {
+                        newNum = changeType['num'](val)
+                    }
+                    return newNum;
+                }
+
+                var changeType = [];
+                changeType.next = function() {
+                    var newNum;
+                    if (current == element.find('li').length - 1) { //一番最後の画像を表示させている場合は最初に戻る
+                        newNum = 0;
+                    } else { //それ以外は次の画像を指定する。
+                        newNum = parseInt(current) + 1;
+                    }
+                    return newNum;
+                }
+
+                changeType.prev = function() {
+                    var newNum;
+                    if (current == 0) { //一番最後の画像を表示させている場合は最初に戻る
+                        newNum = element.find('li').length - 1;
+                    } else { //それ以外は次の画像を指定する。
+                        newNum = parseInt(current) - 1;
+                    }
+                    return newNum;
+                }
+
+                changeType.num = function(val) {
+                    return val;
+                }
+
                 // JavaScript Document
 
                 transitionMode = 'fade';
 
-                function initChangeMode() {
-                    if (setting.photoFrame) {
-                        $(window).resize(function() {
-                            resizeChangeMode()
-                        })
-                    }
-                }
-
-                function resizeChangeMode() {
+                function initTransition() {
 
                 }
 
-                function chnageTransitionMode(mode) {
+                function changeTransitionMode(mode) {
                     transitionMode = mode;
                 }
 
 
-                function transition(num, restart) {
+                function transition(num) {
                     transitionStop()
                     if (transitionMode == 'fade') {
-                        transitionFade(num, restart)
+                        transitionFade(num)
                     } else if (transitionMode == 'swipe') {
-                        transitionSwipe(num, restart)
+                        transitionSwipe(num)
                     }
-                    current = num;
-
-                    appearNav(num)
 
                 }
 
                 function transitionStop() {
-                    transitionFadeStop()
+                    if (transitionMode == 'fade') {
+                        transitionFadeStop()
+                    } else if (transitionMode == 'swipe') {
+
+                    }
                 }
+
+
+
 
 
 
@@ -823,7 +1130,7 @@
                 Image Transition(Fade)
                 =======================================================================*/
 
-                function transitionFade(num, restart) {
+                function transitionFade(num) {
 
                     //各画像の表示・非表示
                     var length = element.find('li').length;
@@ -833,34 +1140,28 @@
                         if (num == i) { //クリックされたボタンの順番と同一なら画像をフェードで表示
                             if (num != current) {
                                 li.fadeIn(setting.fadeSpeed, function() {
-                                    transitionFadeEnd(restart)
+                                    transitionFadeEnd()
                                 });
                                 resizeImages(i);
                             }
-
                         } else { //そうでなければフェードで非表示
                             li.fadeOut(setting.fadeSpeed);
                         }
                     }
-                    //再度タイマーイベントを設定。
-                    //ボタンがクリックされたら自動切り替えをストップする場合には
-                    //ボタンがクリックされた場合は設定しない。
-
-
+                    transitionFadeEnd()
                 }
 
                 function transitionFadeStop() {
                     var length = element.find('li').length;
                     for (var i = 0; i < length; i++) {
                         var li = element.find('li').eq(i);
-                        li.stop(true, true, false);
+                        li.stop(false, true)
                     }
                 }
 
-                function transitionFadeEnd(restart) {
-                    if (restart) {
-                        restartTimerChange()
-                    }
+                function transitionFadeEnd() {
+                    command('transitionEnd');
+
                 }
 
 
@@ -878,6 +1179,14 @@
                 function transitionSwipeStop() {
 
                 }
+
+
+                /* 
+                ------------------------------------------*/
+
+                function swipeMove() {
+
+                }
                 /*=======================================================================
                 Utility
                 =======================================================================*/
@@ -891,6 +1200,12 @@
                     else if (ua.indexOf("Android") > -1) a = "android";
                     else a = "pc";
                     return a;
+                }
+
+                /* Remove Unit
+                ----------------------------------------------------------------------*/
+                function removeUnit(val) {
+                    return parseInt(val.replace(/([a-z]+)/, ''));
                 }
             }
         }

@@ -15,9 +15,9 @@
         
             <footer id="colophon" class="site-footer" role="contentinfo">
                 <div class="site-info">
-                    <a href="<?php echo esc_url( __( 'https://wordpress.org/', 'bg-photo-frame' ) ); ?>"><?php printf( esc_html__( 'Proudly powered by %s', 'bg-photo-frame' ), 'WordPress' ); ?></a>
+                    <a href="<?php echo esc_url( __( 'https://wordpress.org/', 'bg-photo-frame' ) ); ?>"><?php printf( esc_html__( 'Powered by %s', 'bg-photo-frame' ), 'WordPress' ); ?></a>
                     <span class="sep"> | </span>
-                    <?php printf( esc_html__( 'Theme: %1$s', 'bg-photo-frame' ), 'bg-photo-frame' ); ?>
+                    <?php printf( esc_html__( 'Theme: %1$s', 'bg-photo-frame' ), 'BG Photo Frame' ); ?>
                 </div><!-- .site-info -->
             </footer><!-- #colophon -->
         </div><!-- #site-wrapper_inner -->

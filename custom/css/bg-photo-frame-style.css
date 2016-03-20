@@ -1,5 +1,7 @@
 /* CSS Document */
 /* Scss Document */
+/* photo frame
+-----------------------------------------*/
 /*--------------------------------------------------------------
 # Initial
 --------------------------------------------------------------*/
@@ -60,7 +62,8 @@
   font-size: 36px;
   line-height: 1em;
   margin-bottom: 0.1em;
-  padding-bottom: 0.1em; }
+  padding-bottom: 0.1em;
+  margin-right: 52px; }
 
 .site-title a:hover {
   text-decoration: none; }
@@ -69,7 +72,8 @@
   padding-bottom: 1em;
   margin-bottom: 3em;
   border-bottom-style: solid;
-  border-bottom-width: 1px; }
+  border-bottom-width: 1px;
+  padding-right: 52px; }
 
 /* content
 -----------------------------------------*/
@@ -80,15 +84,3 @@
 /*--------------------------------------------------------------
 # Custom
 --------------------------------------------------------------*/
-.flip {
-  display: block;
-  width: 48px;
-  height: 48px;
-  background: #FFF;
-  position: fixed;
-  top: 4%;
-  right: 4%;
-  z-index: 1000; }
-
-.logged-in .flip {
-  top: 7%; }
