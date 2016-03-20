@@ -48,8 +48,8 @@ add_action( 'wp_enqueue_scripts', 'bg_photo_frame_custom_sctipt' );
 function bg_photo_frame_theme_color_customize_register($wp_customize){
 
 	$wp_customize->add_section( 'bg_photo_frame_color', array(
-        'title'          => __('Theme Color', 'bg_photo_frame'),
-        'priority'       => 10,
+        'title'          => esc_html__('Theme Color', 'bg-photo-frame'),
+        'priority'       => 20,
     ));
 		
 	$wp_customize->add_setting('color_option', array(
@@ -61,13 +61,13 @@ function bg_photo_frame_theme_color_customize_register($wp_customize){
     ));
 	
     $wp_customize->add_control('bg_photo_frame_color_scheme', array(
-        'label'      => __('Theme Color', 'bg_photo_frame'),
+        'label'      => esc_html__('Theme Color', 'bg-photo-frame'),
         'section'    => 'bg_photo_frame_color',
         'settings'   => 'color_option',
 		'type' => 'radio',
 		'choices' => array(
-            'light' => 'Light Side',
-            'dark' => 'Dark Side',
+            'light' => esc_html__('Light Side', 'bg-photo-frame'),
+            'dark' => esc_html__('Dark Side', 'bg-photo-frame'),
         ),
 
     ));
@@ -75,8 +75,8 @@ function bg_photo_frame_theme_color_customize_register($wp_customize){
 }
 function wpforge_sanitize_teheme_color( $input ) {
     $valid = array(
-		'light' => 'Light Side',
-		'dark' => 'Dark Side',
+		'light' => esc_html__('Light Side', 'bg-photo-frame'),
+		'dark' => esc_html__('Dark Side', 'bg-photo-frame'),
      );
 
      if ( array_key_exists( $input, $valid ) ) {
@@ -89,20 +89,6 @@ function wpforge_sanitize_teheme_color( $input ) {
 add_action('customize_register', 'bg_photo_frame_theme_color_customize_register');
 
 
-/**
- * Remove Filter
- */
- /*
-$target = array('after_setup_theme' => 'bg_photo_frame_custom_header_setup');
-function bg_photo_frame_remove_filters() {
-	foreach ($target as $key => $value) {
-		//remove_filter($key, $value);
-	}
-}
-bg_photo_frame_remove_filters();
-// テーマ初期化後にフィルタ除去をフック
-add_filter('after_setup_theme', 'bg_photo_frame_remove_filters');
-*/
 
 /**
  * Custom_Header_Setup

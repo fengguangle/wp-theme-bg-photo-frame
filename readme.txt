@@ -5,7 +5,7 @@ Tags: translation-ready, custom-background, theme-options, custom-menu, post-for
 
 Requires at least: 4.0
 Tested up to: 4.2.2
-Stable tag: 1.0.6
+Stable tag: 1.0.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,6 +36,8 @@ BG Photo Frame includes support for Infinite Scroll in Jetpack.
 * Modified theme design
 = 1.0.6 - Decemvar 30 2015 =
 * Changed the screen shot image
+= 1.0.7 - Decemvar 31 2015 =
+* Add Japanese localization
 
 == Credits ==
 
@@ -43,5 +45,3 @@ BG Photo Frame includes support for Infinite Scroll in Jetpack.
 * normalize.css http://necolas.github.io/normalize.css/, (C) 2012-2015 Nicolas Gallagher and Jonathan Neal, [MIT](http://opensource.org/licenses/MIT)
 * BootStrap http://getbootstrap.com/, (C) 2011-2015 Twitter, Inc, [MIT](http://opensource.org/licenses/MIT)
 * The image used in screenshot of the theme and header images is theme's author personal creation and is licensed under GPLv3 or later.(https://www.gnu.org/licenses/gpl-2.0.html)
-* This theme developed at WordCamp Tokyo 2015, in Japan. https://tokyo.wordcamp.org/2015/
-* Special thanks to people who supported develop and upload the theme, Mr.Okamoto, Mr.Nishikawa, Mrs.Toriyama.
