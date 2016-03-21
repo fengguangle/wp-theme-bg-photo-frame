@@ -110,13 +110,31 @@
   bottom: 10px;
   right: 10px; }
 
+#bg-photo-frame-timer-btn:hover {
+  text-decoration: none; }
+
 #bg-photo-frame-timer-btn span {
-  opacity: 0.3; }
+  opacity: 0.5;
+  position: absolute; }
 
 #bg-photo-frame-timer-btn.on span {
   opacity: 1.0; }
 
+#bg-photo-frame-timer-btn .bg-photo-frame-disable {
+  width: 100%;
+  text-align: center;
+  top: 7px;
+  display: block; }
+
+#bg-photo-frame-timer-btn.on .bg-photo-frame-disable {
+  display: none; }
+
+#bg-photo-frame-timer-btn .bg-photo-frame-text {
+  left: 7px;
+  top: 7px; }
+
 #bg-photo-frame-timer-btn .bg-photo-frame-blur-text {
+  left: 7px;
   top: 7px;
   display: none; }
 
