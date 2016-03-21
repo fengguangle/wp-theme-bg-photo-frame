@@ -19,6 +19,9 @@
   position: relative;
   z-index: 1; }
 
+#primary-inner {
+  padding: 15px; }
+
 /*hedaer-image
 -----------------------------------------*/
 #header-image {
@@ -77,22 +80,39 @@
 /* content
 -----------------------------------------*/
 #content {
-  position: relative;
-  z-index: 1; }
+  position: relative; }
+
+.content-area {
+  margin-bottom: 15px; }
 
 /*--------------------------------------------------------------
-# Mavigation
+# Navigation
 --------------------------------------------------------------*/
 .navbar-nav {
   display: block;
-  float: left; }
+  float: left;
+  margin-right: 48px; }
 
 .navbar-nav li a {
   display: block;
-  padding: 15px 15px; }
+  padding: 15px 15px;
+  margin-top: -1px; }
 
 #site-navigation {
   margin-bottom: 30px; }
+
+.navbar-nav ul li:hover > ul, .navbar-nav ul li.focus > ul {
+  left: -1px; }
+
+.navbar-nav li a:hover {
+  text-decoration: none; }
+
+.navbar-nav li > ul {
+  background: white;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-left-style: solid;
+  border-left-width: 1px; }
 
 /*--------------------------------------------------------------
 # Enrty

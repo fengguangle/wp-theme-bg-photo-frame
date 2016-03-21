@@ -1,4 +1,7 @@
 /* Scss Document */
+.navbar-nav {
+  margin: 7.5px 0px; }
+
 @media screen and (max-width: 782px) {
   /*--------------------------------------------------------------
 # layout

@@ -8,9 +8,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-01-09 13:59+0900\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2016-02-10 15:37+0900\n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "X-Generator: Poedit 1.5.7\n"
 
 # @ _s
@@ -232,6 +232,11 @@ msgid "Theme Setting"
 msgstr "テーマ設定"
 
 # @ _s
+#: custom/php/bg-photo-frame-functions.php:48
+msgid "Theme Color"
+msgstr "テーマカラー"
+
+# @ _s
 #: custom/php/bg-photo-frame-functions.php:69
 msgid "Light Side"
 msgstr "ライトサイド"
@@ -240,3 +245,28 @@ msgstr "ライトサイド"
 #: custom/php/bg-photo-frame-functions.php:70
 msgid "Dark Side"
 msgstr "ダークサイド"
+
+# @ _s
+#: custom/php/bg-photo-frame-functions.php:93
+msgid "Order of Images"
+msgstr "画像の順番"
+
+# @ _s
+#: custom/php/bg-photo-frame-functions.php:93
+msgid "In order"
+msgstr "順番どおり"
+
+# @ _s
+#: custom/php/bg-photo-frame-functions.php:93
+msgid "Shuffle"
+msgstr "シャッフル"
+
+# @ _s
+#: custom/php/bg-photo-frame-functions.php:124
+msgid "Opacity of Images"
+msgstr "画像の透明度"
+
+# @ _s
+#: custom/php/bg-photo-frame-functions.php:150
+msgid "Opacity of Contents Background"
+msgstr "コンテンツの背景の透明度"

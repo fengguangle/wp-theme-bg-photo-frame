@@ -4,11 +4,12 @@ var bgSlide;
 var bgGradationColor;
 (function($){
 	
-	/*=======================================================================
-　　Header Images
-	=======================================================================*/
 	/*Slider
 	-----------------------------------------------*/
+	var maskColor = 255;
+	if(themeColor == 'dark'){
+		maskColor = 0;
+	}
 	
 	bgSlide = $('#header-image ul');
 	bgSlide.bgPhotoFrame({
@@ -17,25 +18,34 @@ var bgGradationColor;
 		autoTimer:4000,
 		photoFrame:true,
 		contents : '#site-wrapper',
-		shuffle : shuffle
-		
+		shuffle : shuffle,
+		maskColor : maskColor,
+		maskOpacity : imageOpacity,
 	});
-
-　　/*Flip
-	-----------------------------------------------*/		
-	var flip = $('.flip');
 	
-	flip.click(function(){
-		flipImage();
+	
+	
+
+	/*Navigation
+	-----------------------------------------------*/
+	var subnavTop = $('.nav li').height();
+	$('.nav li > ul').css({
+		top : subnavTop + 'px'
+	})
+	$('.nav li > ul ul').css({
+		top : '-1px'
+	})
+
+	/*Background
+	-----------------------------------------------*/
+	
+	$('#primary-inner,.navbar-nav li,.widget').css({
+		background : 'rgba('+maskColor+','+maskColor+','+maskColor+',' + contentsOpacity + ')'
 	})
 	
-	function flipImage(){
-		$('#site-wrapper').fadeToggle(1000);
-		bgSlide.easySlideshowFade.toggleGradation();
-	}	
-
-
-	//Resize
+	
+	/*Resize
+	-----------------------------------------------*/
 	$(window).resize(function(){
 		resize()
 	})
@@ -47,15 +57,7 @@ var bgGradationColor;
 	}
 	
 	resize();
-	
-	
-	/*=======================================================================
-　　Custmizer
-	=======================================================================*/
-	
-	
-	
-	
+
 	
 	
 })(jQuery);

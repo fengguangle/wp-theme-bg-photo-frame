@@ -28,27 +28,34 @@ body {
 /*--------------------------------------------------------------
 # layout
 --------------------------------------------------------------*/
-#content {
-  text-shadow: 1px 1px 0px #FFF; }
-
 .site-title {
   border-color: #000; }
+
+.site-branding {
+  text-shadow: 1px 1px 0px #FFF; }
+
+#primary-inner {
+  border: #000 1px solid; }
 
 /*--------------------------------------------------------------
 # Navigation
 --------------------------------------------------------------*/
 .navbar-nav {
-  border-top: #000 1px solid;
   border-left: #000 1px solid; }
 
 .navbar-nav li a {
+  border-top: #000 1px solid;
   border-bottom: #000 1px solid;
   border-right: #000 1px solid; }
 
 .navbar-nav li a:hover {
-  text-shadow: none;
   color: #FFF;
-  background: rgba(0, 0, 0, 0.75); }
+  background: black; }
+
+.navbar-nav li > ul {
+  background: white;
+  border-top-color: #000;
+  border-left-color: #000; }
 
 /*--------------------------------------------------------------
 # Widgets

@@ -40,27 +40,37 @@ body {
 /*--------------------------------------------------------------
 # layout
 --------------------------------------------------------------*/
-#content {
-  text-shadow: 1px 1px 0px #000; }
-
 .site-title {
   border-color: #FFF; }
+
+.site-branding {
+  text-shadow: 1px 1px 0px #000; }
+
+#primary-inner {
+  border: #FFF 1px solid;
+  background: rgba(0, 0, 0, 0.5); }
 
 /*--------------------------------------------------------------
 # Navigation
 --------------------------------------------------------------*/
 .navbar-nav {
-  border-top: #FFF 1px solid;
   border-left: #FFF 1px solid; }
 
 .navbar-nav li a {
+  border-top: #FFF 1px solid;
   border-bottom: #FFF 1px solid;
-  border-right: #FFF 1px solid; }
+  border-right: #FFF 1px solid;
+  background: rgba(0, 0, 0, 0.5); }
 
-.navbar-nav > li > a:hover {
-  text-shadow: none;
+.navbar-nav li a:hover {
+  text-decoration: none;
   color: #000;
   background: white; }
+
+.navbar-nav li > ul {
+  background: black;
+  border-top-color: #FFF;
+  border-left-color: #FFF; }
 
 /*--------------------------------------------------------------
 # Widgets
@@ -71,7 +81,8 @@ body {
 .widget {
   border-left: #FFF 1px solid;
   border-right: #FFF 1px solid;
-  border-bottom: #FFF 1px solid; }
+  border-bottom: #FFF 1px solid;
+  background: rgba(0, 0, 0, 0.5); }
 
 /*--------------------------------------------------------------
 # Enrty
