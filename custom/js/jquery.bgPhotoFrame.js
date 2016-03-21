@@ -38,6 +38,7 @@
             maxHeight: 'none', //画像の最大の高さ
             autoChange: true, //画像の自動切り替え
             autoTimer: 4000, //画像の自動切り替えのタイマー
+            interfaceTimer: true, //インターフェース自動非表示
             fadeSpeed: 1000, //画像の自動切り替えのタイマー
             shuffle: false, //シャッフル
             gradationColor: '0,0,0', //グラデーションカラー
@@ -62,7 +63,10 @@
             var element = this;
 
             //Wrapper
-            var wrapper = '<div id="images-wrapper"></div>';
+            var wrapper;
+
+            //Controls
+            var controls;
 
             //parent element
             var parent = element.parent();
@@ -124,8 +128,11 @@
                 /*add element
                 ----------------------------------------------------------------------*/
 
-                element.wrap("<div id='images-wrapper'></div>");
-                wrapper = $('#images-wrapper');
+                element.wrap("<div id='bg-photo-frame-images-wrapper'></div>");
+                wrapper = $('#bg-photo-frame-images-wrapper');
+
+                $('body').prepend("<div id='bg-photo-frame-controls'></div>")
+                controls = $('#bg-photo-frame-controls');
 
                 /* setting css
                 ----------------------------------------------------------------------*/
@@ -630,20 +637,25 @@
                 }
 
                 function enableTimerInterface() {
-                    maskElement.bind('click', function() {
-                        if (currentMode == 'photoframe') {
-                            showInterface();
-                            removeTimerInterface();
-                            setTimerInterface();
-                        }
-                    })
-                    setTimerInterface();
+                    if (setting.interfaceTimer) {
+                        maskElement.bind('click', function() {
+                            if (currentMode == 'photoframe') {
+                                showInterface();
+                                removeTimerInterface();
+                                setTimerInterface();
+                            }
+                        })
+                        setTimerInterface();
+                    }
+
                 }
 
                 function setTimerInterface() {
-                    interfaceTimer.push(setTimeout(function() {
-                        hideInterface()
-                    }, setting.autoTimer));
+                    if (setting.interfaceTimer) {
+                        interfaceTimer.push(setTimeout(function() {
+                            hideInterface()
+                        }, setting.autoTimer));
+                    }
                 }
 
 
@@ -762,7 +774,7 @@
                 var iconClassPhotoFrame = 'glyphicon-picture';
                 var iconClassBlog = 'glyphicon-list-alt';
 
-                var toggleButtonSrc = '<a href="#" id="' + toggleBtnId + '" class="' + prefix + '-btn"><span class="glyphicon glyphicon-picture"></span></a>';
+                var toggleButtonSrc = '<a href="#" id="' + toggleBtnId + '" class="' + prefix + '-btn"　name="Switch Mode"><span class="glyphicon glyphicon-picture"></span></a>';
                 var toggleButton;
 
 
@@ -771,7 +783,7 @@
 
                 function initPhotoFrame() {
 
-                    $('body').append(toggleButtonSrc);
+                    controls.append(toggleButtonSrc);
                     toggleButton = $('#' + toggleBtnId);
 
                     if (device == 'pc') {
@@ -826,16 +838,16 @@
                 function initNav() {
                     if (element.find('li').length > 1) {
                         //prev
-                        $('body').append('<a class="' + prefix + '-btn ' + navPrefix + '" id="' + navPrefix + '-prev" href="#"><span class="glyphicon glyphicon-chevron-left"></span></a>');
-                        //next
-                        $('body').append('<a class="' + prefix + '-btn ' + navPrefix + '" id="' + navPrefix + '-next" href="#"><span class="glyphicon glyphicon-chevron-right"></span></a>');
+                        controls.append('<a class="' + prefix + '-btn ' + navPrefix + '" id="' + navPrefix + '-prev" href="#"><span class="glyphicon glyphicon-chevron-left"></span></a>');
 
-                        $('.' + navPrefix).click(function() {
-                            return false;
-                        })
+                        //next
+                        controls.append('<a class="' + prefix + '-btn ' + navPrefix + '" id="' + navPrefix + '-next" href="#"><span class="glyphicon glyphicon-chevron-right"></span></a>');
+
+
+
 
                         if (device == 'pc') {
-                            $('.' + navPrefix).mousedown(function() {
+                            $('.' + navPrefix).click(function() {
                                 navClick($(this));
                                 return false;
                             })
@@ -924,7 +936,7 @@
 
                 function initThumbs() {
                     //ページ
-                    $('body').append('<div id="' + thumbPageClass + '"><div id="' + thumbPageClass + '-inner" class="clearfix"><ul></ul></div></div>');
+                    controls.after('<div id="' + thumbPageClass + '"><div id="' + thumbPageClass + '-inner" class="clearfix"><ul></ul></div></div>');
                     thumbPage = $('#' + thumbPageClass + ' ul');
 
                     //サムネール
@@ -934,7 +946,7 @@
                     }
 
                     //ボタン
-                    $('body').append('<a id="' + thumbBtnClass + '" class="' + prefix + '-btn" href="#"><span class="glyphicon glyphicon-th"></span></a>');
+                    controls.append('<a id="' + thumbBtnClass + '" class="' + prefix + '-btn" href="#"><span class="glyphicon glyphicon-th"></span></a>');
                     thumbBtn = $('#' + thumbBtnClass);
 
                     //Event
@@ -1122,7 +1134,7 @@
                 function initTimer() {
                     if (setting.autoChange && element.find('li').length > 1) {
                         var timerBtnSrc = '<a id="' + timerBtnId + '" class="' + prefix + '-btn" href="#"><span class="glyphicon glyphicon-refresh ' + prefix + '-blur-text"></span><span class="glyphicon glyphicon-refresh"></span></a>';
-                        $('body').append(timerBtnSrc);
+                        controls.append(timerBtnSrc);
                         timerBtn = $('#' + timerBtnId);
 
                         if (setting.autoChange && element.find('li').length > 1) {

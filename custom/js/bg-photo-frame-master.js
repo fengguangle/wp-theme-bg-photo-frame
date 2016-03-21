@@ -16,6 +16,7 @@ var bgGradationColor;
 		width : '100%',
 		gradationColor: bgGradationColor,
 		autoTimer:4000,
+		interfaceTimer:false,
 		photoFrame:true,
 		contents : '#site-wrapper',
 		shuffle : shuffle,

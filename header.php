@@ -29,13 +29,14 @@
             if($images):
             ?>
 				<?php foreach($images as $image):?>
-                <li><img src="<?php echo esc_html($image['url']); ?>"></li>
+                <?php $filename = pathinfo( esc_html($image['url']))?>
+                <li><img src="<?php echo esc_html($image['url']); ?>" alt="<?php echo $filename["filename"]; ?>"></li>
                 <?php endforeach;?>
             <?php endif; ?>
         <?php else : ?>
         	<?php $theme_color = get_theme_mod( 'color_option' ,'light'); ?>
         	<?php for($i = 0; $i < 3; $i++) : ?>
-			<li><img src="<?php echo get_template_directory_uri() . '/custom/img/bg-default-' . $theme_color . '-' . $i .'.jpg' ?>"></li>
+			<li><img src="<?php echo get_template_directory_uri() . '/custom/img/bg-default-' . $theme_color . '-' . $i .'.jpg' ?>" alt="<?php bloginfo( 'name' ); ?>"></li>
 			<?php endfor; ?>
         	
 		<?php endif; ?>

@@ -5,7 +5,7 @@ Tags: two-columns, white, right-sidebar, fluid-layout, flexible-header, responsi
 
 Requires at least: 4.0
 Tested up to: 4.2.2
-Stable tag: 1.1.9
+Stable tag: 1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,11 +32,11 @@ BG Photo Frame includes support for Infinite Scroll in Jetpack.
 
 = 1.0 - Novemvar 1 2015 =
 * Initial release.
-= 1.0.5 - Decemvar 30 2015 =
+= 1.0.5 - December 30 2015 =
 * Modified theme design.
-= 1.0.6 - Decemvar 30 2015 =
+= 1.0.6 - December 30 2015 =
 * Changed the screen shot image.
-= 1.0.7 - Decemvar 31 2015 =
+= 1.0.7 - December 31 2015 =
 * Add Japanese localization.
 = 1.0.8 - January 08 2016 =
 * Add Photoframe Mode function.
@@ -51,9 +51,9 @@ BG Photo Frame includes support for Infinite Scroll in Jetpack.
 = 1.1.3 - January 23 2016 =
 * Big fix and chnage theme design.
 = 1.1.4 - January 24 2016 =
-* improve interaction of the Photoframe Mode.
+* Improve interaction of the Photoframe Mode.
 = 1.1.5 - January 25 2016 =
-* improve interaction of the Photoframe Mode.
+* Improve interaction of the Photoframe Mode.
 = 1.1.6 - January 28 2016 =
 * Big fix and changed several files name.
 = 1.1.7 - January 28 2016 =
@@ -63,6 +63,8 @@ BG Photo Frame includes support for Infinite Scroll in Jetpack.
 = 1.1.9 - February 10 2016 =
 * Added a option in the theme custmizer.It able to change the opacity of images,background of contents area.
   Some Bugs fixed.
+= 1.2 - February 21 2016 =
+* Improve theme design for the accessibility.
 
 == Credits ==
 
