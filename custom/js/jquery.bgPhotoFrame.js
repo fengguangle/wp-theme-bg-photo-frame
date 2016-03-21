@@ -770,8 +770,8 @@
                         })
                     } else {
                         toggleButton.bind('touchstart', function() {
-                            preventDefault()
                             command('modeChange');
+                            preventDefault();
                         })
                     }
                 }
@@ -830,8 +830,8 @@
                             })
                         } else {
                             $('.' + navPrefix).bind('touchstart', function() {
-                                preventDefault()
                                 navClick($(this));
+                                preventDefault();
                             })
                         }
 
@@ -934,8 +934,8 @@
                         })
                     } else {
                         thumbBtn.bind('touchstart', function() {
-                            preventDefault()
                             toggleThumbBtn();
+                            preventDefault();
                         })
                     }
 
@@ -988,17 +988,11 @@
                     ctx.drawImage(thumbImg, drawPositonX, drawPositonY, fixWidth, fixHeight);
                     thumb.append(canvas);
 
-                    if (device == 'pc') {
-                        thumb.click(function() {
-                            ThumbClick(thumb);
-                            return false;
-                        })
-                    } else {
-                        thumb.bind('touchstart', function() {
-                            preventDefault()
-                            ThumbClick(thumb);
-                        })
-                    }
+
+                    thumb.click(function() {
+                        ThumbClick(thumb);
+                        return false;
+                    })
 
                 }
 
@@ -1132,8 +1126,8 @@
                             })
                         } else {
                             timerBtn.bind('touchend', function() {
-                                preventDefault()
                                 toggleTimer();
+                                preventDefault();
                             })
                         }
                     }
