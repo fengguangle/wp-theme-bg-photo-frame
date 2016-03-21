@@ -512,7 +512,7 @@
                 var iconClassPhotoFrame = 'glyphicon-picture';
                 var iconClassBlog = 'glyphicon-list-alt';
 
-                var toggleButtonSrc = '<a href="#" id="' + toggleBtnId + '" class="' + prefix + '-btn"　name="Switch Mode"><span class="glyphicon glyphicon-picture" aria-hidden="true"><span class="screen-reader-text">Switch Mode</span></span></a>';
+                var toggleButtonSrc = '<a href="#" id="' + toggleBtnId + '" class="' + prefix + '-btn"　name="Switch Mode"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span><span class="screen-reader-text">Swich to Photoframe Mode</span></a>';
                 var toggleButton;
 
 
@@ -544,10 +544,11 @@
                     $('#' + toggleBtnId).find('span').removeClass(iconClassPhotoFrame);
                     $('#' + toggleBtnId).find('span').removeClass(iconClassBlog);
                     if (currentMode == 'background') {
-                        $('#' + toggleBtnId).find('span').addClass(iconClassPhotoFrame);
+                        $('#' + toggleBtnId).find('span.glyphicon').addClass(iconClassPhotoFrame);
+                        $('#' + toggleBtnId).find('span.screen-reader-text').html('Swich to Photoframe Mode');
                     } else if (currentMode == 'photoframe') {
-                        $('#' + toggleBtnId).find('span').addClass(iconClassBlog);
-
+                        $('#' + toggleBtnId).find('span.glyphicon').addClass(iconClassBlog);
+                        $('#' + toggleBtnId).find('span.screen-reader-text').html('Swich to Background Mode');
                     }
 
                 }
@@ -574,10 +575,10 @@
                 function initNav() {
                     if (element.find('li').length) {
                         //prev
-                        controls.append('<a class="' + prefix + '-btn ' + navPrefix + '" id="' + navPrefix + '-prev" href="#"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"><span class="screen-reader-text">Previous Image</span></span></a>');
+                        controls.append('<a class="' + prefix + '-btn ' + navPrefix + '" id="' + navPrefix + '-prev" href="#"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span><span class="screen-reader-text">Change the Previous Image</span></a>');
 
                         //next
-                        controls.append('<a class="' + prefix + '-btn ' + navPrefix + '" id="' + navPrefix + '-next" href="#"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"><span class="screen-reader-text">Next Image</span></span></a>');
+                        controls.append('<a class="' + prefix + '-btn ' + navPrefix + '" id="' + navPrefix + '-next" href="#"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><span class="screen-reader-text">Change the Next Image</span></a>');
 
 
 
@@ -676,7 +677,7 @@
 
 
                     //ボタン
-                    controls.append('<a id="' + thumbBtnClass + '" class="' + prefix + '-btn" href="#"><span class="glyphicon glyphicon-th" aria-hidden="true"><span class="screen-reader-text">Image Thumbnails</span></span></a>');
+                    controls.append('<a id="' + thumbBtnClass + '" class="' + prefix + '-btn" href="#"><span class="glyphicon glyphicon-th" aria-hidden="true"></span><span class="screen-reader-text">Open Image Thumbnails List</span></a>');
                     thumbBtn = $('#' + thumbBtnClass);
 
                     //ページ
@@ -687,7 +688,8 @@
 
                     //サムネール
                     for (var i = 0; i < element.find('li').length; i++) {
-                        var thumb = '<li class="' + thumbPrefix + '" id="' + prefix + '-thumb-' + i + '"><a href="#' + i + '"></a></li>';
+                        var alt = element.find('li').eq(i).find('img').attr('alt')
+                        var thumb = '<li class="' + thumbPrefix + '" id="' + prefix + '-thumb-' + i + '"><a href="#' + i + '"><span class="screen-reader-text">' + alt + '</span></a></li>';
                         thumbPage.append(thumb);
                     }
 
@@ -891,7 +893,7 @@
 
                 function initTimer() {
                     if (setting.autoChange && element.find('li').length) {
-                        var timerBtnSrc = '<a id="' + timerBtnId + '" class="' + prefix + '-btn" href="#"><span class="glyphicon glyphicon-refresh ' + prefix + '-blur-text" aria-hidden="true"></span><span class="glyphicon glyphicon-refresh ' + prefix + '-text" aria-hidden="true"><span class="screen-reader-text">Auto Change Images</span></span></a>';
+                        var timerBtnSrc = '<a id="' + timerBtnId + '" class="' + prefix + '-btn" href="#"><span class="glyphicon glyphicon-refresh ' + prefix + '-blur-text" aria-hidden="true"></span><span class="screen-reader-text">Disable Auto Change Images</span><span class="glyphicon glyphicon-refresh ' + prefix + '-text" aria-hidden="true"></span></a>';
                         controls.append(timerBtnSrc);
                         timerBtn = $('#' + timerBtnId);
 
@@ -942,12 +944,14 @@
                 function timerOn() {
                     timerBtn.addClass('on');
                     timer.setTimer();
+                    $('#' + timerBtnId).find('span.screen-reader-text').html('Disable Auto Change Images')
 
                 }
 
                 function timerOff() {
                     timerBtn.removeClass('on');
                     timer.disableTimer();
+                    $('#' + timerBtnId).find('span.screen-reader-text').html('Enable Auto Change Images')
                 }
 
 
