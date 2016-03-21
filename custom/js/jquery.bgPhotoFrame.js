@@ -9,6 +9,7 @@
 (function($) {
     $.fn.bgPhotoFrame = function(setting) {
 
+
         /*=======================================================================
         Utility
         =======================================================================*/
@@ -115,6 +116,77 @@
             //Fade time
             var fadeTime = 1000;
 
+            /*
+            ------------------------------------------------------------------------------------------------*/
+            // Resize
+            var photoAnimeTime = 1000;
+            var photoAnimeEasing = 'easeOutQuad';
+
+            // Mask
+            var mask = [];
+            var maskElement;
+
+            // Command
+            var commandProcess = [];
+            var interface = false;
+
+            // Mode
+            var contentFadeTime = 500;
+            var currentMode = 'background';
+            var mode = [];
+
+            // Toggle
+            var toggleBtnId = prefix + '-toggle';
+            var iconClassPhotoFrame = 'glyphicon-picture';
+            var iconClassBlog = 'glyphicon-list-alt';
+
+            var toggleButtonSrc = '<a href="#" id="' + toggleBtnId + '" class="' + prefix + '-btn"　name="Switch Mode"><span class="glyphicon glyphicon-picture"></span></a>';
+            var toggleButton;
+
+            // Navigation
+            var nav;
+            var prev;
+            var next;
+            var navClicked = false;
+            var navPrefix = prefix + '-nav';
+
+            // Thumbs
+            var thumbPage;
+            var thumbBtn;
+
+            var thumbPrefix = prefix + '-thumb';
+            var thumbPageClass = thumbPrefix + '-thumbs';
+            var thumbBtnClass = thumbPrefix + '-btn';
+            var thumbTime = 500;
+
+            //Timer
+            var timer;
+            var timerBtn;
+            var timerPrefix = prefix + '-timer';
+            var timerBtnId = timerPrefix + '-btn';
+
+            //Chanage
+            var change = [];
+
+            //Transition
+            transitionMode = 'fade';
+
+            //Image Transition(Fade)
+            var fade = [];
+
+            //Image Transition(Swipe)
+            var swipe = [];
+            var swipeSpeed = 2000;
+            var swipeAnmation = false;
+            var currentSwipeNum = 0;
+            var nextSwipeNum = 0;
+            var swipeSpeedLimit = 5;
+            var swipeSpeedTimerSpan = 100;
+
+            //dammy
+            var dammy = [];
+            var dammyElement;
+
 
 
 
@@ -125,13 +197,15 @@
             }
 
             if (element.find('li').length) {
+
+
                 /*add element
                 ----------------------------------------------------------------------*/
 
                 element.wrap("<div id='bg-photo-frame-images-wrapper'></div>");
                 wrapper = $('#bg-photo-frame-images-wrapper');
 
-                $('body').prepend("<div id='bg-photo-frame-controls'></div>")
+                $('body').prepend("<div id='bg-photo-frame-controls'></div>");
                 controls = $('#bg-photo-frame-controls');
 
                 /* setting css
@@ -148,8 +222,8 @@
                 if (setting.height != 'auto') {
                     element.css({
                         height: setting.height + 'px' //高さをパラメータの値に指定
-                    })
-                };
+                    });
+                }
 
                 //list element
                 element.find('li').css({
@@ -175,7 +249,7 @@
                     element.find('img').css({
                         width: setting.width + 'px' //画像の幅をパラメータの値に指定
                     });
-                };
+                }
 
 
 
@@ -193,13 +267,13 @@
                         var tmp = shuffleElement[i];
                         shuffleElement[i] = shuffleElement[r];
                         shuffleElement[r] = tmp;
-                    };
+                    }
 
                     element.empty();
 
                     for (var i = 0; i < shuffleElement.length; i++) {
                         element.append(shuffleElement[i]);
-                    };
+                    }
 
                 }
 
@@ -221,13 +295,8 @@
 
 
                 /*=======================================================================
-                /* Window resize
+                /* Resize
                 =======================================================================*/
-
-                /* Params
-                ----------------------------------------------------------------------*/
-                var photoAnimeTime = 1000;
-                var photoAnimeEasing = 'easeOutQuad';
 
                 /* Resize event
                 ----------------------------------------------------------------------*/
@@ -237,7 +306,7 @@
                         for (var i = 0; i < element.find('li').length; i++) {
                             resizeImages(i);
                         }
-                    })
+                    });
                     for (var i = 0; i < element.find('li').length; i++) {
                         resizeImages(i);
                     }
@@ -318,14 +387,14 @@
                                     if (callback) {
                                         eval(callback + "()");
                                     }
-                                })
+                                });
                             } else {
                                 _img.width(imgWidth);
                                 _img.height(imgHeight);
                                 _img.css({
                                     marginTop: marginTop + 'px',
                                     marginLeft: marginLeft + 'px'
-                                })
+                                });
                             }
                         }
                     }
@@ -340,23 +409,21 @@
                 }
 
 
-                // JavaScript Document
-
-                var mask = [];
-                var maskElement;
-
+                /*=======================================================================
+                /* Mask resize
+                =======================================================================*/
 
                 /* Init
                 ----------------------------------------------------------------------*/
                 function initMask() {
-                    wrapper.after("<div id='images-mask'></div>")
+                    wrapper.after("<div id='images-mask'></div>");
                     maskElement = $('#images-mask');
 
                     //CSS
 
                     maskElement.css({
                         background: 'rgba(' + setting.maskColor + ',' + setting.maskColor + ',' + setting.maskColor + ',' + setting.maskOpacity + ')'
-                    })
+                    });
                 }
 
                 /* Resize
@@ -371,24 +438,24 @@
 
                 mask.showMask = function() {
                     maskElement.stop(true, false).fadeTo(fadeTime, 1.0);
-                }
+                };
 
                 mask.hideMask = function() {
                     maskElement.stop(true, false).fadeTo(fadeTime, 0.0);
-                }
+                };
 
                 /* Run
                 ----------------------------------------------------------------------*/
+
+                initMask();
+
                 //Attach event
                 $(window).resize(function() {
                     resizeMask();
-                })
-
-
-                initMask();
+                });
                 resizeMask();
                 /*=======================================================================
-                /*読み込み
+                /* Load
                 =======================================================================*/
 
                 /*　読み込み完了イベントの割り当て
@@ -407,7 +474,7 @@
                         setImageSize(index); //画像サイズを取得
                         attachThumbImage(index, src); //サムネール画像の作成
                         checkLoadComplete(); //画像が全て読み込まれたかチェック
-                    })
+                    });
                     loadImg.attr('src', imgSrc);
                 }
 
@@ -479,7 +546,7 @@
 
                 }
                 /*=======================================================================
-                動作スタート
+                * Run
                 =======================================================================*/
                 function start() {
 
@@ -512,14 +579,9 @@
                     element.show();
                 }
                 /*=======================================================================
-                　　Photoframe function
+                  Command function
                 =======================================================================*/
 
-                var commandProcess = [];
-
-                var interface = false;
-                /*Command
-                ----------------------------------------------------------------------*/
                 function command(sentence, val) {
                     commandProcess[sentence](val);
                 }
@@ -537,7 +599,7 @@
                         }
                         disableTimer();
                     }
-                }
+                };
 
                 commandProcess.modeChangeEnd = function() {
                     if (currentMode == 'photoframe') {
@@ -549,7 +611,7 @@
                     }
                     setTimer();
                     btnEnable = true;
-                }
+                };
 
 
 
@@ -568,17 +630,17 @@
                     current = newNum;
                     removeTimerInterface();
                     setTimerInterface();
-                }
+                };
 
 
 
                 commandProcess.setSwipeImage = function(val) {
                     resizeImages(val, false, true);
-                }
+                };
 
                 commandProcess.setDammy = function(val) {
                     resizeImages(val, false, true);
-                }
+                };
 
                 commandProcess.swipeDown = function() {
                     dammy.removeDammy();
@@ -586,25 +648,25 @@
                     disableTimer();
                     removeTimerInterface();
                     setTimerInterface();
-                }
+                };
 
                 commandProcess.swipeUp = function() {
                     setTimer();
-                }
+                };
 
                 commandProcess.swipeEnd = function() {
                     dammy.removeDammy();
-                }
+                };
 
                 commandProcess.transitionEnd = function() {
                     setTimer();
-                }
+                };
 
                 commandProcess.timerChange = function() {
                     var newNum = change.getChangeNum('next');
                     transition(newNum, 'fade');
                     current = newNum;
-                }
+                };
 
 
 
@@ -644,7 +706,7 @@
                                 removeTimerInterface();
                                 setTimerInterface();
                             }
-                        })
+                        });
                         setTimerInterface();
                     }
 
@@ -653,7 +715,7 @@
                 function setTimerInterface() {
                     if (setting.interfaceTimer) {
                         interfaceTimer.push(setTimeout(function() {
-                            hideInterface()
+                            hideInterface();
                         }, setting.autoTimer));
                     }
                 }
@@ -674,16 +736,8 @@
 
 
                 /*=======================================================================
-                　　Photoframe function
+                  Mode
                 =======================================================================*/
-
-                /* params
-                ----------------------------------------------------------------------*/
-                var contentFadeTime = 500;
-                var currentMode = 'background';
-                var mode = [];
-                /* Change mode
-                ----------------------------------------------------------------------*/
                 //Toggle
                 mode.modeChange = function() {
 
@@ -693,7 +747,7 @@
                     } else if (currentMode == 'photoframe') {
                         backgroundMode();
                     }
-                }
+                };
 
                 //Photoframe
                 function photoFrameMode() {
@@ -768,20 +822,13 @@
                 　　Toggle
                 =======================================================================*/
 
-                /* Params
-                ----------------------------------------------------------------------*/
-                var toggleBtnId = prefix + '-toggle';
-                var iconClassPhotoFrame = 'glyphicon-picture';
-                var iconClassBlog = 'glyphicon-list-alt';
 
-                var toggleButtonSrc = '<a href="#" id="' + toggleBtnId + '" class="' + prefix + '-btn"　name="Switch Mode"><span class="glyphicon glyphicon-picture"></span></a>';
-                var toggleButton;
 
 
                 /* init
                 ----------------------------------------------------------------------*/
 
-                function initPhotoFrame() {
+                function initToggle() {
 
                     controls.append(toggleButtonSrc);
                     toggleButton = $('#' + toggleBtnId);
@@ -790,12 +837,12 @@
                         toggleButton.click(function() {
                             command('modeChange');
                             return false;
-                        })
+                        });
                     } else {
                         toggleButton.bind('touchstart', function(event) {
                             command('modeChange');
                             event.preventDefault();
-                        })
+                        });
                     }
                 }
 
@@ -815,7 +862,7 @@
                 }
 
                 if (setting.photoFrame) {
-                    initPhotoFrame();
+                    initToggle();
                 }
 
 
@@ -823,15 +870,6 @@
                 /*=======================================================================
                 　　Navigation
                 =======================================================================*/
-
-                var nav;
-                var prev;
-                var next;
-                var navClicked = false;
-                var navPrefix = prefix + '-nav';
-
-
-
 
                 /* Init
                 ----------------------------------------------------------------------*/
@@ -850,12 +888,12 @@
                             $('.' + navPrefix).click(function() {
                                 navClick($(this));
                                 return false;
-                            })
+                            });
                         } else {
                             $('.' + navPrefix).bind('touchstart', function(event) {
                                 navClick($(this));
                                 event.preventDefault();
-                            })
+                            });
                         }
 
 
@@ -864,7 +902,7 @@
 
                         $(window).resize(function() {
                             resizeNav();
-                        })
+                        });
 
                         nav = $('.' + navPrefix);
                     }
@@ -884,7 +922,7 @@
                 /* Show/Hide
                 ----------------------------------------------------------------------*/
                 function showNav() {
-                    nav.stop(false, true)
+                    nav.stop(false, true);
                     nav.fadeIn(fadeTime, function() {
                         nav.addClass('active');
                     });
@@ -912,7 +950,7 @@
                     var top = ($(window).height() - nav.width()) / 2;
                     $('#' + navPrefix + '-prev, #' + navPrefix + '-next').css({
                         top: top + 'px'
-                    })
+                    });
                 }
 
                 /* Init
@@ -923,13 +961,6 @@
                 /*=======================================================================
                 Image Thumbnails
                 =======================================================================*/
-                var thumbPage;
-                var thumbBtn;
-
-                var thumbPrefix = prefix + '-thumb';
-                var thumbPageClass = thumbPrefix + '-thumbs';
-                var thumbBtnClass = thumbPrefix + '-btn';
-                var thumbTime = 500;
 
                 /* Init
                 ----------------------------------------------------------------------*/
@@ -945,6 +976,8 @@
                     controls.append('<div id="' + thumbPageClass + '"><div id="' + thumbPageClass + '-inner" class="clearfix"><ul></ul></div></div>');
                     thumbPage = $('#' + thumbPageClass + ' ul');
 
+
+
                     //サムネール
                     for (var i = 0; i < element.find('li').length; i++) {
                         var thumb = '<li class="' + thumbPrefix + '" id="' + prefix + '-thumb-' + i + '"><a href="#' + i + '"></a></li>';
@@ -956,26 +989,24 @@
                         thumbBtn.click(function() {
                             toggleThumbBtn();
                             return false;
-                        })
+                        });
                     } else {
                         thumbBtn.bind('touchstart', function(event) {
                             toggleThumbBtn();
                             event.preventDefault();
-                        })
+                        });
                     }
 
 
                     $('#' + thumbPageClass).bind('click', function() {
                         closeThumbs();
                         return false;
-                    })
+                    });
 
                 }
 
 
-                if (setting.photoFrame) {
-                    initThumbs();
-                }
+
 
                 function attachThumbImage(num, src) {
                     var thumb = thumbPage.find('li').eq(num).find('a');
@@ -1017,7 +1048,7 @@
                     thumb.click(function() {
                         ThumbClick(thumb);
                         return false;
-                    })
+                    });
 
                 }
 
@@ -1034,7 +1065,7 @@
                         width: innerWidth + 'px',
                         //height : innerHeight + 'px',
                         padding: innerPaddingHorizontal + 'px ' + innerPaddingHorizontal + 'px',
-                    })
+                    });
 
 
                     //サムネールのサイズを取得
@@ -1047,13 +1078,11 @@
 
                     $('#' + thumbPageClass + ' ul').css({
                         marginLeft: ulMargin + 'px'
-                    })
+                    });
                 }
 
-                $(window).resize(function() {
-                    resizeThumbs();
-                })
-                resizeThumbs();
+
+
 
 
 
@@ -1094,7 +1123,7 @@
                 }
 
                 function openThumbs() {
-                    $('#' + thumbPageClass).show()
+                    $('#' + thumbPageClass).show();
                     $('#' + thumbPageClass).animate({
                         width: '100%',
                         height: '100%'
@@ -1107,7 +1136,7 @@
                         width: '0%',
                         height: '0%'
                     }, thumbTime, easing, function() {
-                        $('#' + thumbPageClass).hide()
+                        $('#' + thumbPageClass).hide();
                     });
                     thumbBtn.removeClass('active');
                 }
@@ -1124,13 +1153,21 @@
                 }
 
 
+                /* Run
+                ----------------------------------------------------------------------*/
+                if (setting.photoFrame) {
+                    initThumbs();
+                    $(window).resize(function() {
+                        resizeThumbs();
+                    });
+                    resizeThumbs();
+                }
+
+
+
                 /*=======================================================================
-                Timer Chnage
+                Timer
                 =======================================================================*/
-                var timer;
-                var timerBtn;
-                var timerPrefix = prefix + '-timer';
-                var timerBtnId = timerPrefix + '-btn';
 
 
                 /* Init
@@ -1151,17 +1188,16 @@
                             timerBtn.click(function() {
                                 toggleTimer();
                                 return false;
-                            })
+                            });
                         } else {
                             timerBtn.bind('touchend', function(event) {
                                 toggleTimer();
                                 event.preventDefault();
-                            })
+                            });
                         }
                     }
                 }
 
-                initTimer();
 
 
 
@@ -1201,7 +1237,7 @@
 
                 function enableTimer() {
                     timer.push(setTimeout(function() {
-                        timerChange()
+                        timerChange();
                     }, setting.autoTimer));
                 }
 
@@ -1216,7 +1252,6 @@
 
                 /* Change
                 ----------------------------------------------------------------------*/
-
                 function timerChange() {
                     command('timerChange');
                 }
@@ -1235,8 +1270,15 @@
                     timerBtn.stop(false, true);
                     timerBtn.fadeOut();
                 }
-                // JavaScript Document
+
+
+                initTimer();
+                /*=======================================================================
+                Chanage
+                =======================================================================*/
                 var change = [];
+
+
 
                 change.getChangeNum = function(val) {
                     var newNum;
@@ -1248,7 +1290,7 @@
                     }
 
                     return newNum;
-                }
+                };
 
                 var changeType = [];
                 changeType.next = function() {
@@ -1260,7 +1302,7 @@
                     }
 
                     return newNum;
-                }
+                };
 
                 changeType.prev = function() {
                     var newNum;
@@ -1270,20 +1312,16 @@
                         newNum = parseInt(current) - 1;
                     }
                     return newNum;
-                }
+                };
 
                 changeType.current = function() {
-
                     return current;
-                }
+                };
 
                 changeType.num = function(val) {
                     return val;
-                }
+                };
 
-                // JavaScript Document
-
-                transitionMode = 'fade';
 
                 function initTransition() {
 
@@ -1321,7 +1359,6 @@
                 /*=======================================================================
                 Image Transition(Fade)
                 =======================================================================*/
-                var fade = [];
 
                 fade.transitionFade = function(num) {
                     //各画像の表示・非表示
@@ -1335,7 +1372,7 @@
                         if (num == i) { //クリックされたボタンの順番と同一なら画像をフェードで表示
                             li.css({
                                 marginLeft: 0
-                            })
+                            });
                             if (num != current) {
                                 if (li.css('display') == 'none') {
                                     li.fadeIn(setting.fadeSpeed, function() {
@@ -1354,7 +1391,7 @@
                         }
                     }
                     transitionFadeEnd();
-                }
+                };
 
 
 
@@ -1370,20 +1407,11 @@
 
                 function transitionFadeEnd() {
                     command('transitionEnd');
-
                 }
 
                 /*=======================================================================
                 Image Auto change(Swipe)
                 =======================================================================*/
-
-                var swipe = [];
-                var swipeSpeed = 2000;
-                var swipeAnmation = false;
-                var currentSwipeNum = 0;
-                var nextSwipeNum = 0;
-                var swipeSpeedLimit = 5;
-                var swipeSpeedTimerSpan = 100
 
                 swipe.transitionSwipe = function(num, direction) {
                     if (!swipeAnmation) {
@@ -1391,7 +1419,7 @@
                     }
                     swipeLoopStop();
                     swipeLoop(num, direction);
-                }
+                };
 
                 function swipeLoop(num, direction) {
                     var margin;
@@ -1403,7 +1431,7 @@
                     var wrapperMargin;
 
                     speed = setSpeed(num, direction);
-                    setSwiprPosition(num, direction);
+                    setSwipePosition(num, direction);
                     setSwipeImage(num, direction);
 
 
@@ -1420,7 +1448,7 @@
                 }
 
 
-                function setSwiprPosition(num, direction) {
+                function setSwipePosition(num, direction) {
                     var margin = 0;
                     var wrapMargin = removeUnit(wrapper.css('marginLeft'));
                     if (direction == 'current') {
@@ -1433,7 +1461,7 @@
 
                     wrapper.css({
                         marginLeft: margin + 'px'
-                    })
+                    });
                 }
 
 
@@ -1496,28 +1524,28 @@
                 var swipeSpeed;
                 var swipeSpeedStart;
                 var swipeSpeedCurrent;
-                var swipeSpeedTimer = []
+                var swipeSpeedTimer = [];
 
                 if (device == 'pc') {
                     maskElement.mousedown(function(e) {
                         swipeDown(e.pageX);
-                    })
+                    });
                     $(window).mousemove(function(e) {
                         swipeMove(e.pageX);
-                    })
+                    });
                     $(window).mouseup(function(e) {
                         swipeUp(e.pageX);
-                    })
+                    });
                 } else {
                     maskElement.bind('touchstart', function() {
                         swipeDown(event.changedTouches[0].pageX);
-                    })
+                    });
                     $(window).bind('touchmove', function() {
                         swipeMove(event.changedTouches[0].pageX);
-                    })
+                    });
                     $(window).bind('touchend', function() {
                         swipeUp(event.changedTouches[0].pageX);
-                    })
+                    });
                 }
 
                 function swipeDown(_x) {
@@ -1527,7 +1555,7 @@
                         swipeDistance = 0;
                         swipeSpeed = 0;
 
-                        setSwiprPosition(current, 'current');
+                        setSwipePosition(current, 'current');
                         setSwipeImage(current, 'current');
 
                         swipeActiveStart = _x;
@@ -1535,8 +1563,9 @@
                         swipeStartMargin = removeUnit(wrapper.css('marginLeft'));
 
                         swipeSpeedTimer.push(setInterval(function() {
-                            setSwipeSpeed()
-                        }, swipeSpeedTimerSpan))
+                            setSwipeSpeed();
+                        }, swipeSpeedTimerSpan));
+
                         command('swipeDown');
                     }
                 }
@@ -1554,7 +1583,7 @@
                         var margin = swipeStartMargin + swipeDistance;
                         wrapper.css({
                             marginLeft: margin + 'px'
-                        })
+                        });
                     }
                 }
 
@@ -1600,28 +1629,18 @@
                     swipeActive = false;
                 }
 
+                /*=======================================================================
+                /* Dammy
+                =======================================================================*/
 
-
-
-
-
-
-
-
-
-                // JavaScript Document
-
-                var dammy = [];
-                var dammyGroup;
 
                 /* init
                 ----------------------------------------------------------------------*/
                 function initDammy() {
-                    dammyGroup = $('<ul/>');
-                    dammyGroup.addClass('dammy');
-                    element.after(dammyGroup);
+                    element.after('<ul class="bg-photo-frame-dammy"></ul>');
+                    dammyElement = $('.bg-photo-frame-dammy');
 
-                    dammyGroup.css({
+                    dammyElement.css({
                         margin: '0px',
                         padding: '0px',
                         position: 'absolute',
@@ -1632,6 +1651,7 @@
                 }
 
                 dammy.setDammy = function(num, direction) {
+                    dammyElement.find('li').remove();
                     var leftMargin, rightMargin;
                     leftMargin = -$(window).width();
                     rightMargin = $(window).width();
@@ -1649,35 +1669,40 @@
 
 
                     dammyNum = num;
-                    for (var i = 0; i < leftDammyNum; i++) {
-                        var leftNum;
-                        if (dammyNum == 0) {
-                            leftNum = element.find('li').length - 1;
-                        } else {
-                            leftNum = dammyNum - 1;
+                    if (direction == 'next' || direction == 'current') {
+
+                        for (var i = 0; i < leftDammyNum; i++) {
+                            var leftNum;
+                            if (dammyNum == 0) {
+                                leftNum = element.find('li').length - 1;
+                            } else {
+                                leftNum = dammyNum - 1;
+                            }
+                            dammyShow(leftNum, i, 'left');
+                            dammyNum = leftNum;
                         }
-                        dammyShow(leftNum, i, 'left');
-                        dammyNum = leftNum;
                     }
 
-                    dammyNum = num;
+                    if (direction == 'prev' || direction == 'current') {
+                        dammyNum = num;
+                        for (var i = 0; i < rightDammyNum; i++) {
+                            var rightNum;
+                            if (dammyNum == element.find('li').length - 1) {
+                                rightNum = 0;
+                            } else {
+                                rightNum = dammyNum + 1;
+                            }
 
-                    for (var i = 0; i < rightDammyNum; i++) {
-                        var rightNum;
-                        if (dammyNum == element.find('li').length - 1) {
-                            rightNum = 0;
-                        } else {
-                            rightNum = dammyNum + 1;
+                            dammyShow(rightNum, i, 'right');
+                            dammyNum = rightNum;
                         }
-
-                        dammyShow(rightNum, i, 'right');
-                        dammyNum = rightNum;
                     }
 
-                    $('.dammy').css('display', 'block');
+
+                    dammyElement.css('display', 'block');
 
 
-                }
+                };
 
                 function dammyShow(num, i, direction) {
                     command('setDammy', num);
@@ -1685,42 +1710,46 @@
                     var width = dammyBase.width();
                     var height = dammyBase.height();
                     var marginTop = dammyBase.css('marginTop');
+                    var wrapperMargin = removeUnit(wrapper.css('marginLeft'));
                     var marginLeft;
 
+
                     if (direction == 'left') {
-                        marginLeft = -$(window).width();
+                        marginLeft = -$(window).width() + ($(window).width() - width) / 2;
                     } else if (direction == 'right') {
-                        marginLeft = $(window).width();
+                        marginLeft = $(window).width() + ($(window).width() - width) / 2;
                     }
                     var src = dammyBase.attr('src');
-                    var dammyElement = $('<li><img/></li>');
+                    var alt = dammyBase.attr('alt');
+                    var dammyImg = $('<li><img/></li>');
 
-                    dammyElement.find('img').attr('src', src);
-                    dammyElement.addClass('dammy-list').addClass('dammy-' + direction);
-                    dammyElement.css({
+                    dammyImg.find('img').attr('src', src);
+                    dammyImg.find('img').attr('alt', alt);
+                    dammyImg.addClass('bg-photo-frame-dammy-list').addClass('bg-photo-frame-dammy-' + direction);
+                    dammyImg.css({
                         width: '100%',
                         position: 'absolute',
                         listStyle: 'none'
-                    })
+                    });
 
-                    dammyElement.find('img').css({
+                    dammyImg.find('img').css({
                         width: width + 'px',
                         height: height + 'px',
                         marginTop: marginTop,
                         marginLeft: marginLeft * (i + 1) + 'px'
-                    })
+                    });
 
-                    dammyGroup.append(dammyElement);
+                    dammyElement.append(dammyImg);
                 }
 
                 dammy.removeDammy = function() {
-                    dammyGroup.find('li').remove();
-                }
+                    dammyElement.find('li').remove();
+                };
 
                 initDammy();
             }
         }
-    }
+    };
 })(jQuery);
 
 /*
