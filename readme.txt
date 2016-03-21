@@ -1,11 +1,11 @@
 === BG Photo Frame ===
 
 Contributors: Takeshi Kashihara
-Tags: two-columns, white, right-sidebar, fluid-layout, flexible-header, responsive-layout, accessibility-ready, custom-header, custom-menu, full-width-template
+Tags: two-columns, black, white, dark, light, right-sidebar, fluid-layout, flexible-header, responsive-layout, accessibility-ready, custom-header, custom-menu, full-width-template
 
 Requires at least: 4.0
 Tested up to: 4.2.2
-Stable tag: 1.2
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,7 +64,9 @@ BG Photo Frame includes support for Infinite Scroll in Jetpack.
 * Added a option in the theme custmizer.It able to change the opacity of images,background of contents area.
   Some Bugs fixed.
 = 1.2 - February 21 2016 =
-* Improve theme design for the accessibility.
+* Improve the theme design for the accessibility.
+= 1.2.1 - February 25 2016 =
+* Edited the theme source for the keyboard accessibility.
 
 == Credits ==
 

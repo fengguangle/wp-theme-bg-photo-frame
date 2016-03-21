@@ -935,8 +935,14 @@
                 ----------------------------------------------------------------------*/
 
                 function initThumbs() {
+
+
+                    //ボタン
+                    controls.append('<a id="' + thumbBtnClass + '" class="' + prefix + '-btn" href="#"><span class="glyphicon glyphicon-th"></span></a>');
+                    thumbBtn = $('#' + thumbBtnClass);
+
                     //ページ
-                    controls.after('<div id="' + thumbPageClass + '"><div id="' + thumbPageClass + '-inner" class="clearfix"><ul></ul></div></div>');
+                    controls.append('<div id="' + thumbPageClass + '"><div id="' + thumbPageClass + '-inner" class="clearfix"><ul></ul></div></div>');
                     thumbPage = $('#' + thumbPageClass + ' ul');
 
                     //サムネール
@@ -944,10 +950,6 @@
                         var thumb = '<li class="' + thumbPrefix + '" id="' + prefix + '-thumb-' + i + '"><a href="#' + i + '"></a></li>';
                         thumbPage.append(thumb);
                     }
-
-                    //ボタン
-                    controls.append('<a id="' + thumbBtnClass + '" class="' + prefix + '-btn" href="#"><span class="glyphicon glyphicon-th"></span></a>');
-                    thumbBtn = $('#' + thumbBtnClass);
 
                     //Event
                     if (device == 'pc') {
@@ -1092,6 +1094,7 @@
                 }
 
                 function openThumbs() {
+                    $('#' + thumbPageClass).show()
                     $('#' + thumbPageClass).animate({
                         width: '100%',
                         height: '100%'
@@ -1103,7 +1106,9 @@
                     $('#' + thumbPageClass).animate({
                         width: '0%',
                         height: '0%'
-                    }, thumbTime, easing);
+                    }, thumbTime, easing, function() {
+                        $('#' + thumbPageClass).hide()
+                    });
                     thumbBtn.removeClass('active');
                 }
 
