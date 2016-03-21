@@ -1,5 +1,4 @@
 /* CSS Document */
-/* Scss Document */
 /* photo frame
 -----------------------------------------*/
 /*--------------------------------------------------------------
@@ -51,12 +50,10 @@ body {
 # Navigation
 --------------------------------------------------------------*/
 .navbar-nav {
-  display: block;
   border-top: #FFF 1px solid;
-  border-left: #FFF 1px solid;
-  float: left; }
+  border-left: #FFF 1px solid; }
 
-.navbar-nav > li > a {
+.navbar-nav li a {
   border-bottom: #FFF 1px solid;
   border-right: #FFF 1px solid; }
 

@@ -36,8 +36,8 @@ function bg_photo_frame_custom_sctipt() {
 	//jQuery
 	wp_enqueue_script('jquery');
 	//Slide
-  	wp_enqueue_style('easySlideshowFade', get_template_directory_uri()   . '/custom/css/jquery.easySlideshowFade.css');
-	wp_enqueue_script('easy-slideshow-fade', get_template_directory_uri() . '/custom/js/jquery.easySlideshowFade.js', array(), '1.0.0', true);
+  	wp_enqueue_style('jquery-bgPhotoFrame-css', get_template_directory_uri()   . '/custom/css/jquery.bgPhotoFrame.min.css');
+	wp_enqueue_script('jquery-bgPhotoFrame-js', get_template_directory_uri() . '/custom/js/jquery.bgPhotoFrame.min.js', array(), '1.0.0', true);
 	
 		
 	//Master
@@ -46,9 +46,22 @@ function bg_photo_frame_custom_sctipt() {
 }
 add_action( 'wp_enqueue_scripts', 'bg_photo_frame_custom_sctipt' );
 
- 
+function bg_photo_frame_js_params() {
+	$image_order = get_theme_mod( "image_order" ,"in_order");
+	echo "\n";
+	echo '<script type="text/javascript">//<![CDATA[';
+	echo "\n";
+	
+	if($image_order == 'in_order'){
+		echo "var shuffle = false;";
+	}else{
+		echo "var shuffle = true;";
+	}
+	echo "\n";
+	echo "//]]></script>";
+}
 
-
+add_action( 'wp_head', 'bg_photo_frame_js_params', 15 );
 
 /**
  * Add control in theme custmizer
@@ -65,7 +78,7 @@ function bg_photo_frame_theme_color_customize_register($wp_customize){
 		'capability' => 'manage_options',
 		'type' => 'theme_mod',
 		'transport' => 'refresh',
-		'sanitize_callback' => 'wpforge_sanitize_teheme_color',
+		'sanitize_callback' => 'bg_photo_frame_sanitize_teheme_color',
     ));
 	
     $wp_customize->add_control('bg_photo_frame_setting_color_scheme', array(
@@ -86,7 +99,7 @@ function bg_photo_frame_theme_color_customize_register($wp_customize){
 		'capability' => 'manage_options',
 		'type' => 'theme_mod',
 		'transport' => 'refresh',
-		'sanitize_callback' => 'wpforge_sanitize_image_order',
+		'sanitize_callback' => 'bg_photo_frame_sanitize_image_order',
     ));
 	
     $wp_customize->add_control('bg_photo_frame_setting_image_order', array(
@@ -102,7 +115,7 @@ function bg_photo_frame_theme_color_customize_register($wp_customize){
     ));
 
 }
-function wpforge_sanitize_teheme_color( $input ) {
+function bg_photo_frame_sanitize_teheme_color( $input ) {
     $valid = array(
 		'light' => esc_html__('Light Side', 'bg-photo-frame'),
 		'dark' => esc_html__('Dark Side', 'bg-photo-frame'),
@@ -115,7 +128,7 @@ function wpforge_sanitize_teheme_color( $input ) {
      }
 }
 
-function wpforge_sanitize_image_order( $input ) {
+function bg_photo_frame_sanitize_image_order( $input ) {
     $valid = array(
 		'in_order' => esc_html__('In order', 'bg-photo-frame'),
 		'shuffle' => esc_html__('Shuffle', 'bg-photo-frame'),

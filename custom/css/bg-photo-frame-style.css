@@ -1,5 +1,4 @@
 /* CSS Document */
-/* Scss Document */
 /* photo frame
 -----------------------------------------*/
 /*--------------------------------------------------------------
@@ -84,6 +83,14 @@
 /*--------------------------------------------------------------
 # Mavigation
 --------------------------------------------------------------*/
+.navbar-nav {
+  display: block;
+  float: left; }
+
+.navbar-nav li a {
+  display: block;
+  padding: 15px 15px; }
+
 #site-navigation {
   margin-bottom: 30px; }
 

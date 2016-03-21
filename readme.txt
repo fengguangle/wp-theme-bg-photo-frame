@@ -5,7 +5,7 @@ Tags: two-columns, white, right-sidebar, fluid-layout, flexible-header, responsi
 
 Requires at least: 4.0
 Tested up to: 4.2.2
-Stable tag: 1.1.5
+Stable tag: 1.1.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -54,10 +54,13 @@ BG Photo Frame includes support for Infinite Scroll in Jetpack.
 * improve interaction of the Photoframe Mode.
 = 1.1.5 - January 25 2016 =
 * improve interaction of the Photoframe Mode.
+= 1.1.6 - January 28 2016 =
+* Big fix and changed several files name.
 
 == Credits ==
 
 * Based on Underscores http://underscores.me/, (C) 2012-2015 Automattic, Inc., [GPLv2 or later](https://www.gnu.org/licenses/gpl-2.0.html)
 * normalize.css http://necolas.github.io/normalize.css/, (C) 2012-2015 Nicolas Gallagher and Jonathan Neal, [MIT](http://opensource.org/licenses/MIT)
 * BootStrap http://getbootstrap.com/, (C) 2011-2015 Twitter, Inc, [MIT](http://opensource.org/licenses/MIT)
-* The image used in screenshot of the theme and header images is theme's author personal creation and is licensed under GPLv3 or later.(https://www.gnu.org/licenses/gpl-2.0.html)
+* jQuery BG Photo Frame (C) 2016 Takeshi Kashihara, [GPLv3 or later](https://www.gnu.org/licenses/gpl.html)
+* The image used in screenshot of the theme and header images is theme's author personal creation and is licensed under GPLv3 or later.(https://www.gnu.org/licenses/gpl.html)

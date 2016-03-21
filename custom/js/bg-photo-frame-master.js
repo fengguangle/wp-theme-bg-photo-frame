@@ -11,7 +11,7 @@ var bgGradationColor;
 	-----------------------------------------------*/
 	
 	bgSlide = $('#header-image ul');
-	bgSlide.easySlideshowFade({
+	bgSlide.bgPhotoFrame({
 		width : '100%',
 		gradationColor: bgGradationColor,
 		autoTimer:4000,

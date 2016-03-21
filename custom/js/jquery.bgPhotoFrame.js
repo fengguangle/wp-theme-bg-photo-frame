@@ -1,12 +1,34 @@
 /*
- * jQuery Easy Slide Show Fade v1.0.0
- * Copyright 2015 Digistry
+ * jQuery BG Photo Frame v1.0.0
+ * Copyright 2016 Takeshi Kashihara
  * Contributing Author: Takeshi Kashihara
+ * License: GPLv3 or later
+ * License URI: https://www.gnu.org/licenses/gpl.html
  */
 
 (function($) {
-    $.fn.easySlideshowFade = function(setting) {
+    $.fn.bgPhotoFrame = function(setting) {
 
+        /*=======================================================================
+        Utility
+        =======================================================================*/
+        /* Detect Device
+        ----------------------------------------------------------------------*/
+        function userAgent() {
+            var a;
+            var ua = navigator.userAgent;
+
+            if (ua.indexOf("iPhone") > -1 || ua.indexOf("iPad") > -1 || ua.indexOf("iPod") > -1) a = "ios";
+            else if (ua.indexOf("Android") > -1) a = "android";
+            else a = "pc";
+            return a;
+        }
+
+        /* Remove Unit
+        ----------------------------------------------------------------------*/
+        function removeUnit(val) {
+            return parseInt(val.replace(/([a-z]+)/, ''));
+        }
         //params
         var defaluts = {
             suffle: false, //シャッフルの有無
@@ -50,6 +72,9 @@
             //current image
             var current = 0;
 
+            //previous image
+            var previous = 0;
+
             //timer
             var timer = [];
 
@@ -88,18 +113,15 @@
             /* call back before run
             ----------------------------------------------------------------------*/
             if (setting.callbackBefore) {
-                window[setting.callbackBefore].apply()
+                window[setting.callbackBefore].apply();
             }
 
             if (element.find('li').length) {
                 /*add element
                 ----------------------------------------------------------------------*/
 
-                element.wrap("<div id='images-wrapper'></div>")
+                element.wrap("<div id='images-wrapper'></div>");
                 wrapper = $('#images-wrapper');
-
-
-
 
                 /* setting css
                 ----------------------------------------------------------------------*/
@@ -108,16 +130,16 @@
                     margin: '0px' //余白をなくす
                         ,
                     padding: '0px'
-                })
+                });
                 wrapper.css({
                     opacity: '1.0'
-                })
+                });
 
                 if (setting.height != 'auto') {
                     element.css({
                         height: setting.height + 'px' //高さをパラメータの値に指定
                     })
-                }
+                };
 
                 //list element
                 element.find('li').css({
@@ -127,25 +149,25 @@
                         ,
                     display: 'none',
                     overflow: 'hidden'
-                })
+                });
 
                 element.find('img').css({
                     maxWidth: 'none' //画像の幅をパラメータの値に指定
-                })
+                });
 
                 //image alement
                 if (setting.width == '100%') {
                     element.find('li').css({
                         width: '100%' //画像の幅をパラメータの値に指定
-                    })
+                    });
                     element.find('img').css({
                         width: '100%' //画像の幅をパラメータの値に指定
-                    })
+                    });
                 } else if (setting.width != 'auto') {
                     element.find('img').css({
                         width: setting.width + 'px' //画像の幅をパラメータの値に指定
-                    })
-                }
+                    });
+                };
 
 
 
@@ -155,7 +177,7 @@
                 /*シャッフル
                 ----------------------------------------------------------------------*/
                 if (setting.shuffle) {
-                    var shuffleElement = element.html().split("</li>")
+                    var shuffleElement = element.html().split("</li>");
                     shuffleElement.splice(shuffleElement.length - 1);
 
                     for (var i = shuffleElement.length - 1; i >= 0; i--) {
@@ -163,13 +185,13 @@
                         var tmp = shuffleElement[i];
                         shuffleElement[i] = shuffleElement[r];
                         shuffleElement[r] = tmp;
-                    }
+                    };
 
                     element.empty();
 
                     for (var i = 0; i < shuffleElement.length; i++) {
                         element.append(shuffleElement[i]);
-                    }
+                    };
 
                 }
 
@@ -185,7 +207,7 @@
                         height: 0,
                         retio: 0,
                         source: null
-                    })
+                    });
                 }
 
 
@@ -218,10 +240,10 @@
                 /* Image resize
                 ----------------------------------------------------------------------*/
                 function resizeImages(_num, animation, force, callback) {
-                    var windowWidth = $(window).width()
+                    var windowWidth = $(window).width();
                     var windowHeight = $(window).height();
                     var windowRatio = windowWidth / windowHeight;
-                    var _li = element.find('li').eq(_num)
+                    var _li = element.find('li').eq(_num);
                     var _img;
                     var arrow;
 
@@ -246,18 +268,18 @@
                             var marginLeft;
 
                             //Stop animation
-                            _img.stop(true, false)
+                            _img.stop(true, false);
 
                             if (currentMode == 'background') {
                                 if (windowRatio > imgRatio) {
                                     imgWidth = windowWidth;
                                     imgHeight = parseInt(baseHeight * (imgWidth / baseWidth));
-                                    marginTop = -(imgHeight - windowHeight) / 2
-                                    marginLeft = 0
+                                    marginTop = -(imgHeight - windowHeight) / 2;
+                                    marginLeft = 0;
                                 } else {
                                     imgHeight = windowHeight;
                                     imgWidth = parseInt(baseWidth * (imgHeight / baseHeight));
-                                    marginTop = 0
+                                    marginTop = 0;
                                     marginLeft = -(imgWidth - windowWidth) / 2;
                                 }
                             } else if (currentMode == 'photoframe') {
@@ -299,9 +321,9 @@
 
                 function stopResizeImages() {
                     for (var i = 0; i < element.find('li').length; i++) {
-                        var _li = element.find('li').eq(_num)
+                        var _li = element.find('li').eq(_num);
                         var _img = _li.find('img');
-                        _img.stop(false, true)
+                        _img.stop(false, true);
                     }
                 }
 
@@ -324,7 +346,7 @@
                     maskElement.css({
                         width: $(window).width() + 'px',
                         height: $(window).height() + 'px'
-                    })
+                    });
                 }
 
 
@@ -358,14 +380,14 @@
                     var img = this.find('img').eq(i);
                     var imgSrc = img.attr('src');
                     var loadImg = $(new Image());
-                    loadImg.attr('id', i)
+                    loadImg.attr('id', i);
                     loadImg.bind('load', function() {
                         var index = $(this).attr('id');
                         var src = $(this).attr('src');
                         imgInfo[index]['loaded'] = true;
                         setImageSize(index); //画像サイズを取得
                         attachThumbImage(index, src); //サムネール画像の作成
-                        checkLoadComplete() //画像が全て読み込まれたかチェック
+                        checkLoadComplete(); //画像が全て読み込まれたかチェック
                     })
                     loadImg.attr('src', imgSrc);
                 }
@@ -387,14 +409,14 @@
                 }
 
                 function getImageTrueSize(image) {
-                    var size = []
+                    var size = [];
                     if (image.prop('naturalWidth')) {
-                        size['width'] = image.prop('naturalWidth')
-                        size['height'] = image.prop('naturalHeight')
+                        size['width'] = image.prop('naturalWidth');
+                        size['height'] = image.prop('naturalHeight');
                     } else {
                         var img = new Image();
                         img.src = image.attr('src');
-                        size['width'] = img.width
+                        size['width'] = img.width;
                         size['height'] = img.height;
                     }
                     return size;
@@ -421,7 +443,7 @@
 
                     if (allLoaded) {
                         loaded = true;
-                        LoadComplete()
+                        LoadComplete();
                     }
 
                 }
@@ -448,7 +470,7 @@
                     //最初のタイマーイベントを設定
                     setTimer();
                     if (setting.callbackAfter) {
-                        window[setting.callbackAfter].apply()
+                        window[setting.callbackAfter].apply();
                     }
                 }
 
@@ -461,10 +483,10 @@
                         var li = element.find('li').eq(i);
                         //最初の画像以外は非表示に設定
                         if (i == 0) {
-                            li.fadeIn(setting.fadeSpeed)
+                            li.fadeIn(setting.fadeSpeed);
                             resizeImages(i);
                         } else {
-                            li.hide()
+                            li.hide();
                         }
                         //sdsds
                     }
@@ -489,8 +511,8 @@
                     if (currentMode == 'photoframe') {
                         mask.hideMask();
                     } else if (currentMode == 'background') {
-                        hideInterface()
-                        disableTimerInterface()
+                        hideInterface();
+                        disableTimerInterface();
                     }
                     disableTimer();
                 }
@@ -510,28 +532,46 @@
 
 
                 commandProcess.imgChange = function(val) {
-                    disableTimer()
+                    disableTimer();
                     var newNum = change.getChangeNum(val);
-                    if (val == 'next' || val == 'prev') {
-                        resizeImages(newNum, false, true)
+
+                    dammy.removeDammy();
+                    if (val == 'next' || val == 'prev' || val == 'current') {
+                        dammy.setDammy(newNum, val);
                         transition(newNum, 'swipe', val);
                     } else {
                         transition(newNum, 'fade');
                     }
+                    previous = current;
                     current = newNum;
                     removeTimerInterface();
                     setTimerInterface();
                 }
 
 
-                commandProcess.createDammy = function(val) {
+
+                commandProcess.setSwipeImage = function(val) {
                     resizeImages(val, false, true);
                 }
 
-                commandProcess.swipeDown = function(val) {
-                    disableTimer()
+                commandProcess.setDammy = function(val) {
+                    resizeImages(val, false, true);
+                }
+
+                commandProcess.swipeDown = function() {
+                    dammy.removeDammy();
+                    dammy.setDammy(current, 'current');
+                    disableTimer();
                     removeTimerInterface();
                     setTimerInterface();
+                }
+
+                commandProcess.swipeUp = function() {
+                    setTimer();
+                }
+
+                commandProcess.swipeEnd = function() {
+                    dammy.removeDammy();
                 }
 
                 commandProcess.transitionEnd = function() {
@@ -545,10 +585,6 @@
                 }
 
 
-                commandProcess.swipeEnd = function() {
-
-
-                }
 
 
 
@@ -572,28 +608,27 @@
 
                 function toggleInterface() {
                     if (interface) {
-                        hideInterface()
+                        hideInterface();
                     } else {
-                        showInterface()
+                        showInterface();
                     }
                 }
 
                 function enableTimerInterface() {
                     maskElement.bind('click', function() {
                         if (currentMode == 'photoframe') {
-                            toggleInterface()
+                            showInterface();
                             removeTimerInterface();
                             setTimerInterface();
                         }
                     })
-                    setTimerInterface()
+                    setTimerInterface();
                 }
 
                 function setTimerInterface() {
-
                     interfaceTimer.push(setTimeout(function() {
                         hideInterface()
-                    }, setting.autoTimer))
+                    }, setting.autoTimer));
                 }
 
 
@@ -605,7 +640,7 @@
 
                 function removeTimerInterface() {
                     for (var i = 0; i < interfaceTimer.length; i++) {
-                        clearTimeout(interfaceTimer[i])
+                        clearTimeout(interfaceTimer[i]);
                     }
                     interfaceTimer.length = 0;
                 }
@@ -646,7 +681,7 @@
                 //Background
                 function backgroundMode() {
                     currentMode = "background";
-                    modeChangeAnimation(mode)
+                    modeChangeAnimation(mode);
                 }
 
 
@@ -663,12 +698,12 @@
                 //Hide
                 function hideContents() {
                     $(setting.contents).fadeOut(contentFadeTime, function() {
-                        contentsAnimationEnd()
+                        contentsAnimationEnd();
                     });
                 }
 
                 function stopContentsAnimation() {
-                    $(setting.contents).stop(false, true)
+                    $(setting.contents).stop(false, true);
                 }
 
 
@@ -678,7 +713,7 @@
                     if (currentMode == "photoframe") {
                         modeChangeAnimation();
                     } else if (currentMode == "background") {
-                        command('modeChangeEnd')
+                        command('modeChangeEnd');
                     }
                 }
 
@@ -696,12 +731,12 @@
                     } else if (currentMode == "background") {
                         showContents();
                     }
-                    changeToggleBtnIcon()
-                    command('modeChangeEnd')
+                    changeToggleBtnIcon();
+                    command('modeChangeEnd');
                 }
 
                 function stopModeChangeAnimation() {
-                    stopContentsAnimation()
+                    stopContentsAnimation();
                 }
 
 
@@ -718,43 +753,46 @@
 
                 var toggleButtonSrc = '<a href="#" id="' + toggleBtnId + '" class="' + prefix + '-btn"><span class="glyphicon glyphicon-picture"></span></a>';
                 var toggleButton;
-                if (setting.photoFrame) {
-                    initPhotoFrame();
-                }
+
 
                 /* init
                 ----------------------------------------------------------------------*/
 
                 function initPhotoFrame() {
 
-                    $('body').append(toggleButtonSrc)
+                    $('body').append(toggleButtonSrc);
                     toggleButton = $('#' + toggleBtnId);
-                    var toggleEvent;
 
                     if (device == 'pc') {
-                        toggleEvent = 'click';
+                        toggleButton.click(function() {
+                            command('modeChange');
+                            return false;
+                        })
                     } else {
-                        toggleEvent = 'touchstart';
+                        toggleButton.bind('touchstart', function() {
+                            preventDefault()
+                            command('modeChange');
+                        })
                     }
-
-                    toggleButton.bind(toggleEvent, function() {
-                        command('modeChange');
-                    })
                 }
 
 
                 /* Icon Change
                 ----------------------------------------------------------------------*/
                 function changeToggleBtnIcon() {
-                    $('#' + toggleBtnId).find('span').removeClass(iconClassPhotoFrame)
-                    $('#' + toggleBtnId).find('span').removeClass(iconClassBlog)
+                    $('#' + toggleBtnId).find('span').removeClass(iconClassPhotoFrame);
+                    $('#' + toggleBtnId).find('span').removeClass(iconClassBlog);
                     if (currentMode == 'background') {
-                        $('#' + toggleBtnId).find('span').addClass(iconClassPhotoFrame)
+                        $('#' + toggleBtnId).find('span').addClass(iconClassPhotoFrame);
                     } else if (currentMode == 'photoframe') {
-                        $('#' + toggleBtnId).find('span').addClass(iconClassBlog)
+                        $('#' + toggleBtnId).find('span').addClass(iconClassBlog);
 
                     }
 
+                }
+
+                if (setting.photoFrame) {
+                    initPhotoFrame();
                 }
 
 
@@ -769,9 +807,7 @@
                 var navClicked = false;
                 var navPrefix = prefix + '-nav';
 
-                if (setting.photoFrame) {
-                    initNav();
-                }
+
 
 
                 /* Init
@@ -783,16 +819,25 @@
                         //next
                         $('body').append('<a class="' + prefix + '-btn ' + navPrefix + '" id="' + navPrefix + '-next" href="#"><span class="glyphicon glyphicon-chevron-right"></span></a>');
 
+                        $('.' + navPrefix).click(function() {
+                            return false;
+                        })
 
                         if (device == 'pc') {
                             $('.' + navPrefix).mousedown(function() {
-                                navClick($(this))
+                                navClick($(this));
+                                return false;
                             })
                         } else {
                             $('.' + navPrefix).bind('touchstart', function() {
-                                navClick($(this))
+                                preventDefault()
+                                navClick($(this));
                             })
                         }
+
+
+
+
 
                         $(window).resize(function() {
                             resizeNav();
@@ -825,7 +870,7 @@
 
                 function hideNav() {
                     nav.removeClass('active');
-                    nav.stop(false, true)
+                    nav.stop(false, true);
                     nav.fadeOut();
                 }
 
@@ -846,6 +891,12 @@
                         top: top + 'px'
                     })
                 }
+
+                /* Init
+                ----------------------------------------------------------------------*/
+                if (setting.photoFrame) {
+                    initNav();
+                }
                 /*=======================================================================
                 Image Thumbnails
                 =======================================================================*/
@@ -859,9 +910,6 @@
 
                 /* Init
                 ----------------------------------------------------------------------*/
-                if (setting.photoFrame) {
-                    initThumbs();
-                }
 
                 function initThumbs() {
                     //ページ
@@ -879,22 +927,29 @@
                     thumbBtn = $('#' + thumbBtnClass);
 
                     //Event
-                    var eventName;
                     if (device == 'pc') {
-                        eventName = 'click';
+                        thumbBtn.click(function() {
+                            toggleThumbBtn();
+                            return false;
+                        })
                     } else {
-                        eventName = 'touchend';
+                        thumbBtn.bind('touchstart', function() {
+                            preventDefault()
+                            toggleThumbBtn();
+                        })
                     }
-
-                    thumbBtn.bind(eventName, function() {
-                        toggleThumbBtn();
-                    })
 
 
                     $('#' + thumbPageClass).bind('click', function() {
                         closeThumbs();
+                        return false;
                     })
 
+                }
+
+
+                if (setting.photoFrame) {
+                    initThumbs();
                 }
 
                 function attachThumbImage(num, src) {
@@ -933,20 +988,23 @@
                     ctx.drawImage(thumbImg, drawPositonX, drawPositonY, fixWidth, fixHeight);
                     thumb.append(canvas);
 
-                    //Attach Event
-                    thumb.bind('click', function() {
-                        ThumbClick(thumb);
-                    })
+                    if (device == 'pc') {
+                        thumb.click(function() {
+                            ThumbClick(thumb);
+                            return false;
+                        })
+                    } else {
+                        thumb.bind('touchstart', function() {
+                            preventDefault()
+                            ThumbClick(thumb);
+                        })
+                    }
 
                 }
 
                 /* Resize
                 ----------------------------------------------------------------------*/
 
-                $(window).resize(function() {
-                    resizeThumbs();
-                })
-                resizeThumbs()
 
                 function resizeThumbs() {
                     var innerWidth = $(window).width();
@@ -966,55 +1024,61 @@
 
                     var ulMargin = (
                         $('#' + thumbPageClass + ' ul').width() - (thumbSize + thumbMargin * 2) * parseInt($('#' + thumbPageClass + ' ul').width() / (thumbMargin * 2 + thumbSize))
-                    ) / 2
+                    ) / 2;
 
                     $('#' + thumbPageClass + ' ul').css({
                         marginLeft: ulMargin + 'px'
                     })
                 }
 
+                $(window).resize(function() {
+                    resizeThumbs();
+                })
+                resizeThumbs();
+
+
 
                 /* Button
                 ----------------------------------------------------------------------*/
                 //Show
                 function showThumbBtn() {
-                    thumbBtn.stop(false, true)
-                    thumbBtn.fadeIn(fadeTime)
+                    thumbBtn.stop(false, true);
+                    thumbBtn.fadeIn(fadeTime);
                 }
 
                 //Hide
                 function hideThumbBtn() {
-                    thumbBtn.stop(false, true)
-                    thumbBtn.fadeOut(fadeTime)
+                    thumbBtn.stop(false, true);
+                    thumbBtn.fadeOut(fadeTime);
                 }
 
                 //サムネールボタンの開閉
                 function toggleThumbBtn() {
-                    thumbBtn.toggleClass('active')
-                    toggleThumbs()
+                    thumbBtn.toggleClass('active');
+                    toggleThumbs();
                 }
 
 
                 /* Event of Thumbs
                 ----------------------------------------------------------------------*/
                 function toggleThumbs() {
-                    thumbAnimationStop()
+                    thumbAnimationStop();
                     if (thumbBtn.hasClass('active')) {
-                        openThumbs()
+                        openThumbs();
                     } else {
-                        closeThumbs()
+                        closeThumbs();
                     }
                 }
 
                 function thumbAnimationStop() {
-                    $('#' + thumbPageClass).stop(false, true)
+                    $('#' + thumbPageClass).stop(false, true);
                 }
 
                 function openThumbs() {
                     $('#' + thumbPageClass).animate({
                         width: '100%',
                         height: '100%'
-                    }, thumbTime, easing)
+                    }, thumbTime, easing);
                 }
 
 
@@ -1022,8 +1086,8 @@
                     $('#' + thumbPageClass).animate({
                         width: '0%',
                         height: '0%'
-                    }, thumbTime, easing)
-                    thumbBtn.removeClass('active')
+                    }, thumbTime, easing);
+                    thumbBtn.removeClass('active');
                 }
 
 
@@ -1033,20 +1097,22 @@
                 //Event
                 function ThumbClick(thumb) {
                     var num = thumb.attr('href').replace('#', '');
-                    command('imgChange', num)
-                    closeThumbs()
+                    command('imgChange', num);
+                    closeThumbs();
                 }
+
+
                 /*=======================================================================
                 Timer Chnage
                 =======================================================================*/
                 var timer;
                 var timerBtn;
                 var timerPrefix = prefix + '-timer';
-                var timerBtnId = timerPrefix + '-btn'
+                var timerBtnId = timerPrefix + '-btn';
 
-                initTimer()
-                    /* Init
-                    ----------------------------------------------------------------------*/
+
+                /* Init
+                ----------------------------------------------------------------------*/
 
                 function initTimer() {
                     if (setting.autoChange && element.find('li').length > 1) {
@@ -1059,18 +1125,21 @@
                         }
 
                         //Event
-                        var eventName;
                         if (device == 'pc') {
-                            eventName = 'click';
+                            timerBtn.click(function() {
+                                toggleTimer();
+                                return false;
+                            })
                         } else {
-                            eventName = 'touchend';
+                            timerBtn.bind('touchend', function() {
+                                preventDefault()
+                                toggleTimer();
+                            })
                         }
-
-                        timerBtn.bind(eventName, function() {
-                            toggleTimer();
-                        })
                     }
                 }
+
+                initTimer();
 
 
 
@@ -1088,7 +1157,7 @@
 
                 function timerOn() {
                     timerBtn.addClass('on');
-                    setTimer()
+                    setTimer();
 
                 }
 
@@ -1102,7 +1171,7 @@
                 /* Event
                 ----------------------------------------------------------------------*/
                 function setTimer() {
-                    disableTimer()
+                    disableTimer();
                     if (setting.autoChange && timerBtn.hasClass('on') && element.find('li').length > 1) {
                         enableTimer();
                     }
@@ -1111,12 +1180,12 @@
                 function enableTimer() {
                     timer.push(setTimeout(function() {
                         timerChange()
-                    }, setting.autoTimer))
+                    }, setting.autoTimer));
                 }
 
                 function disableTimer() {
                     for (var i = 0; i < timer.length; i++) {
-                        clearTimeout(timer[i])
+                        clearTimeout(timer[i]);
                     }
                     timer.length = 0;
                 }
@@ -1134,14 +1203,14 @@
                 /* Show/Hide
                 ----------------------------------------------------------------------*/
                 function showTimer() {
-                    timerBtn.stop(false, true)
+                    timerBtn.stop(false, true);
                     timerBtn.fadeIn();
                     timerBtn.addClass('active');
                 }
 
                 function hideTimer() {
                     timerBtn.removeClass('active');
-                    timerBtn.stop(false, true)
+                    timerBtn.stop(false, true);
                     timerBtn.fadeOut();
                 }
                 // JavaScript Document
@@ -1151,10 +1220,11 @@
                     var newNum;
 
                     if (isNaN(val)) {
-                        newNum = changeType[val]()
+                        newNum = changeType[val]();
                     } else {
-                        newNum = changeType['num'](val)
+                        newNum = changeType['num'](val);
                     }
+
                     return newNum;
                 }
 
@@ -1179,6 +1249,11 @@
                     return newNum;
                 }
 
+                changeType.current = function() {
+
+                    return current;
+                }
+
                 changeType.num = function(val) {
                     return val;
                 }
@@ -1197,18 +1272,18 @@
 
 
                 function transition(num, transitionMode, direction) {
-                    transitionStop()
+                    transitionStop();
                     if (transitionMode == 'fade') {
-                        transitionFade(num)
+                        fade.transitionFade(num);
                     } else if (transitionMode == 'swipe') {
-                        transitionSwipe(num, direction)
+                        swipe.transitionSwipe(num, direction);
                     }
 
                 }
 
                 function transitionStop() {
                     if (transitionMode == 'fade') {
-                        transitionFadeStop()
+                        transitionFadeStop();
                     } else if (transitionMode == 'swipe') {
 
                     }
@@ -1223,33 +1298,50 @@
                 /*=======================================================================
                 Image Transition(Fade)
                 =======================================================================*/
+                var fade = [];
 
-                function transitionFade(num) {
-
+                fade.transitionFade = function(num) {
                     //各画像の表示・非表示
                     var length = element.find('li').length;
+
                     for (var i = 0; i < length; i++) {
                         //i番目のリスト要素を取得
                         var li = element.find('li').eq(i);
+                        li.stop(true, false);
+
                         if (num == i) { //クリックされたボタンの順番と同一なら画像をフェードで表示
+                            li.css({
+                                marginLeft: 0
+                            })
                             if (num != current) {
-                                li.fadeIn(setting.fadeSpeed, function() {
-                                    transitionFadeEnd()
-                                });
+                                if (li.css('display') == 'none') {
+                                    li.fadeIn(setting.fadeSpeed, function() {
+                                        transitionFadeEnd();
+                                    });
+                                } else {
+                                    li.fadeTo(setting.fadeSpeed, 1.0, function() {
+                                        transitionFadeEnd();
+                                    });
+                                }
+
                                 resizeImages(i);
                             }
                         } else { //そうでなければフェードで非表示
                             li.fadeOut(setting.fadeSpeed);
                         }
                     }
-                    transitionFadeEnd()
+                    transitionFadeEnd();
                 }
+
+
+
+
 
                 function transitionFadeStop() {
                     var length = element.find('li').length;
                     for (var i = 0; i < length; i++) {
                         var li = element.find('li').eq(i);
-                        li.stop(false, true)
+                        li.stop(false, true);
                     }
                 }
 
@@ -1258,156 +1350,108 @@
 
                 }
 
-
-
-
-
                 /*=======================================================================
                 Image Auto change(Swipe)
                 =======================================================================*/
 
                 var swipe = [];
-                var swipeNum = 0;
-                var swipeGoal = 0;
                 var swipeSpeed = 2000;
                 var swipeAnmation = false;
+                var currentSwipeNum = 0;
+                var nextSwipeNum = 0;
+                var swipeSpeedLimit = 5;
+                var swipeSpeedTimerSpan = 100
 
-
-                function transitionSwipe(num, direction) {
-                    swipeGoal = parseInt(num);
+                swipe.transitionSwipe = function(num, direction) {
                     if (!swipeAnmation) {
-                        swipeNum = parseInt(current);
+                        currentSwipeNum = parseInt(current);
                     }
                     swipeLoopStop();
-                    swipeLoop(direction);
+                    swipeLoop(num, direction);
                 }
 
-                function swipeLoop(direction) {
-
+                function swipeLoop(num, direction) {
                     var margin;
-                    var swipeEasing = 'linear';
+                    var swipeEasing = easing;
                     var speed = swipeSpeed;
-                    var accel = 2;
+                    var brake = 1;
                     var currentMargin = removeUnit(wrapper.css('marginLeft'));
-                    var nextSwipeNum = getNextSwipe(swipeNum, direction);
+                    var _nextSwipeNum;
+                    var wrapperMargin;
 
-                    if (nextSwipeNum == swipeGoal) {
-                        swipeEasing = easing;
-                        accel = accel / 2;
-                    }
-                    createDammy(nextSwipeNum, direction);
+                    speed = setSpeed(num, direction);
+                    setSwiprPosition(num, direction);
+                    setSwipeImage(num, direction);
 
-                    if (direction == 'next') {
-                        margin = -$(window).width();
-                        speed = (-(margin) + removeUnit(wrapper.css('marginLeft'))) / accel;
-                    } else if (direction == 'prev') {
-                        margin = $(window).width();
-                        speed = (margin - removeUnit(wrapper.css('marginLeft'))) / accel;
-                    }
 
                     wrapper.animate({
-                            marginLeft: margin + 'px'
+                            marginLeft: 0
                         },
                         speed,
                         swipeEasing,
                         function() {
-                            swipeEnd(nextSwipeNum, direction)
+                            swipeEnd(num, direction)
                         }
-                    )
+                    );
                     swipeAnmation = true;
                 }
 
-                function swipeLoopStop() {
-                    wrapper.stop(true, false)
-                    swipeAnmation = false;
 
+                function setSwiprPosition(num, direction) {
+                    var margin = 0;
+                    var wrapMargin = removeUnit(wrapper.css('marginLeft'));
+                    if (direction == 'current') {
+                        margin = removeUnit(wrapper.css('marginLeft'));
+                    } else if (direction == 'next') {
+                        margin = $(window).width() + wrapMargin;
+                    } else if (direction == 'prev') {
+                        margin = -$(window).width() + wrapMargin;
+                    }
+
+                    wrapper.css({
+                        marginLeft: margin + 'px'
+                    })
                 }
+
+
+                function setSwipeImage(num, direction) {
+                    var img = element.find('li').eq(num);
+                    img.removeClass('dammy').removeClass('dammy-left').removeClass('dammy-right');
+                    command('setSwipeImage', num);
+                    img.css({
+                        display: 'block',
+                        marginLeft: 0
+                    });
+                }
+
+
+
+                function setSpeed(num, direction) {
+                    var speed = 0;
+                    var brake = 1;
+                    var margin = removeUnit(wrapper.css('marginLeft'));
+
+                    if (margin >= 0) {
+                        speed = ($(window).width() - margin) * brake;
+                    } else {
+                        speed = ($(window).width() + margin) * brake;
+                    }
+                    return speed;
+                }
+
+
+
+
 
                 function swipeEnd(num, direction) {
-
-                    var margin = removeUnit(wrapper.css('marginLeft'))
-                    if (!swipeActive) {
-                        if (margin == $(window).width() || margin == -$(window).width()) {
-                            wrapper.css({
-                                marginLeft: '0'
-                            })
-                            element.find('li').css({
-                                marginLeft: 0 + 'px'
-                            })
-
-                            element.find('li:not(:eq(' + num + '))').css({
-                                display: 'none'
-                            })
-
-                            element.find('li').eq(num).css({
-                                display: 'block'
-                            })
-                            swipeNum = parseInt(num);
-
-                            if (swipeNum == swipeGoal) {
-                                swipeLoopEnd(swipeNum);
-                            } else {
-                                swipeLoop(direction)
-                            }
-                            swipeNum = current;
-
-                        }
-                    }
-
-
-
-
-
+                    swipeLoopStop();
+                    command('swipeEnd');
                 }
 
-                function swipeLoopEnd(num) {
+                function swipeLoopStop() {
+                    wrapper.stop(true, false);
                     swipeAnmation = false;
-                    command('transitionEnd');
-                }
 
-                function createDammy(num, direction) {
-                    var dammy;
-                    var margin;
-                    if (direction == 'next') {
-                        margin = $(window).width()
-                    } else if (direction == 'prev') {
-                        margin = -$(window).width()
-                    }
-
-                    dammy = element.find('li').eq(num);
-                    dammy.css({
-                        marginLeft: margin + 'px',
-                        display: 'block'
-                    })
-
-                    command('createDammy', num);
-
-                }
-
-                function getNextSwipe(num, direction) {
-                    var nextNum;
-                    num = parseInt(num)
-                    if (num == 0) {
-                        if (direction == 'prev') {
-                            nextNum = element.find('li').length - 1
-                        } else {
-                            nextNum = num + 1;
-                        }
-                    } else if (num == element.find('li').length - 1) {
-                        if (direction == 'next') {
-                            nextNum = 0;
-                        } else {
-                            nextNum = num - 1
-                        }
-                    } else {
-                        if (direction == 'next') {
-                            nextNum = num + 1;
-                        } else {
-                            nextNum = num - 1;
-                        }
-                    }
-
-                    return nextNum;
                 }
 
 
@@ -1418,10 +1462,16 @@
                 var swipeActive;
                 var swipeActiveStart;
                 var swipeActiveCurrent;
+                var swipeStartMargin;
+                var swipeDistance;
+                var swipeSpeed;
+                var swipeSpeedStart;
+                var swipeSpeedCurrent;
+                var swipeSpeedTimer = []
 
                 if (device == 'pc') {
                     maskElement.mousedown(function(e) {
-                        swipeDown(e.pageX)
+                        swipeDown(e.pageX);
                     })
                     $(window).mousemove(function(e) {
                         swipeMove(e.pageX);
@@ -1431,49 +1481,48 @@
                     })
                 } else {
                     maskElement.bind('touchstart', function() {
-                        //event.preventDefault(); 
-                        swipeDown(event.changedTouches[0].pageX)
+                        swipeDown(event.changedTouches[0].pageX);
                     })
                     $(window).bind('touchmove', function() {
-                        //event.preventDefault();
                         swipeMove(event.changedTouches[0].pageX);
                     })
                     $(window).bind('touchend', function() {
-                        //event.preventDefault();
                         swipeUp(event.changedTouches[0].pageX);
                     })
                 }
 
                 function swipeDown(_x) {
                     if (currentMode == 'photoframe') {
-                        swipeActive = true;
                         swipeLoopStop();
-                        current = swipeNum
-                        swipeActiveStart = _x;
+                        swipeActive = true;
+                        swipeDistance = 0;
+                        swipeSpeed = 0;
 
-                        var dammyNext
-                        var dammyPrev
-                        if (current == 0) {
-                            dammyNext = current + 1
-                            dammyPrev = element.find('li').length - 1
-                        } else if (current == element.find('li').length - 1) {
-                            dammyNext = 0
-                            dammyPrev = current - 1
-                        } else {
-                            dammyNext = current + 1;
-                            dammyPrev = current - 1;
-                        }
-                        createDammy(dammyNext, 'next')
-                        createDammy(dammyPrev, 'prev')
+                        setSwiprPosition(current, 'current');
+                        setSwipeImage(current, 'current');
+
+                        swipeActiveStart = _x;
+                        swipeSpeedStart = _x;
+                        swipeStartMargin = removeUnit(wrapper.css('marginLeft'));
+
+                        swipeSpeedTimer.push(setInterval(function() {
+                            setSwipeSpeed()
+                        }, swipeSpeedTimerSpan))
                         command('swipeDown');
                     }
+                }
+
+                function setSwipeSpeed() {
+                    swipeSpeed = swipeSpeedStart - swipeSpeedCurrent;
+                    swipeSpeedStart = swipeSpeedCurrent;
                 }
 
                 function swipeMove(_x) {
                     if (swipeActive) {
                         swipeLoopStop();
-                        swipeActiveCurrent = _x
-                        var margin = swipeActiveCurrent - swipeActiveStart;
+                        swipeDistance = _x - swipeActiveStart;
+                        swipeSpeedCurrent = _x;
+                        var margin = swipeStartMargin + swipeDistance;
                         wrapper.css({
                             marginLeft: margin + 'px'
                         })
@@ -1483,36 +1532,41 @@
                 function swipeUp(_x) {
                     if (swipeActive) {
                         swipeLoopStop();
-                        var direction
-                        var swipeLimit = 20
-                        var distance = swipeActiveStart - swipeActiveCurrent;
-                        var swipeArrow;
-                        var wrapperMargin = removeUnit(wrapper.css('marginLeft'))
+                        for (var i = 0; i < swipeSpeedTimer.length; i++) {
+                            clearInterval(swipeSpeedTimer[i]);
+                        }
+                        swipeSpeedTimer.length = 0;
 
-                        if (distance < swipeLimit && distance > -swipeLimit) {
-                            if (wrapperMargin != 0) {
-                                if (wrapperMargin > 0) {
-                                    direction = 'prev';
-                                } else {
-                                    direction = 'next';
-                                }
+                        var direction = 'current';
+                        var wrapperMargin = removeUnit(wrapper.css('marginLeft'));
+
+                        swipeSpeed = swipeSpeedStart - _x;
+
+
+                        if (swipeSpeed > swipeSpeedLimit || swipeSpeed < -swipeSpeedLimit) {
+                            if (swipeSpeed > 0) {
+                                direction = 'next';
+                            } else {
+                                direction = 'prev';
                             }
                         } else {
-                            if (distance > 0) {
-                                direction = 'next';
-                            } else if (distance < 0) {
-                                direction = 'prev';
+                            if (wrapperMargin > $(window).width() / 2 || wrapperMargin < -$(window).width() / 2) {
+                                if (wrapperMargin < 0) {
+                                    direction = 'next';
+                                } else {
+                                    direction = 'prev';
+                                }
                             }
                         }
 
                         if (direction) {
                             command('imgChange', direction);
-                        } else {
-                            command('imgChange', current);
                         }
 
-
+                        command('swipeUp');
+                        swipeDistance = 0;
                     }
+
 
                     swipeActive = false;
                 }
@@ -1525,25 +1579,77 @@
 
 
 
-                /*=======================================================================
-                Utility
-                =======================================================================*/
-                /* Detect Device
-                ----------------------------------------------------------------------*/
-                function userAgent() {
-                    var a;
-                    var ua = navigator.userAgent;
 
-                    if (ua.indexOf("iPhone") > -1 || ua.indexOf("iPad") > -1 || ua.indexOf("iPod") > -1) a = "ios";
-                    else if (ua.indexOf("Android") > -1) a = "android";
-                    else a = "pc";
-                    return a;
+                // JavaScript Document
+
+                var dammy = [];
+
+                dammy.setDammy = function(num, direction) {
+                    var leftMargin, rightMargin;
+                    leftMargin = -$(window).width();
+                    rightMargin = $(window).width();
+                    var wrapperMargin = removeUnit(wrapper.css('marginLeft'));
+                    num = parseInt(num);
+                    var leftDammyNum = 1;
+                    var rightDammyNum = 1;
+                    var dammyNum;
+
+                    if (wrapperMargin > 0) {
+                        leftDammyNum = Math.floor((wrapperMargin + $(window).width()) / $(window).width()) + 1
+                    } else if (wrapperMargin < 0) {
+                        rightDammyNum = Math.floor(-(wrapperMargin - $(window).width()) / $(window).width()) + 1
+                    }
+
+
+                    dammyNum = num;
+                    for (var i = 0; i < leftDammyNum; i++) {
+                        var leftNum;
+                        if (dammyNum == 0) {
+                            leftNum = element.find('li').length - 1;
+                        } else {
+                            leftNum = dammyNum - 1;
+                        }
+                        dammyShow(leftNum, i, 'left');
+                        dammyNum = leftNum;
+                    }
+
+                    dammyNum = num;
+                    for (var i = 0; i < rightDammyNum; i++) {
+                        var rightNum;
+                        if (dammyNum == element.find('li').length - 1) {
+                            rightNum = 0;
+                        } else {
+                            rightNum = dammyNum + 1;
+                        }
+                        dammyShow(rightNum, i, 'right');
+                        dammyNum = rightNum;
+                    }
+
+                    $('.dammy').css('display', 'block');
+
+
                 }
 
-                /* Remove Unit
-                ----------------------------------------------------------------------*/
-                function removeUnit(val) {
-                    return parseInt(val.replace(/([a-z]+)/, ''));
+                function dammyShow(num, i, direction) {
+                    var dammyImg = element.find('li').eq(num);
+                    var margin;
+                    if (direction == 'left') {
+                        margin = -$(window).width();
+                    } else if (direction == 'right') {
+                        margin = $(window).width();
+                    }
+                    dammyImg.addClass('dammy').css({
+                        marginLeft: margin * (i + 1) + 'px'
+                    })
+                    command('setDammy', num);
+                }
+
+                dammy.removeDammy = function() {
+                    var dammyElement = element.find('li.dammy');
+                    dammyElement.css({
+                        display: 'none'
+                    })
+                    dammyElement.removeClass('dammy').removeClass('dammy-left').removeClass('dammy-right');
                 }
             }
         }
