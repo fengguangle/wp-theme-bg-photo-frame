@@ -116,25 +116,18 @@ function bg_photo_frame_theme_color_customize_register($wp_customize){
 
 }
 function bg_photo_frame_sanitize_teheme_color( $input ) {
-    $valid = array(
-		'light' => esc_html__('Light Side', 'bg-photo-frame'),
-		'dark' => esc_html__('Dark Side', 'bg-photo-frame'),
-     );
-
-     if ( array_key_exists( $input, $valid ) ) {
+	 $valid = array( 'light', 'dark' );
+     if ( in_array( $input, $valid, true)) {
         return $input;
      } else {
         return '';
      }
+	 
 }
 
 function bg_photo_frame_sanitize_image_order( $input ) {
-    $valid = array(
-		'in_order' => esc_html__('In order', 'bg-photo-frame'),
-		'shuffle' => esc_html__('Shuffle', 'bg-photo-frame'),
-     );
-
-     if ( array_key_exists( $input, $valid ) ) {
+	 $valid = array( 'in_order', 'shuffle' );
+     if ( in_array( $input, $valid, true)) {
         return $input;
      } else {
         return '';
