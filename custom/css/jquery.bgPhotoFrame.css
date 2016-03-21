@@ -104,10 +104,10 @@
   cursor: pointer;
   border-width: 3px;
   border-style: solid;
-  border-color: #000; }
+  border-color: #FFF; }
 
 #bg-photo-frame-thumb-thumbs a:hover, #bg-photo-frame-thumb-thumbs a:focus {
-  border-color: #FFF; }
+  border-color: #000; }
 
 #bg-photo-frame-thumb-thumbs img {
   max-width: none; }

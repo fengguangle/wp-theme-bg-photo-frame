@@ -5,7 +5,7 @@ Tags: two-columns, black, white, dark, light, right-sidebar, fluid-layout, flexi
 
 Requires at least: 4.0
 Tested up to: 4.2.2
-Stable tag: 1.2.6
+Stable tag: 1.2.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -77,6 +77,8 @@ BG Photo Frame includes support for Infinite Scroll in Jetpack.
 * Improve the theme source for the accessibility.
 = 1.2.6 - March 21 2016 =
 * Improve the theme source for the accessibility.
+= 1.2.7 - March 21 2016 =
+* Minor bugs fix.
 
 
 == Credits ==
