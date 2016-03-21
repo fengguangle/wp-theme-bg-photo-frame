@@ -246,7 +246,7 @@
                             var marginLeft;
 
                             //Stop animation
-                            _img.stop(false, true)
+                            _img.stop(true, false)
 
                             if (currentMode == 'background') {
                                 if (windowRatio > imgRatio) {
@@ -329,11 +329,11 @@
 
 
                 mask.showMask = function() {
-                    maskElement.fadeIn(fadeTime);
+                    maskElement.fadeTo(fadeTime, 1.0);
                 }
 
                 mask.hideMask = function() {
-                    maskElement.fadeOut(fadeTime);
+                    maskElement.fadeTo(fadeTime, 0.0);
                 }
 
                 /* Run
@@ -519,11 +519,19 @@
                         transition(newNum, 'fade');
                     }
                     current = newNum;
+                    removeTimerInterface();
+                    setTimerInterface();
                 }
 
 
                 commandProcess.createDammy = function(val) {
                     resizeImages(val, false, true);
+                }
+
+                commandProcess.swipeDown = function(val) {
+                    disableTimer()
+                    removeTimerInterface();
+                    setTimerInterface();
                 }
 
                 commandProcess.transitionEnd = function() {
@@ -549,33 +557,40 @@
                 var interfaceTimer = [];
 
                 function showInterface() {
-                    if (!interface) {
-                        showNav();
-                        showThumbBtn();
-                        showTimer();
-                        interface = true;
-                    }
+                    showNav();
+                    showThumbBtn();
+                    showTimer();
+                    interface = true;
                 }
 
                 function hideInterface() {
+                    hideNav();
+                    hideThumbBtn();
+                    hideTimer();
+                    interface = false;
+                }
+
+                function toggleInterface() {
                     if (interface) {
-                        hideNav();
-                        hideThumbBtn();
-                        hideTimer();
-                        interface = false;
+                        hideInterface()
+                    } else {
+                        showInterface()
                     }
                 }
 
                 function enableTimerInterface() {
-                    $(window).bind('click', function() {
-                        showInterface()
-                        removeTimerInterface();
-                        setTimerInterface();
+                    maskElement.bind('click', function() {
+                        if (currentMode == 'photoframe') {
+                            toggleInterface()
+                            removeTimerInterface();
+                            setTimerInterface();
+                        }
                     })
                     setTimerInterface()
                 }
 
                 function setTimerInterface() {
+
                     interfaceTimer.push(setTimeout(function() {
                         hideInterface()
                     }, setting.autoTimer))
@@ -583,7 +598,7 @@
 
 
                 function disableTimerInterface() {
-                    $(window).unbind('click');
+                    maskElement.unbind('click');
                     removeTimerInterface();
 
                 }
@@ -769,17 +784,16 @@
                         $('body').append('<a class="' + prefix + '-btn ' + navPrefix + '" id="' + navPrefix + '-next" href="#"><span class="glyphicon glyphicon-chevron-right"></span></a>');
 
 
-                        var mouseEvent = 'click';
-                        if (device != 'pc') {
-                            mouseEvent = 'touchstart';
+                        if (device == 'pc') {
+                            $('.' + navPrefix).mousedown(function() {
+                                navClick($(this))
+                            })
+                        } else {
+                            $('.' + navPrefix).bind('touchstart', function() {
+                                navClick($(this))
+                            })
                         }
 
-
-                        $('.' + navPrefix).mousedown(function() {
-                            navClick($(this))
-                        })
-
-                        //Resize
                         $(window).resize(function() {
                             resizeNav();
                         })
@@ -1274,11 +1288,9 @@
                     var swipeEasing = 'linear';
                     var speed = swipeSpeed;
                     var accel = 2;
-
-
-
                     var currentMargin = removeUnit(wrapper.css('marginLeft'));
                     var nextSwipeNum = getNextSwipe(swipeNum, direction);
+
                     if (nextSwipeNum == swipeGoal) {
                         swipeEasing = easing;
                         accel = accel / 2;
@@ -1292,11 +1304,6 @@
                         margin = $(window).width();
                         speed = (margin - removeUnit(wrapper.css('marginLeft'))) / accel;
                     }
-
-
-
-
-
 
                     wrapper.animate({
                             marginLeft: margin + 'px'
@@ -1313,34 +1320,38 @@
                 function swipeLoopStop() {
                     wrapper.stop(true, false)
                     swipeAnmation = false;
+
                 }
 
                 function swipeEnd(num, direction) {
 
                     var margin = removeUnit(wrapper.css('marginLeft'))
-                    if (margin == $(window).width() || margin == -$(window).width()) {
-                        wrapper.css({
-                            marginLeft: '0'
-                        })
-                        element.find('li').css({
-                            marginLeft: 0 + 'px'
-                        })
+                    if (!swipeActive) {
+                        if (margin == $(window).width() || margin == -$(window).width()) {
+                            wrapper.css({
+                                marginLeft: '0'
+                            })
+                            element.find('li').css({
+                                marginLeft: 0 + 'px'
+                            })
 
-                        element.find('li:not(:eq(' + num + '))').css({
-                            display: 'none'
-                        })
+                            element.find('li:not(:eq(' + num + '))').css({
+                                display: 'none'
+                            })
 
-                        element.find('li').eq(num).css({
-                            display: 'block'
-                        })
-                        swipeNum = parseInt(num);
+                            element.find('li').eq(num).css({
+                                display: 'block'
+                            })
+                            swipeNum = parseInt(num);
 
-                        if (swipeNum == swipeGoal) {
-                            swipeLoopEnd(swipeNum);
-                        } else {
-                            swipeLoop(direction)
+                            if (swipeNum == swipeGoal) {
+                                swipeLoopEnd(swipeNum);
+                            } else {
+                                swipeLoop(direction)
+                            }
+                            swipeNum = current;
+
                         }
-
                     }
 
 
@@ -1355,35 +1366,21 @@
                 }
 
                 function createDammy(num, direction) {
-                    var dammy = element.find('li').eq(num);
+                    var dammy;
                     var margin;
                     if (direction == 'next') {
                         margin = $(window).width()
-                        if (swipeNum == element.find('li').length - 1) {
-                            dammy = element.find('li').eq(0);
-                        } else {
-                            dammy = element.find('li').eq(parseInt(swipeNum) + 1);
-                        }
-
                     } else if (direction == 'prev') {
                         margin = -$(window).width()
-                        if (swipeNum == 0) {
-                            dammy = element.find('li').eq(element.find('li').length - 1);
-                        } else {
-                            dammy = element.find('li').eq(parseInt(swipeNum) - 1);
-                        }
                     }
 
-
-
-
+                    dammy = element.find('li').eq(num);
                     dammy.css({
                         marginLeft: margin + 'px',
                         display: 'block'
                     })
 
                     command('createDammy', num);
-
 
                 }
 
@@ -1412,6 +1409,118 @@
 
                     return nextNum;
                 }
+
+
+                /*=======================================================================
+                Swipe Interaction
+                =======================================================================*/
+
+                var swipeActive;
+                var swipeActiveStart;
+                var swipeActiveCurrent;
+
+                if (device == 'pc') {
+                    maskElement.mousedown(function(e) {
+                        swipeDown(e.pageX)
+                    })
+                    $(window).mousemove(function(e) {
+                        swipeMove(e.pageX);
+                    })
+                    $(window).mouseup(function(e) {
+                        swipeUp(e.pageX);
+                    })
+                } else {
+                    maskElement.bind('touchstart', function() {
+                        //event.preventDefault(); 
+                        swipeDown(event.changedTouches[0].pageX)
+                    })
+                    $(window).bind('touchmove', function() {
+                        //event.preventDefault();
+                        swipeMove(event.changedTouches[0].pageX);
+                    })
+                    $(window).bind('touchend', function() {
+                        //event.preventDefault();
+                        swipeUp(event.changedTouches[0].pageX);
+                    })
+                }
+
+                function swipeDown(_x) {
+                    if (currentMode == 'photoframe') {
+                        swipeActive = true;
+                        swipeLoopStop();
+                        current = swipeNum
+                        swipeActiveStart = _x;
+
+                        var dammyNext
+                        var dammyPrev
+                        if (current == 0) {
+                            dammyNext = current + 1
+                            dammyPrev = element.find('li').length - 1
+                        } else if (current == element.find('li').length - 1) {
+                            dammyNext = 0
+                            dammyPrev = current - 1
+                        } else {
+                            dammyNext = current + 1;
+                            dammyPrev = current - 1;
+                        }
+                        createDammy(dammyNext, 'next')
+                        createDammy(dammyPrev, 'prev')
+                        command('swipeDown');
+                    }
+                }
+
+                function swipeMove(_x) {
+                    if (swipeActive) {
+                        swipeLoopStop();
+                        swipeActiveCurrent = _x
+                        var margin = swipeActiveCurrent - swipeActiveStart;
+                        wrapper.css({
+                            marginLeft: margin + 'px'
+                        })
+                    }
+                }
+
+                function swipeUp(_x) {
+                    if (swipeActive) {
+                        swipeLoopStop();
+                        var direction
+                        var swipeLimit = 20
+                        var distance = swipeActiveStart - swipeActiveCurrent;
+                        var swipeArrow;
+                        var wrapperMargin = removeUnit(wrapper.css('marginLeft'))
+
+                        if (distance < swipeLimit && distance > -swipeLimit) {
+                            if (wrapperMargin != 0) {
+                                if (wrapperMargin > 0) {
+                                    direction = 'prev';
+                                } else {
+                                    direction = 'next';
+                                }
+                            }
+                        } else {
+                            if (distance > 0) {
+                                direction = 'next';
+                            } else if (distance < 0) {
+                                direction = 'prev';
+                            }
+                        }
+
+                        if (direction) {
+                            command('imgChange', direction);
+                        } else {
+                            command('imgChange', current);
+                        }
+
+
+                    }
+
+                    swipeActive = false;
+                }
+
+
+
+
+
 
 
 
