@@ -39,7 +39,47 @@ body {
 /*--------------------------------------------------------------
 # Navigation
 --------------------------------------------------------------*/
+.navbar-nav > li:first-child > a {
+  border-left: #000 1px solid; }
+
+.navbar-nav > li > a {
+  border-top: #000 1px solid;
+  border-bottom: #000 1px solid;
+  border-right: #000 1px solid; }
+
 .navbar-nav > li > a:hover {
   text-shadow: none;
   color: #FFF;
   background: rgba(0, 0, 0, 0.75); }
+
+/*--------------------------------------------------------------
+# Widgets
+--------------------------------------------------------------*/
+.widget-area .widget:first-child {
+  border-top: #000 1px solid; }
+
+.widget {
+  border-left: #000 1px solid;
+  border-right: #000 1px solid;
+  border-bottom: #000 1px solid; }
+
+/*--------------------------------------------------------------
+# Enrty
+--------------------------------------------------------------*/
+.page-header {
+  border-bottom: 1px solid #000; }
+
+.entry-title {
+  border-bottom: 1px solid #000; }
+
+/*--------------------------------------------------------------
+# Comment
+--------------------------------------------------------------*/
+.comments-area {
+  border-top: 1px solid #000; }
+
+/*--------------------------------------------------------------
+# Footer
+--------------------------------------------------------------*/
+.site-footer {
+  border-top: 1px solid #000; }

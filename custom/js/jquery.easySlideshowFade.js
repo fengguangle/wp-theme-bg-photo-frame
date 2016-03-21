@@ -187,6 +187,9 @@
                         source: null
                     })
                 }
+
+
+
                 /*=======================================================================
                 /* Window resize
                 =======================================================================*/
@@ -486,6 +489,7 @@
                     } else if (currentMode == 'background') {
                         hideInterface()
                         disableTimerInterface()
+                        swipe.DisableSwipe()
                     }
                     disableTimer();
                 }
@@ -494,6 +498,7 @@
                     if (currentMode == 'photoframe') {
                         showInterface();
                         enableTimerInterface();
+                        swipe.EnableSwipe();
                     } else if ('background') {
                         timerOn();
                         mask.showMask();
@@ -562,7 +567,6 @@
 
                 function disableTimerInterface() {
                     $(window).unbind('click');
-                    $(window).unbind('mousemove');
                     removeTimerInterface();
 
                 }
@@ -872,36 +876,30 @@
                     thumbSize = thumbPage.find('li').width();
                     var canvas = document.createElement('canvas');
                     var ctx = canvas.getContext('2d');
-                    var drawPositonX = (thumbSize - (thumbSize * imgRatio)) / 2;
-                    var drawPositonY = 0;
-                    ctx.drawImage(thumbImg, drawPositonX, drawPositonY, thumbSize * imgRatio, thumbSize);
-                    thumb.append(canvas);
 
-                    //thumb.append(thumbImg);
+
 
                     var fixWidth;
                     var fixHeight;
                     var fixMarginTop = 0;
                     var fixMarginLeft = 0;
+                    var drawPositonX = 0;
+                    var drawPositonY = 0;
 
                     if (imgRatio > 1) { //横長の場合
-                        fixHeight = thumbSize
-                        fixWidth = imgWidth * (thumbSize / imgHeight);
-                        fixMarginLeft = -(fixWidth - thumbSize) / 2;
+                        fixHeight = thumbSize;
+                        fixWidth = thumbSize * imgRatio;
+                        drawPositonX = (thumbSize - (thumbSize * imgRatio)) / 2;
                     } else {　 //縦長の場合
-                        fixWidth = thumbSize
+                        fixWidth = thumbSize;
                         fixHeight = imgHeight * (thumbSize / fixWidth);
-                        fixMarginTop = -(fixHeight - thumbSize) / 2;
+                        drawPositonY = (thumbSize - (thumbSize / imgRatio)) / 2;
                     }
+
+                    ctx.drawImage(thumbImg, drawPositonX, drawPositonY, fixWidth, fixHeight);
+                    thumb.append(canvas);
 
                     //Attach Event
-                    var eventName;
-                    if (device == 'pc') {
-                        eventName = 'click';
-                    } else {
-                        eventName = 'touchstart';
-                    }
-
                     thumb.bind('click', function() {
                         ThumbClick(thumb);
                     })
@@ -1232,8 +1230,11 @@
 
 
                 /*=======================================================================
-                Image Auto change(Fade)
+                Image Auto change(Swipe)
                 =======================================================================*/
+
+                var swipe = [];
+
                 function transitionSwipe(num) {
 
                 }
@@ -1250,6 +1251,50 @@
                 function swipeMove() {
 
                 }
+
+                var swipeActive = false;
+
+                var startPosition
+                var movePosition
+                swipe.EnableSwipe = function() {
+                    console.log('swipe')
+                    for (var i = 0; i < element.find('li').length; i++) {
+                        element.find('li').eq(i).find('img').bind('mousedown', function(e) {
+                            swipeActive = true;
+                            startPosition = [e.pageX, e.pageY]
+                            console.log(startPosition)
+                        })
+                    }
+
+                    $(window).bind('mousemove', function(e) {
+                        if (swipeActive) {
+                            movePosition = [e.pageX, e.pageY]
+                            var margin = startPosition[0] - movePosition[0]
+                            var currentImg = element.find('li').eq(current);
+
+                            console.log(margin)
+                            currentImg.css({
+                                marginLeft: -margin + 'px'
+                            })
+                        }
+                    })
+
+                    $(window).bind('mouseup', function() {
+                        console.log('mouseup')
+                        swipeActive = false;
+                    })
+
+
+                }
+
+                swipe.DisableSwipe = function() {
+                    for (var i = 0; i < element.find('li').length; i++) {
+                        element.find('li').eq(i).unbind('mousedown')
+                    }
+                    $(window).unbind('mousemove')
+                    $(window).unbind('mouseup')
+                }
+
                 /*=======================================================================
                 Utility
                 =======================================================================*/

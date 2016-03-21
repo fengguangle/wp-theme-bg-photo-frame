@@ -32,7 +32,8 @@
   display: block;
   z-index: 1000;
   top: 21px;
-  right: 21px; }
+  right: 21px;
+  border: 1px solid #000; }
 
 .admin-bar #bg-photo-frame-toggle {
   top: 53px !important; }

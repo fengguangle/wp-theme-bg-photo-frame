@@ -50,10 +50,37 @@ body {
 /*--------------------------------------------------------------
 # Navigation
 --------------------------------------------------------------*/
+.navbar-nav {
+  display: block;
+  border-top: #FFF 1px solid;
+  border-left: #FFF 1px solid;
+  float: left; }
+
+.navbar-nav > li > a {
+  border-bottom: #FFF 1px solid;
+  border-right: #FFF 1px solid; }
+
 .navbar-nav > li > a:hover {
   text-shadow: none;
   color: #000;
   background: white; }
+
+/*--------------------------------------------------------------
+# Widgets
+--------------------------------------------------------------*/
+.widget-area .widget:first-child {
+  border-top: #FFF 1px solid; }
+
+.widget {
+  border-left: #FFF 1px solid;
+  border-right: #FFF 1px solid;
+  border-bottom: #FFF 1px solid; }
+
+/*--------------------------------------------------------------
+# Enrty
+--------------------------------------------------------------*/
+.entry-title {
+  border-bottom: 1px solid #FFF; }
 
 /*--------------------------------------------------------------
 ## Menus
@@ -62,6 +89,18 @@ body {
 .menu-toggle,
 .main-navigation.toggled ul {
   color: #000; }
+
+/*--------------------------------------------------------------
+# Comment
+--------------------------------------------------------------*/
+.comments-area {
+  border-top: 1px solid #FFF; }
+
+/*--------------------------------------------------------------
+# Footer
+--------------------------------------------------------------*/
+.site-footer {
+  border-top: 1px solid #FFF; }
 
 /*--------------------------------------------------------------
 # PhotoFrame
@@ -81,6 +120,9 @@ body {
 
 /* Toggle
 --------------------------------------------------------------*/
+#bg-photo-frame-toggle {
+  border: 1px solid #FFF !important; }
+
 /* Navigation
 --------------------------------------------------------------*/
 /* Thumbnail
