@@ -17,7 +17,8 @@
   padding: 6px;
   font-size: 36px;
   text-shadow: none;
-  line-height: 1em; }
+  line-height: 1em;
+  text-align: center; }
 
 .bg-photo-frame-btn:hover {
   background: white; }
@@ -32,8 +33,7 @@
   display: block;
   z-index: 1000;
   top: 21px;
-  right: 21px;
-  border: 1px solid #000; }
+  right: 21px; }
 
 .admin-bar #bg-photo-frame-toggle {
   top: 53px !important; }

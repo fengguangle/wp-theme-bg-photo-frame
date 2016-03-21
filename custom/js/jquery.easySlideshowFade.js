@@ -217,17 +217,23 @@
 
                 /* Image resize
                 ----------------------------------------------------------------------*/
-                function resizeImages(_num, animation, callback) {
+                function resizeImages(_num, animation, force, callback) {
                     var windowWidth = $(window).width()
                     var windowHeight = $(window).height();
                     var windowRatio = windowWidth / windowHeight;
                     var _li = element.find('li').eq(_num)
                     var _img;
+                    var arrow;
 
+                    if (force) {
+                        arrow = true;
+                    } else {
+                        if (_li.css('display') != 'none') {
+                            arrow = true;
+                        }
+                    }
 
-
-                    if (_li.css('display') != 'none') {
-
+                    if (arrow) {
                         if (_num in imgInfo) {
                             _img = _li.find('img');
                             var imgRatio = imgInfo[_num]['ratio'];
@@ -238,8 +244,6 @@
 
                             var marginTop;
                             var marginLeft;
-
-
 
                             //Stop animation
                             _img.stop(false, true)
@@ -271,7 +275,6 @@
                             }
 
                             if (animation) {
-
                                 _img.animate({
                                     width: imgWidth + 'px',
                                     height: imgHeight + 'px',
@@ -281,7 +284,6 @@
                                     if (callback) {
                                         eval(callback + "()");
                                     }
-
                                 })
                             } else {
                                 _img.width(imgWidth);
@@ -489,7 +491,6 @@
                     } else if (currentMode == 'background') {
                         hideInterface()
                         disableTimerInterface()
-                        swipe.DisableSwipe()
                     }
                     disableTimer();
                 }
@@ -498,7 +499,6 @@
                     if (currentMode == 'photoframe') {
                         showInterface();
                         enableTimerInterface();
-                        swipe.EnableSwipe();
                     } else if ('background') {
                         timerOn();
                         mask.showMask();
@@ -507,23 +507,40 @@
                     setTimer();
                 }
 
-                commandProcess.transitionEnd = function() {
-                    setTimer();
 
-                }
 
                 commandProcess.imgChange = function(val) {
+                    disableTimer()
                     var newNum = change.getChangeNum(val);
-                    transition(newNum);
+                    if (val == 'next' || val == 'prev') {
+                        resizeImages(newNum, false, true)
+                        transition(newNum, 'swipe', val);
+                    } else {
+                        transition(newNum, 'fade');
+                    }
                     current = newNum;
+                }
+
+
+                commandProcess.createDammy = function(val) {
+                    resizeImages(val, false, true);
+                }
+
+                commandProcess.transitionEnd = function() {
+                    setTimer();
                 }
 
                 commandProcess.timerChange = function() {
                     var newNum = change.getChangeNum('next');
-                    transition(newNum);
+                    transition(newNum, 'fade');
                     current = newNum;
                 }
 
+
+                commandProcess.swipeEnd = function() {
+
+
+                }
 
 
 
@@ -655,7 +672,7 @@
                 ----------------------------------------------------------------------*/
                 function modeChangeAnimation(mode) {
                     var currentImage = element.find('li').eq(current).find('img');
-                    resizeImages(current, true, 'EndModeChangeAnimation');
+                    resizeImages(current, true, true, 'EndModeChangeAnimation');
                 }
 
                 function EndModeChangeAnimation() {
@@ -752,10 +769,15 @@
                         $('body').append('<a class="' + prefix + '-btn ' + navPrefix + '" id="' + navPrefix + '-next" href="#"><span class="glyphicon glyphicon-chevron-right"></span></a>');
 
 
-                        $('.' + navPrefix).click(function() {
+                        var mouseEvent = 'click';
+                        if (device != 'pc') {
+                            mouseEvent = 'touchstart';
+                        }
+
+
+                        $('.' + navPrefix).mousedown(function() {
                             navClick($(this))
                         })
-
 
                         //Resize
                         $(window).resize(function() {
@@ -769,11 +791,9 @@
                 /* Click
                 ----------------------------------------------------------------------*/
                 function navClick(btn) {
-                    //次に表示させる画像を設定する
-                    var newNum;
                     if (btnEnable && nav.hasClass('active')) {
-                        var navBtn = btn.attr('id').replace(navPrefix + '-', '');
-                        command('imgChange', navBtn);
+                        var btn = btn.attr('id').replace(navPrefix + '-', '');
+                        command('imgChange', btn);
                     }
                 }
 
@@ -999,7 +1019,6 @@
                 //Event
                 function ThumbClick(thumb) {
                     var num = thumb.attr('href').replace('#', '');
-                    console.log(num)
                     command('imgChange', num)
                     closeThumbs()
                 }
@@ -1163,12 +1182,12 @@
                 }
 
 
-                function transition(num) {
+                function transition(num, transitionMode, direction) {
                     transitionStop()
                     if (transitionMode == 'fade') {
                         transitionFade(num)
                     } else if (transitionMode == 'swipe') {
-                        transitionSwipe(num)
+                        transitionSwipe(num, direction)
                     }
 
                 }
@@ -1234,66 +1253,168 @@
                 =======================================================================*/
 
                 var swipe = [];
+                var swipeNum = 0;
+                var swipeGoal = 0;
+                var swipeSpeed = 2000;
+                var swipeAnmation = false;
 
-                function transitionSwipe(num) {
 
+                function transitionSwipe(num, direction) {
+                    swipeGoal = parseInt(num);
+                    if (!swipeAnmation) {
+                        swipeNum = parseInt(current);
+                    }
+                    swipeLoopStop();
+                    swipeLoop(direction);
                 }
 
+                function swipeLoop(direction) {
 
-                function transitionSwipeStop() {
+                    var margin;
+                    var swipeEasing = 'linear';
+                    var speed = swipeSpeed;
+                    var accel = 2;
 
-                }
 
 
-                /* 
-                ------------------------------------------*/
+                    var currentMargin = removeUnit(wrapper.css('marginLeft'));
+                    var nextSwipeNum = getNextSwipe(swipeNum, direction);
+                    if (nextSwipeNum == swipeGoal) {
+                        swipeEasing = easing;
+                        accel = accel / 2;
+                    }
+                    createDammy(nextSwipeNum, direction);
 
-                function swipeMove() {
-
-                }
-
-                var swipeActive = false;
-
-                var startPosition
-                var movePosition
-                swipe.EnableSwipe = function() {
-                    console.log('swipe')
-                    for (var i = 0; i < element.find('li').length; i++) {
-                        element.find('li').eq(i).find('img').bind('mousedown', function(e) {
-                            swipeActive = true;
-                            startPosition = [e.pageX, e.pageY]
-                            console.log(startPosition)
-                        })
+                    if (direction == 'next') {
+                        margin = -$(window).width();
+                        speed = (-(margin) + removeUnit(wrapper.css('marginLeft'))) / accel;
+                    } else if (direction == 'prev') {
+                        margin = $(window).width();
+                        speed = (margin - removeUnit(wrapper.css('marginLeft'))) / accel;
                     }
 
-                    $(window).bind('mousemove', function(e) {
-                        if (swipeActive) {
-                            movePosition = [e.pageX, e.pageY]
-                            var margin = startPosition[0] - movePosition[0]
-                            var currentImg = element.find('li').eq(current);
 
-                            console.log(margin)
-                            currentImg.css({
-                                marginLeft: -margin + 'px'
-                            })
+
+
+
+
+                    wrapper.animate({
+                            marginLeft: margin + 'px'
+                        },
+                        speed,
+                        swipeEasing,
+                        function() {
+                            swipeEnd(nextSwipeNum, direction)
                         }
-                    })
-
-                    $(window).bind('mouseup', function() {
-                        console.log('mouseup')
-                        swipeActive = false;
-                    })
-
-
+                    )
+                    swipeAnmation = true;
                 }
 
-                swipe.DisableSwipe = function() {
-                    for (var i = 0; i < element.find('li').length; i++) {
-                        element.find('li').eq(i).unbind('mousedown')
+                function swipeLoopStop() {
+                    wrapper.stop(true, false)
+                    swipeAnmation = false;
+                }
+
+                function swipeEnd(num, direction) {
+
+                    var margin = removeUnit(wrapper.css('marginLeft'))
+                    if (margin == $(window).width() || margin == -$(window).width()) {
+                        wrapper.css({
+                            marginLeft: '0'
+                        })
+                        element.find('li').css({
+                            marginLeft: 0 + 'px'
+                        })
+
+                        element.find('li:not(:eq(' + num + '))').css({
+                            display: 'none'
+                        })
+
+                        element.find('li').eq(num).css({
+                            display: 'block'
+                        })
+                        swipeNum = parseInt(num);
+
+                        if (swipeNum == swipeGoal) {
+                            swipeLoopEnd(swipeNum);
+                        } else {
+                            swipeLoop(direction)
+                        }
+
                     }
-                    $(window).unbind('mousemove')
-                    $(window).unbind('mouseup')
+
+
+
+
+
                 }
+
+                function swipeLoopEnd(num) {
+                    swipeAnmation = false;
+                    command('transitionEnd');
+                }
+
+                function createDammy(num, direction) {
+                    var dammy = element.find('li').eq(num);
+                    var margin;
+                    if (direction == 'next') {
+                        margin = $(window).width()
+                        if (swipeNum == element.find('li').length - 1) {
+                            dammy = element.find('li').eq(0);
+                        } else {
+                            dammy = element.find('li').eq(parseInt(swipeNum) + 1);
+                        }
+
+                    } else if (direction == 'prev') {
+                        margin = -$(window).width()
+                        if (swipeNum == 0) {
+                            dammy = element.find('li').eq(element.find('li').length - 1);
+                        } else {
+                            dammy = element.find('li').eq(parseInt(swipeNum) - 1);
+                        }
+                    }
+
+
+
+
+                    dammy.css({
+                        marginLeft: margin + 'px',
+                        display: 'block'
+                    })
+
+                    command('createDammy', num);
+
+
+                }
+
+                function getNextSwipe(num, direction) {
+                    var nextNum;
+                    num = parseInt(num)
+                    if (num == 0) {
+                        if (direction == 'prev') {
+                            nextNum = element.find('li').length - 1
+                        } else {
+                            nextNum = num + 1;
+                        }
+                    } else if (num == element.find('li').length - 1) {
+                        if (direction == 'next') {
+                            nextNum = 0;
+                        } else {
+                            nextNum = num - 1
+                        }
+                    } else {
+                        if (direction == 'next') {
+                            nextNum = num + 1;
+                        } else {
+                            nextNum = num - 1;
+                        }
+                    }
+
+                    return nextNum;
+                }
+
+
+
 
                 /*=======================================================================
                 Utility
