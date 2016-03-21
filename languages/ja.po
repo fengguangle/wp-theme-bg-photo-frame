@@ -2,42 +2,42 @@
 # This file is distributed under the GNU General Public License v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: _s 1.0.0\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/tags/_s\n"
-"POT-Creation-Date: 2015-09-16 19:02:07+00:00\n"
+"Project-Id-Version: BG Photo Frame\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-02-10 15:37+0900\n"
-"Last-Translator: \n"
-"Language-Team: \n"
 "X-Generator: Poedit 1.5.7\n"
+"Language: Japanese\n"
 
-# @ _s
+# @ BG Photo Frame
 #: 404.php:17
 msgid "Oops! That page can&rsquo;t be found."
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: 404.php:21
 msgid ""
 "It looks like nothing was found at this location. Maybe try one of the links "
 "below or a search?"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: 404.php:29
 msgid "Most Used Categories"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #. translators: %1$s: smiley
 #: 404.php:46
 #, php-format
 msgid "Try looking in the monthly archives. %1$s"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: comments.php:31
 #, php-format
 msgctxt "comments title"
@@ -46,152 +46,152 @@ msgid_plural "%1$s thoughts on &ldquo;%2$s&rdquo;"
 msgstr[0] ""
 msgstr[1] ""
 
-# @ _s
+# @ BG Photo Frame
 #: comments.php:40 comments.php:61
 msgid "Comment navigation"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: comments.php:43 comments.php:64
 msgid "Older Comments"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: comments.php:44 comments.php:65
 msgid "Newer Comments"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: comments.php:77
 msgid "Comments are closed."
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: footer.php:18
 msgid "https://wordpress.org/"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: footer.php:18
 #, php-format
 msgid "Proudly powered by %s"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: footer.php:20
 #, php-format
 msgid "Theme: %1$s by %2$s."
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: functions.php:47 header.php:38
 msgid "Primary Menu"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: functions.php:102
 msgid "Sidebar"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: header.php:25
 msgid "Skip to content"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: inc/template-tags.php:28
 #, php-format
 msgctxt "post date"
 msgid "Posted on %s"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: inc/template-tags.php:33
 #, php-format
 msgctxt "post author"
 msgid "by %s"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #. translators: used between list items, there is a space after the comma
 #: inc/template-tags.php:50 inc/template-tags.php:56
 msgid ", "
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: inc/template-tags.php:52
 #, php-format
 msgid "Posted in %1$s"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: inc/template-tags.php:58
 #, php-format
 msgid "Tagged %1$s"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: inc/template-tags.php:64
 msgid "Leave a comment"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: inc/template-tags.php:64
 msgid "1 Comment"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: inc/template-tags.php:64
 #, php-format
 msgid "% Comments"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #. translators: %s: Name of current post
 #: inc/template-tags.php:71 template-parts/content-page.php:32
 #, php-format
 msgid "Edit %s"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: search.php:18
 #, php-format
 msgid "Search Results for: %s"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: template-parts/content-none.php:14
 msgid "Nothing Found"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: template-parts/content-none.php:20
 #, php-format
 msgid ""
 "Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: template-parts/content-none.php:24
 msgid ""
 "Sorry, but nothing matched your search terms. Please try again with some "
 "different keywords."
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: template-parts/content-none.php:29
 msgid ""
 "It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps "
 "searching can help."
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: template-parts/content-page.php:21 template-parts/content-single.php:25
 #: template-parts/content.php:34
 msgid "Pages:"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #. translators: %s: Name of current post.
 #: template-parts/content.php:27
 #, php-format
@@ -202,12 +202,12 @@ msgstr ""
 msgid "_s"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #. Theme URI of the plugin/theme
 msgid "http://underscores.me/"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #. Description of the plugin/theme
 msgid ""
 "Hi. I'm a starter theme called <code>_s</code>, or <em>underscores</em>, if "
@@ -216,57 +216,71 @@ msgid ""
 "theme out there. That's what I'm here for."
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #. Author of the plugin/theme
 msgid "Automattic"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #. Author URI of the plugin/theme
 msgid "http://automattic.com/"
 msgstr ""
 
-# @ _s
+# @ BG Photo Frame
 #: custom/php/bg-photo-frame-functions.php:48
 msgid "Theme Setting"
 msgstr "テーマ設定"
 
-# @ _s
+# @ BG Photo Frame
 #: custom/php/bg-photo-frame-functions.php:48
 msgid "Theme Color"
 msgstr "テーマカラー"
 
-# @ _s
+# @ BG Photo Frame
 #: custom/php/bg-photo-frame-functions.php:69
 msgid "Light Side"
 msgstr "ライトサイド"
 
-# @ _s
+# @ BG Photo Frame
 #: custom/php/bg-photo-frame-functions.php:70
 msgid "Dark Side"
 msgstr "ダークサイド"
 
-# @ _s
+# @ BG Photo Frame
 #: custom/php/bg-photo-frame-functions.php:93
 msgid "Order of Images"
 msgstr "画像の順番"
 
-# @ _s
+# @ BG Photo Frame
 #: custom/php/bg-photo-frame-functions.php:93
 msgid "In order"
 msgstr "順番どおり"
 
-# @ _s
+# @ BG Photo Frame
 #: custom/php/bg-photo-frame-functions.php:93
 msgid "Shuffle"
 msgstr "シャッフル"
 
-# @ _s
+# @ BG Photo Frame
 #: custom/php/bg-photo-frame-functions.php:124
 msgid "Opacity of Images"
 msgstr "画像の透明度"
 
-# @ _s
+# @ BG Photo Frame
 #: custom/php/bg-photo-frame-functions.php:150
 msgid "Opacity of Contents Background"
 msgstr "コンテンツの背景の透明度"
+
+# @ BG Photo Frame
+#: styles.css
+msgid ""
+"This theme able to set header images like a background image, full size on "
+"window. You can set header images by the Theme Custmizer.If you has not set "
+"header images, several default images will apperes on the background.And you "
+"can toggle background mode between photoframe mode from a upper right button "
+"on the site."
+msgstr ""
+"このテーマではヘッダー画像をフルサイズで背景画像のように配置でき、ヘッダー画"
+"像はテーマカスタマイザーで設定できます。もしヘッダー画像を設定していない場合"
+"は、いつかの画像が背景に表示されます。また、サイト上で背景モードとフォトフ"
+"レームモードを切り替えることができます。"

@@ -22,6 +22,7 @@ var bgGradationColor;
 		shuffle : shuffle,
 		maskColor : maskColor,
 		maskOpacity : imageOpacity,
+		controls : '.bg-photo-frame-controls'
 	});
 	
 	

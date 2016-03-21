@@ -1,5 +1,5 @@
 /*
- * jQuery BG Photo Frame v1.0.1
+ * jQuery BG Photo Frame v1.1
  * Copyright 2016 Takeshi Kashihara
  * Contributing Author: Takeshi Kashihara
  * License: GPLv3 or later
@@ -48,9 +48,10 @@
             callbackChange: null,
             photoFrame: false, //フォトフレーム機能
             stopWhenClicked: true,
-            contents: '', //コンテンツ要素
-            maskColor: 'light', //マスクのカラー
-            maskOpacity: 0.7 //マスクの透明度
+            contents: '',
+            maskColor: 'light',
+            maskOpacity: 0.7,
+            controls: ''
 
 
 
@@ -138,8 +139,13 @@
                 element.wrap("<div id='bg-photo-frame-images-wrapper'></div>");
                 wrapper = $('#bg-photo-frame-images-wrapper');
 
-                $('body').prepend("<div id='bg-photo-frame-controls'></div>");
-                controls = $('#bg-photo-frame-controls');
+                if (setting.controls != '') {
+                    controls = $(setting.controls);
+                } else {
+                    $('body').prepend("<div id='bg-photo-frame-controls'></div>");
+                    controls = $('#bg-photo-frame-controls');
+                }
+
 
                 /* setting css
                 ----------------------------------------------------------------------*/
@@ -506,7 +512,7 @@
                 var iconClassPhotoFrame = 'glyphicon-picture';
                 var iconClassBlog = 'glyphicon-list-alt';
 
-                var toggleButtonSrc = '<a href="#" id="' + toggleBtnId + '" class="' + prefix + '-btn"　name="Switch Mode"><span class="glyphicon glyphicon-picture"></span></a>';
+                var toggleButtonSrc = '<a href="#" id="' + toggleBtnId + '" class="' + prefix + '-btn"　name="Switch Mode"><span class="glyphicon glyphicon-picture" aria-hidden="true"><span class="screen-reader-text">Switch Mode</span></span></a>';
                 var toggleButton;
 
 
@@ -568,10 +574,10 @@
                 function initNav() {
                     if (element.find('li').length) {
                         //prev
-                        controls.append('<a class="' + prefix + '-btn ' + navPrefix + '" id="' + navPrefix + '-prev" href="#"><span class="glyphicon glyphicon-chevron-left"></span></a>');
+                        controls.append('<a class="' + prefix + '-btn ' + navPrefix + '" id="' + navPrefix + '-prev" href="#"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"><span class="screen-reader-text">Previous Image</span></span></a>');
 
                         //next
-                        controls.append('<a class="' + prefix + '-btn ' + navPrefix + '" id="' + navPrefix + '-next" href="#"><span class="glyphicon glyphicon-chevron-right"></span></a>');
+                        controls.append('<a class="' + prefix + '-btn ' + navPrefix + '" id="' + navPrefix + '-next" href="#"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"><span class="screen-reader-text">Next Image</span></span></a>');
 
 
 
@@ -670,7 +676,7 @@
 
 
                     //ボタン
-                    controls.append('<a id="' + thumbBtnClass + '" class="' + prefix + '-btn" href="#"><span class="glyphicon glyphicon-th"></span></a>');
+                    controls.append('<a id="' + thumbBtnClass + '" class="' + prefix + '-btn" href="#"><span class="glyphicon glyphicon-th" aria-hidden="true"><span class="screen-reader-text">Image Thumbnails</span></span></a>');
                     thumbBtn = $('#' + thumbBtnClass);
 
                     //ページ
@@ -885,7 +891,7 @@
 
                 function initTimer() {
                     if (setting.autoChange && element.find('li').length) {
-                        var timerBtnSrc = '<a id="' + timerBtnId + '" class="' + prefix + '-btn" href="#"><span class="glyphicon glyphicon-refresh ' + prefix + '-blur-text"></span><span class="glyphicon glyphicon-refresh ' + prefix + '-text"></span></a>';
+                        var timerBtnSrc = '<a id="' + timerBtnId + '" class="' + prefix + '-btn" href="#"><span class="glyphicon glyphicon-refresh ' + prefix + '-blur-text" aria-hidden="true"></span><span class="glyphicon glyphicon-refresh ' + prefix + '-text" aria-hidden="true"><span class="screen-reader-text">Auto Change Images</span></span></a>';
                         controls.append(timerBtnSrc);
                         timerBtn = $('#' + timerBtnId);
 

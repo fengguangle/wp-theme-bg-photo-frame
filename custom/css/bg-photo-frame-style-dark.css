@@ -61,7 +61,7 @@ body {
   border-bottom: #FFF 1px solid;
   border-right: #FFF 1px solid; }
 
-.navbar-nav li a:hover {
+.navbar-nav li a:hover, .navbar-nav li a:focus {
   text-decoration: none;
   color: #000;
   background: white; }
@@ -122,14 +122,36 @@ body {
   color: #FFF !important;
   background: rgba(0, 0, 0, 0.75) !important; }
 
+/*
+.bg-photo-frame-btn:hover{
+	background:rgba($baseColorDark,$baseColorDark,$baseColorDark,$btn-transparent-hover) !important;
+}
+*/
 .bg-photo-frame-btn:hover {
-  background: black !important; }
+  color: #000 !important;
+  background: white !important; }
+
+.bg-photo-frame-btn:focus {
+  color: #000 !important;
+  background: white !important; }
 
 /* Toggle
 --------------------------------------------------------------*/
 /* Navigation
 --------------------------------------------------------------*/
+#bg-photo-frame-timer-btn .bg-photo-frame-text {
+  color: #999; }
+
+#bg-photo-frame-timer-btn.on .bg-photo-frame-text {
+  color: #FFF; }
+
 /* Thumbnail
 --------------------------------------------------------------*/
 #bg-photo-frame-thumb-thumbs {
   background: rgba(0, 0, 0, 0.75) !important; }
+
+#bg-photo-frame-thumb-thumbs a {
+  border-color: #FFF; }
+
+#bg-photo-frame-thumb-thumbs a:hover, #bg-photo-frame-thumb-thumbs a:focus {
+  border-color: #000; }

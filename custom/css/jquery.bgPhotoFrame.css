@@ -20,7 +20,12 @@
   text-align: center; }
 
 .bg-photo-frame-btn:hover {
-  background: white; }
+  color: #FFF;
+  background: black; }
+
+.bg-photo-frame-btn:focus {
+  color: #FFF;
+  background: black; }
 
 .bg-photo-frame-blur-text {
   position: absolute; }
@@ -53,7 +58,7 @@
 #bg-photo-frame-nav-next {
   right: 10px; }
 
-/* Thumbnauls
+/* Thumbnails
 --------------------------------------------------------------*/
 #bg-photo-frame-thumb-btn {
   display: none;
@@ -96,7 +101,13 @@
   height: 100%;
   display: block;
   overflow: hidden;
-  cursor: pointer; }
+  cursor: pointer;
+  border-width: 3px;
+  border-style: solid;
+  border-color: #000; }
+
+#bg-photo-frame-thumb-thumbs a:hover, #bg-photo-frame-thumb-thumbs a:focus {
+  border-color: #FFF; }
 
 #bg-photo-frame-thumb-thumbs img {
   max-width: none; }
@@ -114,7 +125,6 @@
   text-decoration: none; }
 
 #bg-photo-frame-timer-btn span {
-  opacity: 0.5;
   position: absolute; }
 
 #bg-photo-frame-timer-btn.on span {
@@ -128,6 +138,15 @@
 
 #bg-photo-frame-timer-btn.on .bg-photo-frame-disable {
   display: none; }
+
+#bg-photo-frame-timer-btn {
+  color: #666; }
+
+#bg-photo-frame-timer-btn.on {
+  color: #000; }
+
+#bg-photo-frame-timer-btn:hover {
+  color: #FFF; }
 
 #bg-photo-frame-timer-btn .bg-photo-frame-text {
   left: 7px;
