@@ -22,9 +22,9 @@ a:hover {
 body {
   color: #000; }
 
-/* site-wrapper
+/* site-header-mask
 -----------------------------------------*/
-#site-wrapper {
+#images-mask {
   background: rgba(255, 255, 255, 0.6); }
 
 /*--------------------------------------------------------------

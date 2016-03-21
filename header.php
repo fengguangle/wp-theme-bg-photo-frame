@@ -51,6 +51,7 @@ var shuffle = true;
 		<?php endif; ?>
         </ul>
 	</div>
+    
 	<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'bg-photo-frame' ); ?></a>
 
 	<div id="site-wrapper">

@@ -37,8 +37,6 @@
 
             //Wrapper
             var wrapper = '<div id="images-wrapper"></div>';
-            var gradationTop = '<div id="images-top"></div>';
-            var gradationBottom = '<div id="images-bottom"></div>';
 
             //parent element
             var parent = element.parent();
@@ -77,8 +75,12 @@
             var prefix = 'bg-photo-frame';
 
 
-            //Whether click or not
+            //Easing
             var easing = 'easeOutCubic';
+
+
+            //Fade time
+            var fadeTime = 1000;
 
 
 
@@ -95,6 +97,8 @@
 
                 element.wrap("<div id='images-wrapper'></div>")
                 wrapper = $('#images-wrapper');
+
+
 
 
                 /* setting css
@@ -295,6 +299,48 @@
                         _img.stop(false, true)
                     }
                 }
+
+
+                // JavaScript Document
+
+                var mask = [];
+                var maskElement;
+
+
+                /* Init
+                ----------------------------------------------------------------------*/
+                function initMask() {
+                    wrapper.after("<div id='images-mask'></div>")
+                    maskElement = $('#images-mask');
+                }
+                /* Resize
+                ----------------------------------------------------------------------*/
+                function resizeMask() {
+                    maskElement.css({
+                        width: $(window).width() + 'px',
+                        height: $(window).height() + 'px'
+                    })
+                }
+
+
+                mask.showMask = function() {
+                    maskElement.fadeIn(fadeTime);
+                }
+
+                mask.hideMask = function() {
+                    maskElement.fadeOut(fadeTime);
+                }
+
+                /* Run
+                ----------------------------------------------------------------------*/
+                //Attach event
+                $(window).resize(function() {
+                    resizeMask();
+                })
+
+
+                initMask();
+                resizeMask();
                 /*=======================================================================
                 /*読み込み
                 =======================================================================*/
@@ -435,7 +481,9 @@
 
                 commandProcess.modeChange = function() {
                     mode.modeChange();
-                    if (currentMode == 'background') {
+                    if (currentMode == 'photoframe') {
+                        mask.hideMask();
+                    } else if (currentMode == 'background') {
                         hideInterface()
                         disableTimerInterface()
                     }
@@ -448,6 +496,7 @@
                         enableTimerInterface();
                     } else if ('background') {
                         timerOn();
+                        mask.showMask();
                     }
                     btnEnable = true;
                     setTimer();
@@ -497,17 +546,10 @@
 
                 function enableTimerInterface() {
                     $(window).bind('click', function() {
-                            showInterface()
-                            removeTimerInterface();
-                            setTimerInterface();
-                        })
-                        /*
-                        $(window).bind('mousemove', function(){
-                        	showInterface()
-                        	removeTimerInterface();
-                        	setTimerInterface();
-                        })
-                        */
+                        showInterface()
+                        removeTimerInterface();
+                        setTimerInterface();
+                    })
                     setTimerInterface()
                 }
 
@@ -737,7 +779,7 @@
                 ----------------------------------------------------------------------*/
                 function showNav() {
                     nav.stop(false, true)
-                    nav.fadeIn(1000, function() {
+                    nav.fadeIn(fadeTime, function() {
                         nav.addClass('active');
                     });
                     navPosition();
@@ -851,14 +893,6 @@
                         fixHeight = imgHeight * (thumbSize / fixWidth);
                         fixMarginTop = -(fixHeight - thumbSize) / 2;
                     }
-                    /*
-                    thumbImg.css({
-                    	width : fixWidth + 'px',
-                    	height : fixHeight + 'px',
-                    	marginTop : fixMarginTop + 'px',
-                    	marginLeft : fixMarginLeft + 'px'
-                    })
-                    */
 
                     //Attach Event
                     var eventName;
@@ -913,13 +947,13 @@
                 //Show
                 function showThumbBtn() {
                     thumbBtn.stop(false, true)
-                    thumbBtn.fadeIn()
+                    thumbBtn.fadeIn(fadeTime)
                 }
 
                 //Hide
                 function hideThumbBtn() {
                     thumbBtn.stop(false, true)
-                    thumbBtn.fadeOut()
+                    thumbBtn.fadeOut(fadeTime)
                 }
 
                 //サムネールボタンの開閉
