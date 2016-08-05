@@ -1,0 +1,220 @@
+@charset "UTF-8";
+/* CSS Document */
+@import "bg-photo-frame-vars";
+
+
+$wrapColor : rgba( $baseColorDark  ,$baseColorDark , $baseColorDark , $wrapTransparent);
+
+/*--------------------------------------------------------------
+# Initial
+--------------------------------------------------------------*/
+body{
+	background : rgb( $baseColorDark ,$baseColorDark, $baseColorDark);
+}
+/* anchor
+-----------------------------------------*/
+a, a:link, a:visited, a:active{
+	color:$fontColorDark;
+}
+
+a:hover{
+	color:$fontColorDark;
+}
+/*--------------------------------------------------------------
+# Typography
+--------------------------------------------------------------*/
+body{
+	color:$fontColorDark;
+}
+
+
+/* site-header-mask
+-----------------------------------------*/
+#images-mask{
+	background:$wrapColor;
+}
+
+
+/* site-header-background
+-----------------------------------------*/
+#header-background{
+	background:$wrapColor;
+}
+
+
+/* site-header
+-----------------------------------------*/
+#masthead{
+	position:relative;
+	z-index:1;	
+}
+
+/*--------------------------------------------------------------
+# layout
+--------------------------------------------------------------*/
+
+
+.site-title{
+	border-color:$fontColorDark;
+}
+
+.site-branding{
+	text-shadow:1px 1px 0px $fontColorLight;
+}
+
+#primary-inner{
+	border:$fontColorDark 1px solid;
+	background:rgba( $baseColorDark ,$baseColorDark, $baseColorDark , $contents-bg-opacity);
+}
+
+/*--------------------------------------------------------------
+# Navigation
+--------------------------------------------------------------*/
+.navbar-nav{
+	border-left:$fontColorDark 1px solid;
+}
+
+
+
+.navbar-nav li a{
+	border-top:$fontColorDark 1px solid;
+	border-bottom:$fontColorDark 1px solid;
+	border-right:$fontColorDark 1px solid;
+}
+
+
+.navbar-nav li a:hover,.navbar-nav li a:focus{
+	text-decoration:none;
+	color:$fontColorLight;
+	background:rgba( $baseColorLight ,$baseColorLight, $baseColorLight , 1.0);
+}
+
+.navbar-nav li > ul{
+	background:rgba( $baseColorDark ,$baseColorDark, $baseColorDark , 1.0);
+	border-top-color:$fontColorDark;
+	border-left-color:$fontColorDark;
+}
+
+
+/*--------------------------------------------------------------
+# Widgets
+--------------------------------------------------------------*/
+.widget-area {
+	
+	
+	.widget{
+		background:rgba( $baseColorDark ,$baseColorDark, $baseColorDark , $contents-bg-opacity);
+		border-left:$fontColorDark 1px solid;
+		border-right:$fontColorDark 1px solid;
+		border-bottom:$fontColorDark 1px solid;
+		&:first-child{
+			border-top:$fontColorDark 1px solid;
+		}
+	}
+}
+
+/*--------------------------------------------------------------
+# Enrty
+--------------------------------------------------------------*/
+.entry-title{
+	border-bottom:1px solid $fontColorDark;
+	
+}
+
+
+
+
+/*--------------------------------------------------------------
+## Menus
+--------------------------------------------------------------*/
+/* Small menu. */
+.menu-toggle,
+.main-navigation.toggled ul {
+	color:#000;
+}
+
+
+/*--------------------------------------------------------------
+# Comment
+--------------------------------------------------------------*/
+.comments-area{
+	border-top:1px solid $fontColorDark;
+}
+
+/*--------------------------------------------------------------
+# Footer
+--------------------------------------------------------------*/
+.site-footer{
+	border-top:1px solid $fontColorDark;
+}
+
+
+/*--------------------------------------------------------------
+# PhotoFrame
+--------------------------------------------------------------*/
+
+.#{$prefix}-blur-text{
+	filter: blur(3px);
+  	-webkit-filter: blur(5px);
+}
+
+/* Button
+--------------------------------------------------------------*/
+
+.#{$prefix}-btn{
+	color:#{$fontColorDark} !important;
+	background:rgba($baseColorDark,$baseColorDark,$baseColorDark,$btn-transparent) !important;
+}
+/*
+.#{$prefix}-btn:hover{
+	background:rgba($baseColorDark,$baseColorDark,$baseColorDark,$btn-transparent-hover) !important;
+}
+*/
+
+.#{$prefix}-btn:hover{
+	color:#{$fontColorLight} !important;
+	background:rgba($baseColorLight,$baseColorLight,$baseColorLight,1) !important;
+}
+
+.#{$prefix}-btn:focus{
+	color:#{$fontColorLight} !important;
+	background:rgba($baseColorLight,$baseColorLight,$baseColorLight,1) !important;
+}
+
+
+/* Toggle
+--------------------------------------------------------------*/
+
+##{$toggle-prefix}{
+	//border:1px solid $fontColorDark !important;
+}
+
+
+/* Navigation
+--------------------------------------------------------------*/
+
+##{$prefix}-timer-btn .#{$prefix}-text{
+	color:#999;
+}
+
+##{$prefix}-timer-btn.on .#{$prefix}-text{
+	color:#{$fontColorDark};
+}
+
+
+/* Thumbnail
+--------------------------------------------------------------*/
+##{$thumb-prefix}-thumbs{
+	background:rgba($baseColorDark,$baseColorDark,$baseColorDark,$btn-transparent) !important;
+}
+
+
+##{$thumb-prefix}-thumbs a{
+	border-color:#{$fontColorLight} !important;
+}
+
+##{$thumb-prefix}-thumbs a:hover,##{$thumb-prefix}-thumbs a:focus{
+	border-color:#{$fontColorDark} !important;
+}
+
+

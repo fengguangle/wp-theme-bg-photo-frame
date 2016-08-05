@@ -1,0 +1,252 @@
+/* Scss Document */
+
+@import "bg-photo-frame-vars";
+
+/* site-header-mask
+--------------------------------------------------------------*/
+#images-mask{
+	position:fixed;
+}
+
+
+
+/* Button
+--------------------------------------------------------------*/
+.#{$prefix}-btn{
+	color:$fontColorLight;
+	background:rgba($baseColorLight,$baseColorLight,$baseColorLight,$btn-transparent);
+	width:#{$btn-size}px;
+	height:#{$btn-size}px;
+	padding:#{$btn-padding}px;
+	font-size:#{$btn-font-size}px;
+	text-shadow:none;
+	line-height:1em;
+	text-align:center;
+}
+
+.#{$prefix}-btn:hover{
+	color:#{$fontColorDark};
+	background:rgba($baseColorDark,$baseColorDark,$baseColorDark,1.0);
+}
+
+.#{$prefix}-btn:focus{
+	color:#{$fontColorDark};
+	background:rgba($baseColorDark,$baseColorDark,$baseColorDark,1.0);
+}
+
+.#{$prefix}-blur-text{
+	position:absolute;
+}
+
+
+/* Toggle Button
+--------------------------------------------------------------*/
+
+##{$toggle-prefix}{
+	position:fixed;
+	display:block;
+	z-index:1000;
+	top:21px;
+	right:21px;
+	
+}
+
+
+
+.admin-bar ##{$toggle-prefix}{
+	top:53px !important;
+}
+
+
+/* Navigation
+--------------------------------------------------------------*/
+.#{$nav-prefix}{
+	display:none;
+	position:fixed;
+	z-index:1000;
+}
+
+.#{$nav-prefix}:focus{
+	display:block !important;
+}
+
+
+
+
+
+##{$nav-prefix}-prev{
+	left:10px;
+}
+
+##{$nav-prefix}-next{
+	right:10px;
+}
+
+
+
+/* Thumbnail
+--------------------------------------------------------------*/
+##{$thumb-prefix}-btn{
+	display:none;
+	position:fixed;
+	z-index:1001;
+	bottom:#{$btn-margin}px;
+	left:#{$btn-margin}px;
+}
+
+
+
+##{$thumb-prefix}-thumbs{
+	z-index:1000;
+	position:fixed;
+	overflow:auto;
+	width:0%;
+	height:0%;
+	padding:0%;
+	display:none;
+	left:0;
+	bottom:0;
+	background:rgba($baseColorLight,$baseColorLight,$baseColorLight,$btn-transparent);
+}
+
+##{$thumb-prefix}-thumbs-inner{
+	padding:2%;
+}
+
+##{$thumb-prefix}-thumbs ul{
+	margin:0;
+	padding:0;
+}
+
+##{$thumb-prefix}-thumbs li{
+	margin:0;
+	padding:0;
+	float:left;
+	list-style:none;
+	width:64px;
+	height:64px;
+	display:block;
+	margin:5px;
+}
+
+##{$thumb-prefix}-thumbs a{
+	width:100%;
+	height:100%;
+	display:block;
+	overflow:hidden;
+	cursor:pointer;
+	border-width:3px;
+	border-style:solid;
+	border-color:#{$fontColorDark};
+}
+
+##{$thumb-prefix}-thumbs a:hover,##{$thumb-prefix}-thumbs a:focus{
+	border-color:#{$fontColorLight};
+}
+
+
+##{$thumb-prefix}-thumbs img{
+	max-width:none;
+}
+
+
+/* Timer
+--------------------------------------------------------------*/
+##{$prefix}-timer-btn{
+	display:none;
+	position:fixed;
+	z-index:1001;
+	bottom:#{$btn-margin}px;
+	right:#{$btn-margin}px;
+}
+
+##{$prefix}-timer-btn:hover{
+	text-decoration:none;
+}
+
+##{$prefix}-timer-btn span{
+	position:absolute;
+}
+
+##{$prefix}-timer-btn.on span{
+	opacity:1.0;
+	
+}
+
+##{$prefix}-timer-btn .#{$prefix}-disable{
+	width:100%;
+	text-align:center;
+	top:7px;
+	display:block;
+}
+
+##{$prefix}-timer-btn.on .#{$prefix}-disable{
+	display:none;
+}
+
+
+##{$prefix}-timer-btn{
+	color:#666;
+}
+
+##{$prefix}-timer-btn.on{
+	color:#{$fontColorLight};
+}
+
+##{$prefix}-timer-btn:hover{
+	color:#{$fontColorDark};
+}
+
+
+##{$prefix}-timer-btn .#{$prefix}-text{
+	left:7px;
+	top:7px;
+}
+
+##{$prefix}-timer-btn .#{$prefix}-blur-text{
+	left:7px;
+	top:7px;
+	display:none;
+}
+
+##{$prefix}-timer-btn.on .#{$prefix}-blur-text{
+	display:block;
+}
+
+
+/*--------------------------------------------------------------
+# SmartPhone
+--------------------------------------------------------------*/
+
+@media screen and (max-width: 782px) {
+##{$prefix}-toggle{
+	top:12px;
+	right:12px;
+}
+
+
+
+.admin-bar ##{$prefix}-toggle{
+	top:58px !important;
+}
+
+/* Navigation
+--------------------------------------------------------------*/
+.#{$prefix}-nav-num{
+	display:none;
+}
+
+
+}
+
+/*--------------------------------------------------------------
+# For WordPress
+--------------------------------------------------------------*/
+
+/* Thumbnauls
+--------------------------------------------------------------*/
+.admin-bar ##{$prefix}-thumbs{
+	padding:64px 0 0 0;
+	
+}
+

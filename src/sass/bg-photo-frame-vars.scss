@@ -1,0 +1,26 @@
+$wrapTransparent : 0.6;
+
+$fontColorLight : #000;
+$baseColorLight : 255;
+
+$fontColorDark : #FFF;
+$baseColorDark : 0;
+
+/* photo frame
+-----------------------------------------*/
+$prefix : bg-photo-frame;
+$toggle-prefix : #{$prefix}-toggle;
+$nav-prefix : #{$prefix}-nav;
+$thumb-prefix : #{$prefix}-thumb;
+$timer-prefix : #{$prefix}-timer;
+
+$contents-bg-opacity : 0.5;
+
+$btn-size : 48;
+$btn-padding : 6;
+$btn-margin : 10;
+$btn-font-size : 36;
+$btn-transparent : 0.75;
+$btn-transparent-hover : 1.0;
+
+

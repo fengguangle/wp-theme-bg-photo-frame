@@ -1,0 +1,133 @@
+@charset "UTF-8";
+@import "bg-photo-frame-vars";
+
+$wrapColor : rgba( $baseColorLight  ,$baseColorLight , $baseColorLight , $wrapTransparent);
+/*--------------------------------------------------------------
+# Initial
+--------------------------------------------------------------*/
+body{
+	background : rgb( $baseColorLight ,$baseColorLight, $baseColorLight);
+	
+}
+/* anchor
+-----------------------------------------*/
+a, a:link, a:visited, a:active{
+	color:$fontColorLight;
+}
+
+a:hover, a:focus{
+	color:$fontColorLight;
+}
+/*--------------------------------------------------------------
+# Typography
+--------------------------------------------------------------*/
+body{
+	color:$fontColorLight;
+}
+
+
+/* site-header-mask
+-----------------------------------------*/
+#images-mask{
+	background:$wrapColor;
+}
+
+
+
+/*--------------------------------------------------------------
+# layout
+--------------------------------------------------------------*/
+
+
+.site-title{
+	border-color:$fontColorLight;
+}
+
+.site-branding{
+	text-shadow:1px 1px 0px $fontColorDark;
+}
+
+#primary-inner{
+	border:$fontColorLight 1px solid;
+	//background:rgba( $baseColorLight ,$baseColorLight, $baseColorLight , $contents-bg-opacity);
+}
+
+
+
+
+/*--------------------------------------------------------------
+# Navigation
+--------------------------------------------------------------*/
+.navbar-nav{
+	//border-top:$fontColorLight 1px solid;
+	border-left:$fontColorLight 1px solid;
+}
+
+.navbar-nav li a{
+	border-top:$fontColorLight 1px solid;
+	border-bottom:$fontColorLight 1px solid;
+	border-right:$fontColorLight 1px solid;
+}
+
+
+
+.navbar-nav li a:hover,.navbar-nav li a:focus{
+	color:$fontColorDark;
+	background:rgba( $baseColorDark ,$baseColorDark, $baseColorDark , 1.0);
+}
+
+.navbar-nav li > ul{
+	background:rgba( $baseColorLight ,$baseColorLight, $baseColorLight , 1.0);
+	border-top-color:$fontColorLight;
+	border-left-color:$fontColorLight;
+}
+
+
+/*--------------------------------------------------------------
+# Widgets
+--------------------------------------------------------------*/
+.widget-area{
+	.widget{
+		border-left:$fontColorLight 1px solid;
+		border-right:$fontColorLight 1px solid;
+		border-bottom:$fontColorLight 1px solid;
+		&:first-child{
+			border-top:$fontColorLight 1px solid;
+		}
+	}
+}
+
+.widget{
+	
+	//background:rgba( $baseColorLight ,$baseColorLight, $baseColorLight , $contents-bg-opacity);
+	
+}
+
+/*--------------------------------------------------------------
+# Enrty
+--------------------------------------------------------------*/
+
+.page-header{
+	border-bottom:1px solid $fontColorLight;
+}
+
+.entry-title{
+	border-bottom:1px solid $fontColorLight;
+	
+}
+
+/*--------------------------------------------------------------
+# Comment
+--------------------------------------------------------------*/
+.comments-area{
+	border-top:1px solid $fontColorLight;
+}
+
+
+/*--------------------------------------------------------------
+# Footer
+--------------------------------------------------------------*/
+.site-footer{
+	border-top:1px solid $fontColorLight;
+}
+
