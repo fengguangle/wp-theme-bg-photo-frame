@@ -1,4 +1,19 @@
 language: php
+sudo: false
 php:
-- '5.5'
-- '5.4'
+- '5.6'
+env:
+  global:
+  - GIT_COMMITTER_NAME=kassy000
+  - GIT_COMMITTER_EMAIL=kashihara_ybb@yahoo.co.jp
+  - GIT_AUTHOR_NAME=kassy000
+  - GIT_AUTHOR_EMAIL=kashihara_ybb@yahoo.co.jp
+  - secure: KAqds6XKG4OZzyqAP0AsXvm+hwkDNJlzw31JWwnqkvmj9yl2m04UzVNrDDC/OyxdbYkqJA3GEppNfog+a3/VqupbPkQSCYO4zixZ60Ru+w5uKpYkCRUdL+GivP1Xp5sn7lBJmVyhtAOZP2ikDoQgUy4aQYCEI3y+A1nmC++C7ZXAnkeaA6TjYraoeLJ00aBE0lokS3jpchNwZfl9Bb2xItLTwoeqC79RgmajacLmQSSwB3BcjJXooxVKuXoup+QOON2ikls08fFGw6G9+uT30Vi49KFkky2dl3fULhnb3yqe+YIztoJ79QvKsXtz1UMbSs4zhf4vovi0EPrc7LtjTvVseXEizkdB7TldwNSa5lMs0Z4bstN+F6OFfMEn/+VmlpLu0U2ltJaoAg8s6y4izD+N2MDlBZ/eJG/hd4j+ouIPyteaPlWWHzozRtyUoCjY2A7vWYwO2hh92Qtyq2sT2eb8NbI7wLTorXFJMJvTfldQ7CJfX9CxSYR/6IBN9/1PLx8LMEiXeFMNd5CQDG4yH0PlnQc6W+ReYR3AJSshUfVDdMi6t18JWFu1bl0pfSVt2vrsdhDj90+SFuz/j694Pj12JPlxEFp9veQ2uY3GrQju5Llfc5iUcfC2e+dSploiidmNn53Cs3F+qWzwMgQpqOpnrTtVtGYKE/+0VmN+1hA=
+before_script:
+- nvm install 4.2
+- npm install
+script:
+- find . \( -name '*.php' \) -exec php -lf {} \;
+after_success:
+#- run npm dist
+- bash ./bin/deploy.sh
