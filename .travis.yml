@@ -8,12 +8,11 @@ env:
   - GIT_COMMITTER_EMAIL=kashihara_ybb@yahoo.co.jp
   - GIT_AUTHOR_NAME=kassy000
   - GIT_AUTHOR_EMAIL=kashihara_ybb@yahoo.co.jp
-  - secure: KAqds6XKG4OZzyqAP0AsXvm+hwkDNJlzw31JWwnqkvmj9yl2m04UzVNrDDC/OyxdbYkqJA3GEppNfog+a3/VqupbPkQSCYO4zixZ60Ru+w5uKpYkCRUdL+GivP1Xp5sn7lBJmVyhtAOZP2ikDoQgUy4aQYCEI3y+A1nmC++C7ZXAnkeaA6TjYraoeLJ00aBE0lokS3jpchNwZfl9Bb2xItLTwoeqC79RgmajacLmQSSwB3BcjJXooxVKuXoup+QOON2ikls08fFGw6G9+uT30Vi49KFkky2dl3fULhnb3yqe+YIztoJ79QvKsXtz1UMbSs4zhf4vovi0EPrc7LtjTvVseXEizkdB7TldwNSa5lMs0Z4bstN+F6OFfMEn/+VmlpLu0U2ltJaoAg8s6y4izD+N2MDlBZ/eJG/hd4j+ouIPyteaPlWWHzozRtyUoCjY2A7vWYwO2hh92Qtyq2sT2eb8NbI7wLTorXFJMJvTfldQ7CJfX9CxSYR/6IBN9/1PLx8LMEiXeFMNd5CQDG4yH0PlnQc6W+ReYR3AJSshUfVDdMi6t18JWFu1bl0pfSVt2vrsdhDj90+SFuz/j694Pj12JPlxEFp9veQ2uY3GrQju5Llfc5iUcfC2e+dSploiidmNn53Cs3F+qWzwMgQpqOpnrTtVtGYKE/+0VmN+1hA=
+  - secure: AlvvRZoPxuEPSIaXQJQUJeqA8dOvf1w7TjHYOupIiaHs9Y5iaTlRYRtsCWiSNZ2RPqzmir9SXAoyMQYWoYH7PBBOE6xv09KnKz1fvMxBEZBJdVHwAntpHADJosWi5Ad5cnim51rcAX/Sjd/NAvqXQLnf6FZRsyytisLWa9tXMTIW9dGQjk053kz+euGeL+zly1QvPZDcVpuatxMot6fVcXY/0JGR6FJp0SC2TNXtvxCQRvZ3E7xklbeiQbC2bqbDIGMiaE8pMpzUwLmD46NGIgGapfUFq23rsh9gWpXPeoV4a9GnkWgmBXt/H9fLOaK5O+tp3hly/mqJ+4yUdmCoP9Q85DT9XDOGT+RfkZ+pkXMxivvzHrotL+AK8iHyWLEKz5wzjJxT64d1oEzvyJQtKVw0/mT3YVYI60evLr/4YwtFBOYoq+ASNmd2EGMH5SdQ/FoSAxpIxpCJK/hSMTHaeSkGUJ0t/qfCufNCXRnNWQ7S2QQYx8/IhEpWAABSVYsI4MDR8w4WdqFAZPmwU7u0GDufDO7+WHLBliqsqfGHmNiDGqA5uP+or0Tf+HDqXVm2DHmW3asT5IVTe/4XGPc3uUWiUv1+pZNrvwKx6MJTBgUwrJ1fxHoCz4ngDYXSUfrWCpMsbqP40eYKoq+Ce6KjGinSw45NNd0mEYu3Mw37Yxc=
 before_script:
 - nvm install 4.2
 - npm install
 script:
 - find . \( -name '*.php' \) -exec php -lf {} \;
 after_success:
-- run npm dist
-#- bash ./bin/deploy.sh
+- bash ./bin/deploy.sh
