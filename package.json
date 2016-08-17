@@ -2,16 +2,15 @@
   "name": "bg-photo-frame",
   "version": "1.0.0",
   "description": "=== BG Photo Frame ===",
-  "main": "index.js",
+  "main": "gulpfile.js",
   "dependencies": {
     "bower": "^1.7.9",
     "browser-sync": "^2.10.1",
-    "del": "^2.2.0",
     "gulp": "^3.9.0",
     "gulp-beautify": "^2.0.0",
     "gulp-callback": "^0.0.3",
     "gulp-clean": "^0.3.1",
-    "gulp-compass": "^2.1.0",
+    "del": "^2.2.0",
     "gulp-concat": "^2.6.0",
     "gulp-connect": "^3.1.0",
     "gulp-cssmin": "^0.1.7",
@@ -20,13 +19,14 @@
     "gulp-if": "^2.0.1",
     "gulp-ignore": "^2.0.1",
     "gulp-load-plugins": "^1.1.0",
-    "gulp-notify": "^2.2.0",
+    "gulp-compass": "^2.1.0",
     "gulp-plumber": "^1.0.1",
     "gulp-reload": "^0.0.4",
     "gulp-rename": "^1.2.2",
     "gulp-rimraf": "^0.2.0",
     "gulp-sass": "^2.1.1",
     "gulp-sitemap": "^2.2.0",
+    "gulp-notify": "^2.2.0",
     "gulp-strip-comments": "^2.1.1",
     "gulp-strip-debug": "^1.1.0",
     "gulp-stylus": "^2.5.0",
@@ -35,21 +35,28 @@
     "gulp-util": "^3.0.7",
     "gulp-wait": "^0.0.2",
     "gulp-watch": "^4.3.5",
-    "npm": "^2.14.7",
     "gulp-webshot": "^0.1.5",
     "gulp-zip": "^3.0.2",
     "http-server": "^0.8.5",
+    "npm": "^2.14.7",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.2.2",
-    "vinyl-paths": "^2.1.0",
     "stylus": "^0.54.5",
+    "vinyl-paths": "^2.1.0",
     "watch": "^0.17.1"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-	"dist": "gulp dist"
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://kassy000@github.com/kassy000/wp-theme-bg-photo-frame.git"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kassy000/wp-theme-bg-photo-frame/issues"
+  },
+  "homepage": "https://github.com/kassy000/wp-theme-bg-photo-frame#readme"
 }
