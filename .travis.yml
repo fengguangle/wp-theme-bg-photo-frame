@@ -15,4 +15,5 @@ before_script:
 script:
 - find . \( -name '*.php' \) -exec php -lf {} \;
 after_success:
+- run npm dist
 - bash ./bin/deploy.sh
