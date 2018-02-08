@@ -11,19 +11,19 @@ var bgGradationColor;
 		maskColor = 0;
 	}
 	
-	bgSlide = $('#header-image ul');
-	bgSlide.bgPhotoFrame({
-		width : '100%',
-		gradationColor: bgGradationColor,
-		autoTimer:4000,
-		interfaceTimer:false,
-		photoFrame:true,
-		contents : '#site-wrapper',
-		shuffle : shuffle,
-		maskColor : maskColor,
-		maskOpacity : imageOpacity,
-		controls : '.bg-photo-frame-controls'
-	});
+	// bgSlide = $('#header-image ul');
+	// bgSlide.bgPhotoFrame({
+	// 	width : '100%',
+	// 	gradationColor: bgGradationColor,
+	// 	autoTimer:4000,
+	// 	interfaceTimer:false,
+	// 	photoFrame:true,
+	// 	contents : '#site-wrapper',
+	// 	shuffle : shuffle,
+	// 	maskColor : maskColor,
+	// 	maskOpacity : imageOpacity,
+	// 	controls : '.bg-photo-frame-controls'
+	// });
 	
 	
 	

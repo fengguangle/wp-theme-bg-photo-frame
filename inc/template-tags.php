@@ -55,11 +55,13 @@ function bg_photo_frame_entry_footer() {
 		/* translators: used between list items, there is a space after the comma */
 		$tags_list = get_the_tag_list( '', esc_html__( ', ', 'bg-photo-frame' ) );
 		if ( $tags_list ) {
+			echo '<span class="sep"> | </span>';
 			printf( '<span class="tags-links">' . esc_html__( 'Tagged %1$s', 'bg-photo-frame' ) . '</span>', $tags_list ); // WPCS: XSS OK.
 		}
 	}
 
 	if ( ! is_single() && ! post_password_required() && ( comments_open() || get_comments_number() ) ) {
+		echo '<span class="sep"> | </span>';
 		echo '<span class="comments-link">';
 		comments_popup_link( esc_html__( 'Leave a comment', 'bg-photo-frame' ), esc_html__( '1 Comment', 'bg-photo-frame' ), esc_html__( '% Comments', 'bg-photo-frame' ) );
 		echo '</span>';
@@ -71,7 +73,7 @@ function bg_photo_frame_entry_footer() {
 			esc_html__( 'Edit %s', 'bg-photo-frame' ),
 			the_title( '<span class="screen-reader-text">"', '"</span>', false )
 		),
-		'<span class="edit-link">',
+		'<span class="sep"> | </span><span class="edit-link">',
 		'</span>'
 	);
 }

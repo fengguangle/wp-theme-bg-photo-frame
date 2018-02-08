@@ -4,7 +4,7 @@
 # Initial
 --------------------------------------------------------------*/
 body {
-  background: white; }
+  background: rgb(202, 251, 237); }
 
 /* anchor
 -----------------------------------------*/
@@ -29,10 +29,13 @@ body {
 # layout
 --------------------------------------------------------------*/
 .site-title {
-  border-color: #000; }
+  /*border-color: #000;*/ }
+
+.site-title > a{
+  color: rgb(10, 132, 100);}
 
 .site-branding {
-  text-shadow: 1px 1px 0px #FFF; }
+  /*text-shadow: 1px 1px 0px #FFF;*/ }
 
 #primary-inner {
   border: #000 1px solid; }
@@ -77,6 +80,18 @@ body {
 .entry-title {
   border-bottom: 1px solid #000; }
 
+.entry-footer{
+  color: rgb(192,80,77); }
+
+.entry-footer > .cat-links > a,
+.entry-footer > .tags-links > a,
+.entry-footer > .comments-link > a,
+.entry-footer > .edit-link > a {
+  color: rgb(192,80,77); }
+
+.entry-footer > .sep {
+  color:#000; }
+
 /*--------------------------------------------------------------
 # Comment
 --------------------------------------------------------------*/
@@ -88,3 +103,61 @@ body {
 --------------------------------------------------------------*/
 .site-footer {
   border-top: 1px solid #000; }
+
+/*--------------------------------------------------------------
+# DeanFeng @20180207
+--------------------------------------------------------------*/
+h1, h2, h3, h4, h5, h6 {  /* main title and sub-title */
+/*  font-family: "Century Gothic", "Trebuchet MS", "Segoe UI", Segoe, "Nimbus Sans L", "Ubuntu", Verdana, Tahoma, Arial, Helvetica, sans-serif;
+  margin: 0;*/
+  color: rgb(10, 132, 100);
+/*  letter-spacing: 1px;
+  line-height: 1.2;
+  text-align:left;*/
+}
+h1 {
+  /*font-size: 40px;
+  font-weight: 400;
+  padding: 0.2em 0;*/
+}
+h2 {
+  /*font-size: 36px;
+  font-weight: 400;
+  padding: 0.2em 0;*/
+}
+h3 {
+  /*font-size: 22px;*/
+  border-bottom: thin solid rgb(12, 155, 116);
+  padding: 0 0 0.3em 0;
+}
+h4 {
+/*  font-family: "Segoe UI", Segoe, "Nimbus Sans L", "Ubuntu", Verdana, Tahoma, Arial, Helvetica, sans-serif;
+  font-size: 18px;*/
+  padding: 1.3em 0 0.2em 0;
+  border-bottom: thin dotted rgb(12, 155, 116);
+}
+h5, h6 {
+/*  font-family: "Segoe UI", Segoe, "Nimbus Sans L", "Ubuntu", Verdana, Tahoma, Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  color: #444;*/
+  /*padding: 1.2em 0 0 0;*/  /* top right bottom left */
+  letter-spacing: 1px;
+}
+
+pre {
+    font-family: Consolas, "DejaVu Sans Mono", "Lucida Console", "Courier New", Courier, monospace;
+    background-color: rgb(215, 236, 211);  /* darker */
+/*    font-size: 13px;
+    margin: 5px 0 8px 0;
+    border: solid 2px #f8f8f8;
+    padding: 5px 10px;
+    line-height: 135%;*/
+}
+
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 15.5px;
+    border-left: 5px solid #0c9b74;
+    background-color: rgb(204, 238, 241);
+}

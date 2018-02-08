@@ -18,6 +18,10 @@
                     <a href="<?php echo esc_url( __( 'https://wordpress.org/', 'bg-photo-frame' ) ); ?>"><?php printf( esc_html__( 'Powered by %s', 'bg-photo-frame' ), 'WordPress' ); ?></a>
                     <span class="sep"> | </span>
                     <?php printf( esc_html__( 'Theme: %1$s', 'bg-photo-frame' ), 'BG Photo Frame' ); ?>
+                    <span class="sep"> | </span>
+                    <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">
+                    <?php echo get_option( 'zh_cn_l10n_icp_num' );?></a>
+                    <span class="sep"> |  © 2018 ResCup</span>
                 </div><!-- .site-info -->
             </footer><!-- #colophon -->
         </div><!-- #site-wrapper_inner -->
